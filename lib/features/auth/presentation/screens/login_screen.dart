@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:messenger/features/delete/presentation/screens/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -11,14 +10,14 @@ class LoginScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushReplacement(
+            /* Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return HomeScreen();
+                  // return HomeScreen();
                 },
               ),
-            );
+            ); */
           },
           child: Text('Login'),
         ),

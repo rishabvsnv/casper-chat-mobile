@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:messenger/core/theme/app_colors.dart';
-import 'package:messenger/widgets/custom_appbar.dart';
-import 'package:messenger/widgets/custom_drawer.dart';
+import 'package:messenger/shared/widgets/custom_appbar.dart';
+import 'package:messenger/shared/widgets/custom_drawer.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class FolderScreen extends StatelessWidget {
+  const FolderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

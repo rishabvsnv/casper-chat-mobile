@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:messenger/widgets/custom_appbar.dart';
-import 'package:messenger/widgets/custom_drawer.dart';
+import 'package:messenger/shared/widgets/custom_appbar.dart';
+import 'package:messenger/shared/widgets/custom_drawer.dart';
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
