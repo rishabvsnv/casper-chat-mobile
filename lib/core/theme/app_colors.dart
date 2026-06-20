@@ -1,44 +1,67 @@
 import 'dart:ui';
 
 class AppColors {
-  // Brand colors
-  static const Color primary = Color(0xFF1E88E5);
-  static const Color secondary = Color(0xFFFF9800);
-
-  // Dashboard colors
-  static const Color ringColor = Color(0xFF4CAF50);
+  // Telegram Brand
+  static const Color primary = Color(0xFF229ED9);
+  static const Color secondary = Color(0xFF5AC8FA);
 
   // Backgrounds
-  static const Color background = Color(0xFFFAFAFA);
+  static const Color background = Color(0xFFF4F5F7);
   static const Color surface = Color(0xFFFFFFFF);
+  static const Color surfaceVariant = Color(0xFFF0F2F5);
 
-  // Text colors
+  // Text
   static const Color onPrimary = Color(0xFFFFFFFF);
-  static const Color textPrimary = Color(0xFF212121);
-  static const Color textSecondary = Color(0xFF757575);
-  static const Color textHint = Color(0xFF9E9E9E);
 
-  // Status colors
-  static const Color success = Color(0xFF4CAF50);
-  static const Color warning = Color(0xFFFFC107);
-  // static const Color error = Color(0xFFF44336);
-  static const Color error = Color(0xFFB3261E);
-  static const Color info = Color(0xFF2196F3);
+  static const Color textPrimary = Color(0xFF111827);
+  static const Color textSecondary = Color(0xFF6B7280);
+  static const Color textHint = Color(0xFF9CA3AF);
 
-  // Borders & dividers
-  // static const Color border = Color(0xFF212121);
-  static const Color border = Color(0xFFE0E0E0);
-  static const Color divider = Color(0xFFBDBDBD);
+  // Telegram Status
+  static const Color online = Color(0xFF4CAF50);
+  static const Color unread = Color(0xFF229ED9);
+  static const Color archived = Color(0xFF9CA3AF);
 
-  // Disabled states
-  static const Color disabled = Color(0xFFBDBDBD);
-  static const Color disabledBackground = Color(0xFFF5F5F5);
+  // Feedback
+  static const Color success = Color(0xFF22C55E);
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color error = Color(0xFFDC2626);
+  static const Color info = Color(0xFF229ED9);
+
+  // Borders
+  static const Color border = Color(0xFFE5E7EB);
+  static const Color divider = Color(0xFFF1F5F9);
+
+  // Disabled
+  static const Color disabled = Color(0xFFD1D5DB);
+  static const Color disabledBackground = Color(0xFFF3F4F6);
 
   // Shadows
-  static const Color shadow = Color(0x1F000000);
+  static const Color shadow = Color(0x14000000);
 
-  // Dark theme colors
-  static const Color darkSurface = Color(0xFF1E1E1E);
-  static const Color darkScaffold = Color(0xFF121212);
-  static const Color darkTextPrimary = Color(0xFFFFFFFF);
+  // Chat Bubble Colors
+  static const Color outgoingBubble = Color(0xFFE3F6FF);
+  static const Color incomingBubble = Color(0xFFFFFFFF);
+
+  // Dark Theme
+  static const Color darkScaffold = Color(0xFF0F172A);
+  static const Color darkSurface = Color(0xFF111827);
+  static const Color darkSurfaceVariant = Color(0xFF1F2937);
+
+  static const Color darkTextPrimary = Color(0xFFF9FAFB);
+  static const Color darkTextSecondary = Color(0xFF9CA3AF);
+
+  static const Color darkBorder = Color(0xFF374151);
+  static const Color darkDivider = Color(0xFF1F2937);
+
+  // Stories
+  static const Color storyBorder = Color(0xFF229ED9);
+
+  // Chat States
+  static const Color readTick = Color(0xFF229ED9);
+  static const Color unreadTick = Color(0xFF9CA3AF);
+
+  // Folder Tabs
+  static const Color tabSelected = Color(0xFF229ED9);
+  static const Color tabUnselected = Color(0xFF6B7280);
 }

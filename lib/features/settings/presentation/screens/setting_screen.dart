@@ -1,27 +1,205 @@
 import 'package:flutter/material.dart';
-import 'package:messenger/shared/widgets/custom_appbar.dart';
-import 'package:messenger/shared/widgets/custom_drawer.dart';
 
-class SettingScreen extends StatelessWidget {
-  const SettingScreen({super.key});
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Telegram Messaging'),
-      drawer: CustomDrawer(),
-      body: Column(
+      appBar: AppBar(title: const Text('Settings')),
+      body: ListView(
         children: [
-          TabBar(tabs: [Text('data'), Text('data'), Text('data')]),
-          TabBarView(
-            children: [
-              Center(child: Text('Home Screen')),
-              Center(child: Text('Home Screen')),
-              Center(child: Text('Home Screen')),
-            ],
+          const SizedBox(height: 12),
+
+          // Profile Section
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                const CircleAvatar(
+                  radius: 32,
+                  child: Icon(Icons.person, size: 32),
+                ),
+                const SizedBox(width: 16),
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Prashant',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        '+91 9876543210',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.qr_code_rounded),
+                ),
+              ],
+            ),
           ),
+
+          const Divider(),
+
+          _sectionTitle('Account'),
+
+          _settingsTile(
+            icon: Icons.person_outline,
+            title: 'Edit Profile',
+            subtitle: 'Name, bio, profile photo',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.alternate_email,
+            title: 'Username',
+            subtitle: '@prashant',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.phone_outlined,
+            title: 'Phone Number',
+            subtitle: '+91 9876543210',
+            onTap: () {},
+          ),
+
+          const Divider(),
+
+          _sectionTitle('Preferences'),
+
+          _settingsTile(
+            icon: Icons.notifications_none,
+            title: 'Notifications',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.lock_outline,
+            title: 'Privacy & Security',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.chat_bubble_outline,
+            title: 'Chat Settings',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.palette_outlined,
+            title: 'Appearance',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.language_outlined,
+            title: 'Language',
+            onTap: () {},
+          ),
+
+          const Divider(),
+
+          _sectionTitle('Data & Storage'),
+
+          _settingsTile(
+            icon: Icons.storage_outlined,
+            title: 'Storage Usage',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.network_check_outlined,
+            title: 'Data Usage',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.download_outlined,
+            title: 'Auto Download Media',
+            onTap: () {},
+          ),
+
+          const Divider(),
+
+          _sectionTitle('Advanced'),
+
+          _settingsTile(
+            icon: Icons.devices_outlined,
+            title: 'Devices',
+            onTap: () {},
+          ),
+
+          _settingsTile(
+            icon: Icons.folder_outlined,
+            title: 'Chat Folders',
+            onTap: () {},
+          ),
+
+          const Divider(),
+
+          _sectionTitle('Help'),
+
+          _settingsTile(icon: Icons.help_outline, title: 'FAQ', onTap: () {}),
+
+          _settingsTile(
+            icon: Icons.support_agent_outlined,
+            title: 'Ask a Question',
+            onTap: () {},
+          ),
+
+          _settingsTile(icon: Icons.info_outline, title: 'About', onTap: () {}),
+
+          const Divider(),
+
+          ListTile(
+            leading: const Icon(Icons.logout_rounded, color: Colors.red),
+            title: const Text(
+              'Logout',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+            ),
+            onTap: () {},
+          ),
+
+          const SizedBox(height: 24),
         ],
       ),
+    );
+  }
+
+  static Widget _sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+      child: Text(
+        title,
+        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  static Widget _settingsTile({
+    required IconData icon,
+    required String title,
+    String? subtitle,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      subtitle: subtitle != null ? Text(subtitle) : null,
+      trailing: const Icon(Icons.chevron_right_rounded),
+      onTap: onTap,
     );
   }
 }

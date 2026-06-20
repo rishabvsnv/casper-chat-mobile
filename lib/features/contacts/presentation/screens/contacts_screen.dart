@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
 import 'package:messenger/shared/widgets/custom_drawer.dart';
 
-class FolderScreen extends StatelessWidget {
-  const FolderScreen({super.key});
+class ContactsScreen extends StatelessWidget {
+  const ContactsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
