@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:messenger/features/contacts/domain/call_model.dart';
 
-class ContactsScreen extends StatelessWidget {
+class ContactsScreen extends ConsumerWidget {
   const ContactsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final calls = [
       CallModel(name: 'John Doe', time: 'Today, 10:24 AM', isIncoming: true),
       CallModel(
@@ -60,16 +62,4 @@ class ContactsScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class CallModel {
-  final String name;
-  final String time;
-  final bool isIncoming;
-
-  const CallModel({
-    required this.name,
-    required this.time,
-    required this.isIncoming,
-  });
 }

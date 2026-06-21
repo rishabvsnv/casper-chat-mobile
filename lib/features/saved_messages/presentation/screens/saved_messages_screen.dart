@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:messenger/features/saved_messages/domain/saved_message.dart';
 
-class SavedMessagesScreen extends StatelessWidget {
+class SavedMessagesScreen extends StatefulWidget {
   const SavedMessagesScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final messages = [
-      const SavedMessage(
-        text: 'Flutter Riverpod architecture notes',
-        time: '10:24 AM',
-      ),
-      const SavedMessage(
-        text: 'Remember to implement chat pagination.',
-        time: 'Yesterday',
-      ),
-      const SavedMessage(text: 'https://flutter.dev', time: 'Yesterday'),
-      const SavedMessage(
-        text: 'Telegram clone feature checklist.',
-        time: 'Monday',
-      ),
-      const SavedMessage(text: 'UI inspiration screenshots.', time: 'Jun 15'),
-    ];
+  State<SavedMessagesScreen> createState() => _SavedMessagesScreenState();
+}
 
+class _SavedMessagesScreenState extends State<SavedMessagesScreen> {
+  final messages = [
+    const SavedMessage(
+      text: 'Flutter Riverpod architecture notes',
+      time: '10:24 AM',
+    ),
+    const SavedMessage(
+      text: 'Remember to implement chat pagination.',
+      time: 'Yesterday',
+    ),
+    const SavedMessage(text: 'https://flutter.dev', time: 'Yesterday'),
+    const SavedMessage(
+      text: 'Telegram clone feature checklist.',
+      time: 'Monday',
+    ),
+    const SavedMessage(text: 'UI inspiration screenshots.', time: 'Jun 15'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Saved Messages')),
       floatingActionButton: FloatingActionButton(
@@ -96,11 +102,4 @@ class SavedMessagesScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class SavedMessage {
-  final String text;
-  final String time;
-
-  const SavedMessage({required this.text, required this.time});
 }

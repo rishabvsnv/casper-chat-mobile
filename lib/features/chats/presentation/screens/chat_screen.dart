@@ -211,7 +211,7 @@ class ChatScreen extends ConsumerWidget {
 
                       return InkWell(
                         onTap: () {
-                          context.push('/messages', extra: chat['name']);
+                          context.push('/chats/$index');
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(

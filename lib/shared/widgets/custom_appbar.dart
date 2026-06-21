@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:messenger/core/constants/image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final String title;
   final Widget? customTitle;
   final List<Widget>? actions;
@@ -18,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       title: (customTitle ?? Text(title)),
       centerTitle: isCenterTitle,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:messenger/features/nearby/domain/nearby_group.dart';
+import 'package:messenger/features/nearby/domain/nearby_user.dart';
 
 class PeopleNearbyScreen extends StatefulWidget {
   const PeopleNearbyScreen({super.key});
@@ -147,28 +149,4 @@ class _PeopleNearbyScreenState extends State<PeopleNearbyScreen> {
       ),
     );
   }
-}
-
-class NearbyUser {
-  final String name;
-  final String distance;
-  final bool isOnline;
-
-  const NearbyUser({
-    required this.name,
-    required this.distance,
-    required this.isOnline,
-  });
-}
-
-class NearbyGroup {
-  final String name;
-  final int members;
-  final String distance;
-
-  const NearbyGroup({
-    required this.name,
-    required this.members,
-    required this.distance,
-  });
 }

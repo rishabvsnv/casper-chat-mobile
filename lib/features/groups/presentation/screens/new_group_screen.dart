@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:messenger/features/groups/domain/contact_model.dart';
 
 class NewGroupScreen extends StatefulWidget {
   const NewGroupScreen({super.key});
@@ -125,11 +126,4 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
       ),
     );
   }
-}
-
-class ContactModel {
-  final String id;
-  final String name;
-
-  const ContactModel({required this.id, required this.name});
 }

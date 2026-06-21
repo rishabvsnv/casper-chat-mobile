@@ -214,7 +214,17 @@ class CustomDrawer extends ConsumerWidget {
                     context,
                     icon: Icons.person_add_outlined,
                     title: 'Invite Friends',
-                    onTap: () => context.push('/invite-friends'),
+                    onTap: () { // async
+                      /* await SharePlus.instance.share(
+                        ShareParams(
+                          text:
+                              'Hey! I am using Messenger for chatting and calling.\n\n'
+                              'Download it here:\n'
+                              'https://yourapp.com/download',
+                          subject: 'Join Messenger',
+                        ),
+                      ); */
+                    },
                   ),
 
                   _drawerItem(

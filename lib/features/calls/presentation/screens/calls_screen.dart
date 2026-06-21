@@ -1,48 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:messenger/features/calls/domain/call_model.dart';
 
-class CallsScreen extends StatelessWidget {
+class CallsScreen extends StatefulWidget {
   const CallsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final calls = [
-      CallModel(
-        name: 'John Doe',
-        time: 'Today, 10:24 AM',
-        isIncoming: true,
-        isMissed: false,
-        isVideo: false,
-      ),
-      CallModel(
-        name: 'Emma Wilson',
-        time: 'Today, 09:12 AM',
-        isIncoming: false,
-        isMissed: false,
-        isVideo: true,
-      ),
-      CallModel(
-        name: 'Alex Johnson',
-        time: 'Yesterday, 08:45 PM',
-        isIncoming: true,
-        isMissed: true,
-        isVideo: false,
-      ),
-      CallModel(
-        name: 'Sophia Brown',
-        time: 'Yesterday, 05:10 PM',
-        isIncoming: false,
-        isMissed: false,
-        isVideo: true,
-      ),
-      CallModel(
-        name: 'Michael Smith',
-        time: 'Monday, 11:30 AM',
-        isIncoming: true,
-        isMissed: false,
-        isVideo: false,
-      ),
-    ];
+  State<CallsScreen> createState() => _CallsScreenState();
+}
 
+class _CallsScreenState extends State<CallsScreen> {
+  final calls = [
+    CallModel(
+      name: 'John Doe',
+      time: 'Today, 10:24 AM',
+      isIncoming: true,
+      isMissed: false,
+      isVideo: false,
+    ),
+    CallModel(
+      name: 'Emma Wilson',
+      time: 'Today, 09:12 AM',
+      isIncoming: false,
+      isMissed: false,
+      isVideo: true,
+    ),
+    CallModel(
+      name: 'Alex Johnson',
+      time: 'Yesterday, 08:45 PM',
+      isIncoming: true,
+      isMissed: true,
+      isVideo: false,
+    ),
+    CallModel(
+      name: 'Sophia Brown',
+      time: 'Yesterday, 05:10 PM',
+      isIncoming: false,
+      isMissed: false,
+      isVideo: true,
+    ),
+    CallModel(
+      name: 'Michael Smith',
+      time: 'Monday, 11:30 AM',
+      isIncoming: true,
+      isMissed: false,
+      isVideo: false,
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Calls'), centerTitle: false),
       floatingActionButton: FloatingActionButton(
@@ -91,20 +97,4 @@ class CallsScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class CallModel {
-  final String name;
-  final String time;
-  final bool isIncoming;
-  final bool isMissed;
-  final bool isVideo;
-
-  const CallModel({
-    required this.name,
-    required this.time,
-    required this.isIncoming,
-    required this.isMissed,
-    required this.isVideo,
-  });
 }
