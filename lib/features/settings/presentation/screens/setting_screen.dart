@@ -46,7 +46,9 @@ class SettingsScreen extends ConsumerWidget {
                 ),
 
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push(NamedRoutes.myQR);
+                  },
                   icon: const Icon(Icons.qr_code_rounded),
                 ),
               ],

@@ -22,7 +22,7 @@ dependencies:
   path_provider: ^2.1.6
   cached_network_image: ^3.4.1
   qr_flutter: ^4.1.0
-  video_player: ^2.11.1
+  # video_player: ^2.11.1
   # share_plus: ^13.1.0
 
 dev_dependencies:
