@@ -216,6 +216,7 @@ class CustomDrawer extends ConsumerWidget {
                     icon: Icons.person_add_outlined,
                     title: 'Invite Friends',
                     onTap: () {
+                      context.go(NamedRoutes.share);
                       // async
                       /* await SharePlus.instance.share(
                         ShareParams(

@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/features/common/presentation/screens/share_screen.dart';
+import 'package:messenger/features/common/presentation/screens/telegram_features_screen.dart';
 import 'package:messenger/features/contacts/presentation/screens/blocked_users_screen.dart';
 import 'package:messenger/features/settings/presentation/screens/active_sessions_screen.dart';
 import 'package:messenger/features/settings/presentation/screens/data_usage_screen.dart';
@@ -175,6 +177,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: NamedRoutes.myQR,
         builder: (context, state) => const QrCodeScreen(),
+      ),
+
+      GoRoute(
+        path: NamedRoutes.telegramFeatures,
+        builder: (context, state) => const TelegramFeaturesScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.share,
+        builder: (context, state) => const ShareScreen(),
       ),
     ],
   );

@@ -32,4 +32,5 @@ class NamedRoutes {
   static final String peopleNearby = '/people-nearby';
   static final String myQR = '/my-qr';
   static final String telegramFeatures = '/telegram-features';
+  static final String share = '/share';
 }
