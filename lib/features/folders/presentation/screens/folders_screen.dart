@@ -133,14 +133,9 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
                 : ReorderableListView.builder(
                     itemCount: _folders.length,
                     buildDefaultDragHandles: false,
-                    onReorder: (oldIndex, newIndex) {
+                    onReorderItem: (oldIndex, newIndex) {
                       setState(() {
-                        if (newIndex > oldIndex) {
-                          newIndex -= 1;
-                        }
-
                         final item = _folders.removeAt(oldIndex);
-
                         _folders.insert(newIndex, item);
                       });
                     },

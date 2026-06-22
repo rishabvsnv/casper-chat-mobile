@@ -97,18 +97,24 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
               children: [
                 const SizedBox(height: 8),
 
-                ..._reasons.map(
-                  (reason) => RadioListTile<String>(
-                    value: reason.title,
-                    groupValue: _selectedReason,
-                    title: Text(reason.title),
-                    subtitle: Text(reason.description),
-                    secondary: Icon(reason.icon),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedReason = value;
-                      });
-                    },
+                RadioGroup<String>(
+                  groupValue: _selectedReason,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedReason = value;
+                    });
+                  },
+                  child: Column(
+                    children: _reasons
+                        .map(
+                          (reason) => RadioListTile<String>(
+                            value: reason.title,
+                            title: Text(reason.title),
+                            subtitle: Text(reason.description),
+                            secondary: Icon(reason.icon),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
 

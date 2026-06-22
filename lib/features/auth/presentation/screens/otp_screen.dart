@@ -24,9 +24,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   Future<void> _verifyOtp() async {
     if (_otpController.text.trim().length < 4) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a valid verification code'),
-        ),
+        const SnackBar(content: Text('Please enter a valid verification code')),
       );
       return;
     }
@@ -44,9 +42,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       // ref.read(authProvider.notifier).verifyOtp(_otpController.text);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('OTP verified successfully'),
-        ),
+        const SnackBar(content: Text('OTP verified successfully')),
       );
     } finally {
       if (mounted) {
@@ -59,18 +55,14 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
 
   void _resendCode() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Verification code sent again'),
-      ),
+      const SnackBar(content: Text('Verification code sent again')),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Verification',
-      ),
+      appBar: const CustomAppBar(title: 'Verification'),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -83,9 +75,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primaryContainer,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                 ),
                 child: Icon(
                   Icons.lock_outline,
@@ -99,8 +89,8 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
               Text(
                 'Enter Verification Code',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               const SizedBox(height: 12),
@@ -141,13 +131,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                       ? const SizedBox(
                           height: 22,
                           width: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text(
-                          'Verify',
-                        ),
+                      : const Text('Verify'),
                 ),
               ),
 
@@ -161,9 +147,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
               const SizedBox(height: 8),
 
               TextButton(
-                onPressed: _remainingSeconds > 0
-                    ? null
-                    : _resendCode,
+                onPressed: _remainingSeconds > 0 ? null : _resendCode,
                 child: Text(
                   _remainingSeconds > 0
                       ? 'Resend in $_remainingSeconds sec'
@@ -178,16 +162,12 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      const Icon(
-                        Icons.info_outline,
-                      ),
+                      const Icon(Icons.info_outline),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           'For Telegram-style login, the verification code is usually received via Telegram, SMS, or phone call.',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
