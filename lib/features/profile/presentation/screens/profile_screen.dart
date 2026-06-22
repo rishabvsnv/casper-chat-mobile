@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:messenger/routes/named_routes.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -102,14 +104,18 @@ class ProfileScreen extends ConsumerWidget {
             icon: Icons.lock_outline,
             title: 'Privacy & Security',
             subtitle: 'Manage account privacy',
-            onTap: () {},
+            onTap: () {
+              context.push(NamedRoutes.privacy);
+            },
           ),
 
           _profileTile(
             icon: Icons.devices_outlined,
             title: 'Devices',
             subtitle: 'Manage active sessions',
-            onTap: () {},
+            onTap: () {
+              context.push(NamedRoutes.devices);
+            },
           ),
 
           const Divider(),
@@ -125,7 +131,9 @@ class ProfileScreen extends ConsumerWidget {
             icon: Icons.folder_outlined,
             title: 'Chat Folders',
             subtitle: 'Organize conversations',
-            onTap: () {},
+            onTap: () {
+              context.push(NamedRoutes.folders);
+            },
           ),
 
           const Divider(),

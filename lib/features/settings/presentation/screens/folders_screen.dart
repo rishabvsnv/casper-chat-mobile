@@ -62,7 +62,66 @@ class _FoldersScreenState extends State<FoldersScreen>
     return Scaffold(
       appBar: AppBar(title: const Text('Chat Folders')),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          final controller = TextEditingController();
+
+          final result = await showDialog<String>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('New Folder'),
+                content: TextField(
+                  controller: controller,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Folder name',
+                    border: OutlineInputBorder(),
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  FilledButton(
+                    onPressed: () {
+                      final name = controller.text.trim();
+
+                      if (name.isEmpty) {
+                        return;
+                      }
+
+                      Navigator.pop(context, name);
+                    },
+                    child: const Text('Create'),
+                  ),
+                ],
+              );
+            },
+          );
+
+          if (result == null || result.isEmpty) {
+            return;
+          }
+
+          setState(() {
+            folders.add(
+              ChatFolder(
+                title: result,
+                description: 'Custom folder',
+                icon: Icons.folder_outlined,
+              ),
+            );
+          });
+
+          ScaffoldMessenger.of(
+            // ignore: use_build_context_synchronously
+            context,
+          ).showSnackBar(SnackBar(content: Text('$result folder created')));
+        },
         child: const Icon(Icons.create_new_folder_outlined),
       ),
       body: Column(
@@ -101,9 +160,17 @@ class _FoldersScreenState extends State<FoldersScreen>
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   subtitle: Text(folder.description),
+                  onLongPress: folder.isDefault
+                      ? null
+                      : () {
+                          _showFolderActions(folder, index);
+                        },
                   trailing: folder.isDefault
                       ? const Chip(label: Text('Default'))
-                      : const Icon(Icons.drag_handle),
+                      : ReorderableDragStartListener(
+                          index: index,
+                          child: const Icon(Icons.drag_handle),
+                        ),
                 );
               },
             ),
@@ -111,5 +178,91 @@ class _FoldersScreenState extends State<FoldersScreen>
         ],
       ),
     );
+  }
+
+  Future<void> _showFolderActions(ChatFolder folder, int index) async {
+    await showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit_outlined),
+                title: const Text('Rename Folder'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _renameFolder(folder, index);
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.delete_outline),
+                title: const Text('Delete Folder'),
+                textColor: Colors.red,
+                iconColor: Colors.red,
+                onTap: () {
+                  Navigator.pop(context);
+
+                  setState(() {
+                    folders.removeAt(index);
+                  });
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${folder.title} deleted')),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _renameFolder(ChatFolder folder, int index) async {
+    final controller = TextEditingController(text: folder.title);
+
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Rename Folder'),
+          content: TextField(
+            controller: controller,
+            decoration: const InputDecoration(border: OutlineInputBorder()),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(context, controller.text.trim());
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == null || result.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      folders[index] = ChatFolder(
+        title: result,
+        description: folder.description,
+        icon: folder.icon,
+        isDefault: folder.isDefault,
+      );
+    });
   }
 }

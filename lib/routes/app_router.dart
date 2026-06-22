@@ -1,84 +1,111 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/features/contacts/presentation/screens/blocked_users_screen.dart';
+import 'package:messenger/features/settings/presentation/screens/active_sessions_screen.dart';
+import 'package:messenger/features/settings/presentation/screens/data_usage_screen.dart';
+import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/routes/routes_export.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/chats',
+    initialLocation: NamedRoutes.chats,
     routes: [
       // Auth
       GoRoute(
-        path: '/splash',
+        path: NamedRoutes.splash,
         builder: (context, state) => const SplashScreen(),
       ),
-      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(path: '/otp', builder: (context, state) => const OtpScreen()),
+      GoRoute(
+        path: NamedRoutes.login,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.otp,
+        builder: (context, state) => const OtpScreen(),
+      ),
 
       // Chats
-      GoRoute(path: '/chats', builder: (context, state) => const ChatScreen()),
+      GoRoute(
+        path: NamedRoutes.chats,
+        builder: (context, state) => const ChatScreen(),
+      ),
 
       GoRoute(
-        path: '/chats/:chatId',
+        path: NamedRoutes.chatWithParams,
         builder: (context, state) {
           final chatId = state.pathParameters['chatId']!;
+          final userName = state.extra as String;
 
-          return MessageInfoScreen(chatId: chatId);
+          return MessageInfoScreen(chatId: chatId, userName: userName);
         },
       ),
 
       // Archive
       GoRoute(
-        path: '/archive',
+        path: NamedRoutes.archive,
         builder: (context, state) => const ArchivedChatsScreen(),
       ),
 
       // Profile
       GoRoute(
-        path: '/profile',
+        path: NamedRoutes.profile,
         builder: (context, state) => const ProfileScreen(),
       ),
       GoRoute(
-        path: '/profile/edit',
+        path: NamedRoutes.profileEdit,
         builder: (context, state) => const ProfileScreen(),
       ),
 
       // Settings
       GoRoute(
-        path: '/settings',
+        path: NamedRoutes.settings,
         builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(
-        path: '/settings/appearance',
+        path: NamedRoutes.appearance,
         builder: (context, state) => const AppearanceScreen(),
       ),
       GoRoute(
-        path: '/settings/language',
+        path: NamedRoutes.language,
         builder: (context, state) => const LanguageScreen(),
       ),
       GoRoute(
-        path: '/settings/privacy',
+        path: NamedRoutes.privacy,
         builder: (context, state) => const PrivacyScreen(),
       ),
       GoRoute(
-        path: '/settings/notifications',
+        path: NamedRoutes.notifications,
         builder: (context, state) => const NotificationsScreen(),
       ),
       GoRoute(
-        path: '/settings/storage',
+        path: NamedRoutes.storage,
         builder: (context, state) => const StorageScreen(),
       ),
       GoRoute(
-        path: '/settings/devices',
+        path: NamedRoutes.devices,
         builder: (context, state) => const DevicesScreen(),
       ),
       GoRoute(
-        path: '/settings/folders',
+        path: NamedRoutes.folders,
         builder: (context, state) => const FoldersScreen(),
+      ),
+
+      GoRoute(
+        path: NamedRoutes.blockedUsers,
+        builder: (context, state) => const BlockedUsersScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.dataUsage,
+        builder: (context, state) => const DataUsageScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.activeSessions,
+        builder: (context, state) => const ActiveSessionsScreen(),
       ),
 
       // Contacts
       GoRoute(
-        path: '/contacts',
+        path: NamedRoutes.contacts,
         builder: (context, state) => const ContactsScreen(),
       ),
       GoRoute(
@@ -91,11 +118,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // Calls
-      GoRoute(path: '/calls', builder: (context, state) => const CallsScreen()),
+      GoRoute(
+        path: NamedRoutes.calls,
+        builder: (context, state) => const CallsScreen(),
+      ),
 
       // Saved Messages
       GoRoute(
-        path: '/saved-messages',
+        path: NamedRoutes.savedMessages,
         builder: (context, state) => const SavedMessagesScreen(),
       ),
       GoRoute(
@@ -109,7 +139,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // New Group
       GoRoute(
-        path: '/new-group',
+        path: NamedRoutes.newGroup,
         builder: (context, state) => const NewGroupScreen(),
       ),
       GoRoute(
@@ -123,7 +153,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // New Channel
       GoRoute(
-        path: '/new-channel',
+        path: NamedRoutes.newChannel,
         builder: (context, state) => const NewChannelScreen(),
       ),
       GoRoute(
@@ -137,25 +167,13 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // People Nearby
       GoRoute(
-        path: '/people-nearby',
+        path: NamedRoutes.peopleNearby,
         builder: (context, state) => const PeopleNearbyScreen(),
-      ),
-
-      // Notifications
-      GoRoute(
-        path: '/notifications',
-        builder: (context, state) => const NotificationsScreen(),
-      ),
-
-      // Storage Usage
-      GoRoute(
-        path: '/storage',
-        builder: (context, state) => const StorageScreen(),
       ),
 
       // QR
       GoRoute(
-        path: '/my-qr',
+        path: NamedRoutes.myQR,
         builder: (context, state) => const QrCodeScreen(),
       ),
     ],

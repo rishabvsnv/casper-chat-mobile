@@ -1,78 +1,117 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/routes/named_routes.dart';
+import 'package:messenger/shared/widgets/custom_appbar.dart';
 import 'package:messenger/shared/widgets/custom_drawer.dart';
 
-class ChatScreen extends ConsumerWidget {
+class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final chats = [
-      {
-        "name": "Saved Messages",
-        "message": "IMG_420.png",
-        "time": "Fri",
-        "unread": 0,
-        "color": Colors.blue,
-        "read": true,
-        "muted": false,
-        "pinned": true,
-      },
-      {
-        "name": "Emma Torreaux",
-        "message": "Bob says hi.",
-        "time": "9:41",
-        "unread": 0,
-        "color": Colors.orange,
-        "read": true,
-        "muted": false,
-        "pinned": false,
-      },
-      {
-        "name": "Roberto",
-        "message": "Say hello to Emma.",
-        "time": "9:41",
-        "unread": 1,
-        "color": Colors.green,
-        "read": false,
-        "muted": false,
-        "pinned": false,
-      },
-      {
-        "name": "8Bit Times",
-        "message": "8Bit Times started a Live Stream",
-        "time": "9:41",
-        "unread": 4,
-        "color": Colors.red,
-        "read": false,
-        "muted": true,
-        "pinned": false,
-      },
-      {
-        "name": "Digital Nomads",
-        "message": "Jennie: We just reached 2,500 members",
-        "time": "9:22",
-        "unread": 12,
-        "color": Colors.teal,
-        "read": false,
-        "muted": true,
-        "pinned": true,
-      },
-      {
-        "name": "Penelope",
-        "message": "See you tomorrow 👋",
-        "time": "9:12",
-        "unread": 0,
-        "color": Colors.purple,
-        "read": true,
-        "muted": false,
-        "pinned": false,
-      },
-    ];
+  ConsumerState<ChatScreen> createState() => _ChatScreenState();
+}
 
+class _ChatScreenState extends ConsumerState<ChatScreen> {
+  int selectedTab = 0;
+
+  final tabs = ['All', 'Groups', 'Work', 'Bots'];
+
+  final chats = [
+    {
+      "name": "Saved Messages",
+      "type": "All",
+      "message": "IMG_420.png",
+      "time": "Fri",
+      "unread": 0,
+      "color": Colors.blue,
+      "read": true,
+      "muted": false,
+      "pinned": true,
+    },
+    {
+      "name": "Emma Torreaux",
+      "type": "Work",
+      "message": "Bob says hi.",
+      "time": "9:41",
+      "unread": 0,
+      "color": Colors.orange,
+      "read": true,
+      "muted": false,
+      "pinned": false,
+    },
+    {
+      "name": "Roberto",
+      "type": "Work",
+      "message": "Say hello to Emma.",
+      "time": "9:41",
+      "unread": 1,
+      "color": Colors.green,
+      "read": false,
+      "muted": false,
+      "pinned": false,
+    },
+    {
+      "name": "8Bit Times",
+      "type": "Groups",
+      "message": "8Bit Times started a Live Stream",
+      "time": "9:41",
+      "unread": 4,
+      "color": Colors.red,
+      "read": false,
+      "muted": true,
+      "pinned": false,
+    },
+    {
+      "name": "Digital Nomads",
+      "type": "Groups",
+      "message": "Jennie: We just reached 2,500 members",
+      "time": "9:22",
+      "unread": 12,
+      "color": Colors.teal,
+      "read": false,
+      "muted": true,
+      "pinned": true,
+    },
+    {
+      "name": "Penelope",
+      "message": "See you tomorrow 👋",
+      "time": "9:12",
+      "unread": 0,
+      "color": Colors.purple,
+      "read": true,
+      "muted": false,
+      "pinned": false,
+    },
+    {
+      "name": "ChatGPT Bots",
+      "type": "Bots",
+      "message": "See you tomorrow 👋",
+      "time": "9:12",
+      "unread": 0,
+      "color": Colors.purple,
+      "read": true,
+      "muted": false,
+      "pinned": false,
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredChats = selectedTab == 0
+        ? chats
+        : chats.where((chat) {
+            return chat["type"] == tabs[selectedTab];
+          }).toList();
+    filteredChats.sort((a, b) {
+      final aPinned = a["pinned"] as bool;
+      final bPinned = b["pinned"] as bool;
+
+      if (aPinned == bPinned) return 0;
+
+      return aPinned ? -1 : 1;
+    });
     return Scaffold(
-      backgroundColor: Colors.white,
       drawer: const CustomDrawer(),
 
       floatingActionButton: FloatingActionButton(
@@ -81,63 +120,31 @@ class ChatScreen extends ConsumerWidget {
         child: const Icon(Icons.mode_edit_outline_rounded, color: Colors.white),
       ),
 
-      /* appBar: CustomAppBar(
+      appBar: CustomAppBar(
+        isDashboard: true,
         title: 'Telegram',
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
-      ), */
+      ),
       body: SafeArea(
         child: Builder(
           builder: (context) {
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
+                Container(
+                  margin: const EdgeInsets.symmetric(
                     horizontal: 16,
-                    vertical: 12,
+                    vertical: 8,
                   ),
-                  child: Row(
-                    children: [
-                      /* SizedBox(
-                        width: 54,
-                        child: Stack(
-                          children: [
-                            const CircleAvatar(
-                              radius: 16,
-                              backgroundColor: Colors.orange,
-                            ),
-                            Positioned(
-                              left: 18,
-                              child: CircleAvatar(
-                                radius: 16,
-                                backgroundColor: Colors.purple.shade200,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ), */
-                      IconButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        icon: const Icon(Icons.menu_rounded),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Search",
+                      prefixIcon: Icon(Icons.search),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
                       ),
-
-                      const Text(
-                        "Telegram",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff229ED9),
-                        ),
-                      ),
-
-                      const Spacer(),
-
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.search),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
 
@@ -193,10 +200,17 @@ class ChatScreen extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     scrollDirection: Axis.horizontal,
                     children: [
-                      _tab("All", true),
-                      _tab("Groups", false),
-                      _tab("Work", false),
-                      _tab("Bots", false),
+                      ...List.generate(
+                        tabs.length,
+                        (index) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedTab = index;
+                            });
+                          },
+                          child: _tab(tabs[index], selectedTab == index),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -205,13 +219,39 @@ class ChatScreen extends ConsumerWidget {
 
                 Expanded(
                   child: ListView.builder(
-                    itemCount: chats.length,
+                    itemCount: filteredChats.length,
                     itemBuilder: (context, index) {
-                      final chat = chats[index];
+                      final chat = filteredChats[index];
 
                       return InkWell(
+                        onLongPress: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) {
+                              return Wrap(
+                                children: [
+                                  ListTile(
+                                    leading: Icon(Icons.push_pin),
+                                    title: Text("Pin Chat"),
+                                  ),
+                                  ListTile(
+                                    leading: Icon(Icons.notifications_off),
+                                    title: Text("Mute"),
+                                  ),
+                                  ListTile(
+                                    leading: Icon(Icons.archive),
+                                    title: Text("Archive"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
                         onTap: () {
-                          context.push('/chats/$index');
+                          context.push(
+                            '${NamedRoutes.chats}/$index',
+                            extra: chat['name'],
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -367,13 +407,10 @@ class ChatScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
           if (selected)
-            Container(
-              width: 24,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              width: selected ? 24 : 0,
               height: 3,
-              decoration: BoxDecoration(
-                color: const Color(0xff229ED9),
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
         ],
       ),

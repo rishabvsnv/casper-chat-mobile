@@ -20,7 +20,17 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
-      title: (customTitle ?? Text(title)),
+      actionsPadding: EdgeInsets.only(right: 16),
+      title: isDashboard
+          ? const Text(
+              "Telegram",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: Color(0xff229ED9),
+              ),
+            )
+          : (customTitle ?? Text(title)),
       centerTitle: isCenterTitle,
       actions: actions,
     );

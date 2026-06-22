@@ -28,7 +28,7 @@ class SettingsScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
-                        'Prashant',
+                        'Rishabh',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -65,7 +65,7 @@ class SettingsScreen extends ConsumerWidget {
           _settingsTile(
             icon: Icons.alternate_email,
             title: 'Username',
-            subtitle: '@prashant',
+            subtitle: '@rishabvsnv',
             onTap: () {},
           ),
 

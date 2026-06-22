@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:messenger/features/settings/presentation/widgets/privacy_tile_widget.dart';
 import 'package:messenger/features/settings/presentation/widgets/section_header_widget.dart';
+import 'package:messenger/routes/named_routes.dart';
 
 class PrivacyScreen extends StatefulWidget {
   const PrivacyScreen({super.key});
@@ -96,7 +98,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
             title: const Text('Active Sessions'),
             subtitle: const Text('Manage logged-in devices'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              context.push(NamedRoutes.activeSessions);
+            },
           ),
 
           const Divider(),
@@ -134,7 +138,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
             title: const Text('Blocked Users'),
             subtitle: const Text('Manage blocked contacts'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              context.push(NamedRoutes.blockedUsers);
+            },
           ),
 
           ListTile(
@@ -150,7 +156,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
             title: const Text('Data Settings'),
             subtitle: const Text('Control data usage and storage'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              context.push(NamedRoutes.dataUsage);
+            },
           ),
 
           const SizedBox(height: 24),

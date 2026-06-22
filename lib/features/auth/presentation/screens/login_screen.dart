@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/routes/named_routes.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -83,7 +84,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push('/chats');
+          context.push(NamedRoutes.chats);
         },
         child: const Icon(Icons.arrow_forward),
       ),

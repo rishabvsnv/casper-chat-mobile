@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:messenger/features/settings/presentation/widgets/section_header_widget.dart';
+import 'package:messenger/routes/named_routes.dart';
 
 class StorageScreen extends StatefulWidget {
   const StorageScreen({super.key});
@@ -63,7 +65,58 @@ class _StorageScreenState extends State<StorageScreen> {
             title: const Text('Clear Cache'),
             subtitle: const Text('Free up device storage'),
             trailing: const Text('2.3 GB'),
-            onTap: () {},
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    title: const Text('Clear Cache'),
+                    content: const Text('Are you sure you want clear cache?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => context.pop(),
+                        child: const Text('Cancel'),
+                      ),
+                      FilledButton(
+                        onPressed: () {
+                          context.pop();
+
+                          // Todo:
+                          // AuthRepository.logout();
+                          // Clear cache
+                          // Navigate to login
+
+                          context.go(NamedRoutes.login);
+                        },
+                        child: const Text('Clear'),
+                      ),
+                    ],
+                  );
+                },
+              );
+              showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Clear Cache"),
+                    content: Text("Are you sure you want to clear cache?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: Text(
+                          "Clear",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
 
           ListTile(
@@ -161,7 +214,9 @@ class _StorageScreenState extends State<StorageScreen> {
             title: const Text('Data Usage'),
             subtitle: const Text('Manage mobile and Wi-Fi usage'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              context.push(NamedRoutes.dataUsage);
+            },
           ),
 
           const SizedBox(height: 24),

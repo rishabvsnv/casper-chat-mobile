@@ -139,7 +139,7 @@ class _PeopleNearbyScreenState extends State<PeopleNearbyScreen> {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 64),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(

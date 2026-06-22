@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/core/theme/app_colors.dart';
+import 'package:messenger/routes/named_routes.dart';
 
 class CustomDrawer extends ConsumerWidget {
   const CustomDrawer({super.key});
@@ -9,8 +10,8 @@ class CustomDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Todo: Replace with actual user provider
-    const userName = 'Prashant';
-    const username = 'prashant';
+    const userName = 'Rishabh';
+    const username = 'rishabvsnv';
     const phoneNumber = '+91 9876543210';
 
     return Drawer(
@@ -31,7 +32,7 @@ class CustomDrawer extends ConsumerWidget {
                           context.pop();
 
                           WidgetsBinding.instance.addPostFrameCallback((_) {
-                            context.push('/profile');
+                            context.push(NamedRoutes.profile);
                           });
                         },
                         child: const CircleAvatar(
@@ -52,7 +53,7 @@ class CustomDrawer extends ConsumerWidget {
                           context.pop();
 
                           WidgetsBinding.instance.addPostFrameCallback((_) {
-                            context.push('/my-qr');
+                            context.push(NamedRoutes.myQR);
                           });
                         },
                         icon: const Icon(
@@ -112,49 +113,49 @@ class CustomDrawer extends ConsumerWidget {
                     context,
                     icon: Icons.group_outlined,
                     title: 'New Group',
-                    onTap: () => context.push('/new-group'),
+                    onTap: () => context.push(NamedRoutes.newGroup),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.campaign_outlined,
                     title: 'New Channel',
-                    onTap: () => context.push('/new-channel'),
+                    onTap: () => context.push(NamedRoutes.newChannel),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.person_outline,
                     title: 'Contacts',
-                    onTap: () => context.push('/contacts'),
+                    onTap: () => context.push(NamedRoutes.contacts),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.call_outlined,
                     title: 'Calls',
-                    onTap: () => context.push('/calls'),
+                    onTap: () => context.push(NamedRoutes.calls),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.location_on_outlined,
                     title: 'People Nearby',
-                    onTap: () => context.push('/people-nearby'),
+                    onTap: () => context.push(NamedRoutes.peopleNearby),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.bookmark_outline_rounded,
                     title: 'Saved Messages',
-                    onTap: () => context.push('/saved-messages'),
+                    onTap: () => context.push(NamedRoutes.savedMessages),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.archive_outlined,
                     title: 'Archived Chats',
-                    onTap: () => context.push('/archive'),
+                    onTap: () => context.push(NamedRoutes.archive),
                   ),
 
                   const Divider(),
@@ -163,49 +164,49 @@ class CustomDrawer extends ConsumerWidget {
                     context,
                     icon: Icons.account_circle_outlined,
                     title: 'My Profile',
-                    onTap: () => context.push('/profile'),
+                    onTap: () => context.push(NamedRoutes.profile),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.notifications_outlined,
                     title: 'Notifications',
-                    onTap: () => context.push('/notifications'),
+                    onTap: () => context.push(NamedRoutes.notifications),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.security_outlined,
                     title: 'Privacy & Security',
-                    onTap: () => context.push('/privacy'),
+                    onTap: () => context.push(NamedRoutes.privacy),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.storage_outlined,
                     title: 'Storage Usage',
-                    onTap: () => context.push('/storage'),
+                    onTap: () => context.push(NamedRoutes.storage),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.devices_outlined,
                     title: 'Devices',
-                    onTap: () => context.push('/devices'),
+                    onTap: () => context.push(NamedRoutes.devices),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.folder_outlined,
                     title: 'Chat Folders',
-                    onTap: () => context.push('/folders'),
+                    onTap: () => context.push(NamedRoutes.folders),
                   ),
 
                   _drawerItem(
                     context,
                     icon: Icons.settings_outlined,
                     title: 'Settings',
-                    onTap: () => context.push('/settings'),
+                    onTap: () => context.push(NamedRoutes.settings),
                   ),
 
                   const Divider(),
@@ -214,7 +215,8 @@ class CustomDrawer extends ConsumerWidget {
                     context,
                     icon: Icons.person_add_outlined,
                     title: 'Invite Friends',
-                    onTap: () { // async
+                    onTap: () {
+                      // async
                       /* await SharePlus.instance.share(
                         ShareParams(
                           text:
@@ -231,7 +233,7 @@ class CustomDrawer extends ConsumerWidget {
                     context,
                     icon: Icons.auto_awesome_outlined,
                     title: 'Telegram Features',
-                    onTap: () => context.push('/telegram-features'),
+                    onTap: () => context.push(NamedRoutes.telegramFeatures),
                   ),
 
                   const Divider(),
@@ -263,7 +265,7 @@ class CustomDrawer extends ConsumerWidget {
                                   // Clear cache
                                   // Navigate to login
 
-                                  context.go('/login');
+                                  context.go(NamedRoutes.login);
                                 },
                                 child: const Text('Logout'),
                               ),
