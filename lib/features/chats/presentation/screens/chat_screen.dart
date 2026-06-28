@@ -266,7 +266,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                   ),
                 ), */
-
                 SizedBox(
                   height: 42,
                   child: Card(

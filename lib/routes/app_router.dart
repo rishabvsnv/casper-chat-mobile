@@ -3,195 +3,133 @@ import 'package:go_router/go_router.dart';
 import 'package:messenger/features/common/presentation/screens/main_screen.dart';
 import 'package:messenger/features/common/presentation/screens/share_screen.dart';
 import 'package:messenger/features/common/presentation/screens/telegram_features_screen.dart';
-import 'package:messenger/features/contacts/presentation/screens/blocked_users_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/active_sessions_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/data_usage_screen.dart';
+// import 'package:messenger/features/contacts/presentation/screens/blocked_users_screen.dart';
+// import 'package:messenger/features/settings/presentation/screens/active_sessions_screen.dart';
+// import 'package:messenger/features/settings/presentation/screens/data_usage_screen.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/routes/routes_export.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: NamedRoutes.main,
+    initialLocation: NamedRoutes.chats,
+
     routes: [
-      // Auth
-      GoRoute(
-        path: NamedRoutes.main,
-        builder: (context, state) => const MainScreen(),
+      /// =========================
+      /// MAIN SHELL (BOTTOM NAV)
+      /// =========================
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return MainScreen();
+        },
+        branches: [
+          /// CHATS
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: NamedRoutes.chats,
+                builder: (_, _) => const ChatScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':chatId',
+                    builder: (context, state) {
+                      return MessageInfoScreen(
+                        chatId: state.pathParameters['chatId']!,
+                        userName: state.extra as String,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          /// CONTACTS
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: NamedRoutes.contacts,
+                builder: (_, _) => const ContactsScreen(),
+              ),
+            ],
+          ),
+
+          /// SETTINGS
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: NamedRoutes.settings,
+                builder: (_, _) => const SettingScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'appearance',
+                    builder: (_, _) => const AppearanceScreen(),
+                  ),
+                  GoRoute(
+                    path: 'privacy',
+                    builder: (_, _) => const PrivacyScreen(),
+                  ),
+                  GoRoute(
+                    path: 'language',
+                    builder: (_, _) => const LanguageScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          /// PROFILE
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: NamedRoutes.profile,
+                builder: (_, _) => const ProfileScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
+
+      /// =========================
+      /// AUTH (OUTSIDE SHELL)
+      /// =========================
       GoRoute(
         path: NamedRoutes.splash,
-        builder: (context, state) => const SplashScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.login,
-        builder: (context, state) => const LoginScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.otp,
-        builder: (context, state) => const OtpScreen(),
+        builder: (_, _) => const SplashScreen(),
       ),
 
-      // Chats
-      GoRoute(
-        path: NamedRoutes.chats,
-        builder: (context, state) => const ChatScreen(),
-      ),
+      GoRoute(path: NamedRoutes.login, builder: (_, _) => const LoginScreen()),
 
-      GoRoute(
-        path: NamedRoutes.chatWithParams,
-        builder: (context, state) {
-          final chatId = state.pathParameters['chatId']!;
-          final userName = state.extra as String;
+      GoRoute(path: NamedRoutes.otp, builder: (_, _) => const OtpScreen()),
 
-          return MessageInfoScreen(chatId: chatId, userName: userName);
-        },
-      ),
-
-      // Archive
-      GoRoute(
-        path: NamedRoutes.archive,
-        builder: (context, state) => const ArchivedChatsScreen(),
-      ),
-
-      // Profile
-      GoRoute(
-        path: NamedRoutes.profile,
-        builder: (context, state) => const ProfileScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.profileEdit,
-        builder: (context, state) => const ProfileScreen(),
-      ),
-
-      // Settings
-      GoRoute(
-        path: NamedRoutes.settings,
-        builder: (context, state) => const SettingScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.appearance,
-        builder: (context, state) => const AppearanceScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.language,
-        builder: (context, state) => const LanguageScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.privacy,
-        builder: (context, state) => const PrivacyScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.notifications,
-        builder: (context, state) => const NotificationsScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.storage,
-        builder: (context, state) => const StorageScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.devices,
-        builder: (context, state) => const DevicesScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.folders,
-        builder: (context, state) => const FoldersScreen(),
-      ),
-
-      GoRoute(
-        path: NamedRoutes.blockedUsers,
-        builder: (context, state) => const BlockedUsersScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.dataUsage,
-        builder: (context, state) => const DataUsageScreen(),
-      ),
-      GoRoute(
-        path: NamedRoutes.activeSessions,
-        builder: (context, state) => const ActiveSessionsScreen(),
-      ),
-
-      // Contacts
-      GoRoute(
-        path: NamedRoutes.contacts,
-        builder: (context, state) => const ContactsScreen(),
-      ),
-      GoRoute(
-        path: '/contact/:userId',
-        builder: (context, state) {
-          final userId = state.pathParameters['userId']!;
-
-          return ContactProfileScreen(userId: userId);
-        },
-      ),
-
-      // Calls
-      GoRoute(
-        path: NamedRoutes.calls,
-        builder: (context, state) => const CallsScreen(),
-      ),
-
-      // Saved Messages
-      GoRoute(
-        path: NamedRoutes.savedMessages,
-        builder: (context, state) => const SavedMessagesScreen(),
-      ),
-      GoRoute(
-        path: '/media/:mediaId',
-        builder: (context, state) {
-          final mediaId = state.pathParameters['mediaId']!;
-
-          return MediaGalleryScreen(mediaId: mediaId);
-        },
-      ),
-
-      // New Group
-      GoRoute(
-        path: NamedRoutes.newGroup,
-        builder: (context, state) => const NewGroupScreen(),
-      ),
-      GoRoute(
-        path: '/group/:groupId',
-        builder: (context, state) {
-          final groupId = state.pathParameters['groupId']!;
-
-          return GroupInfoScreen(groupId: groupId);
-        },
-      ),
-
-      // New Channel
-      GoRoute(
-        path: NamedRoutes.newChannel,
-        builder: (context, state) => const NewChannelScreen(),
-      ),
-      GoRoute(
-        path: '/channel/:channelId',
-        builder: (context, state) {
-          final channelId = state.pathParameters['channelId']!;
-
-          return ChannelInfoScreen(channelId: channelId);
-        },
-      ),
-
-      // People Nearby
+      /// =========================
+      /// FULL SCREEN OVERLAYS
+      /// =========================
       GoRoute(
         path: NamedRoutes.peopleNearby,
-        builder: (context, state) => const PeopleNearbyScreen(),
+        builder: (_, _) => const PeopleNearbyScreen(),
       ),
 
-      // QR
       GoRoute(
-        path: NamedRoutes.myQR,
-        builder: (context, state) => const QrCodeScreen(),
+        path: NamedRoutes.newGroup,
+        builder: (_, _) => const NewGroupScreen(),
+      ),
+
+      GoRoute(
+        path: NamedRoutes.newChannel,
+        builder: (_, _) => const NewChannelScreen(),
+      ),
+
+      GoRoute(
+        path: NamedRoutes.savedMessages,
+        builder: (_, _) => const SavedMessagesScreen(),
       ),
 
       GoRoute(
         path: NamedRoutes.telegramFeatures,
-        builder: (context, state) => const TelegramFeaturesScreen(),
+        builder: (_, _) => const TelegramFeaturesScreen(),
       ),
-      GoRoute(
-        path: NamedRoutes.share,
-        builder: (context, state) => const ShareScreen(),
-      ),
+
+      GoRoute(path: NamedRoutes.share, builder: (_, _) => const ShareScreen()),
     ],
   );
 });

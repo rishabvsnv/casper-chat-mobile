@@ -30,9 +30,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actionsPadding,
     this.titleStyle,
   }) : assert(
-          title != null || titleWidget != null || isDashboard,
-          'Provide either title, titleWidget, or enable isDashboard.',
-        );
+         title != null || titleWidget != null || isDashboard,
+         'Provide either title, titleWidget, or enable isDashboard.',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (isDashboard) {
       appBarTitle = Text(
         context.l10n.appName,
-        style: titleStyle ??
+        style:
+            titleStyle ??
             const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w700,
@@ -60,8 +61,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottom: bottom,
       elevation: elevation,
       backgroundColor: backgroundColor,
-      actionsPadding:
-          actionsPadding ?? const EdgeInsets.only(right: 16),
+      actionsPadding: actionsPadding ?? const EdgeInsets.only(right: 16),
     );
   }
 

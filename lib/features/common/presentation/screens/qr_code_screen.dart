@@ -125,7 +125,6 @@ class QrCodeScreen extends ConsumerWidget {
                     // Todo:
                     // Save QR image
                     showModalBottomSheet(
-                      
                       context: context,
                       showDragHandle: true,
                       builder: (_) {
