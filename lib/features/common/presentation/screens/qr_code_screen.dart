@@ -112,7 +112,7 @@ class QrCodeScreen extends ConsumerWidget {
                     // Share profile link
                   },
                   icon: const Icon(Icons.share),
-                  label: const Text('Share Profile'),
+                  label: const Text('Share QR Code'),
                 ),
               ),
 
@@ -124,9 +124,30 @@ class QrCodeScreen extends ConsumerWidget {
                   onPressed: () {
                     // Todo:
                     // Save QR image
+                    showModalBottomSheet(
+                      
+                      context: context,
+                      showDragHandle: true,
+                      builder: (_) {
+                        return SafeArea(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.person_outline),
+                                title: const Text('View Profile'),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
                   },
-                  icon: const Icon(Icons.download),
-                  label: const Text('Save QR Code'),
+                  icon: const Icon(Icons.qr_code_outlined),
+                  label: const Text('Scan QR Code'),
                 ),
               ),
 

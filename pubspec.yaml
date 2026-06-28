@@ -22,8 +22,12 @@ dependencies:
   path_provider: ^2.1.6
   cached_network_image: ^3.4.1
   qr_flutter: ^4.1.0
+  intl: ^0.20.2
   # video_player: ^2.11.1
   # share_plus: ^13.1.0
+
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -32,7 +36,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   
 flutter:
-
+  generate: true
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
@@ -40,16 +44,23 @@ flutter:
     - assets/images/
     
   fonts:
-    - family: Lexend
-      fonts:
-        - asset: assets/fonts/Lexend-Regular.ttf
-        - asset: assets/fonts/Lexend-Black.ttf
-        - asset: assets/fonts/Lexend-Bold.ttf
-        - asset: assets/fonts/Lexend-ExtraBold.ttf
-        - asset: assets/fonts/Lexend-ExtraLight.ttf
-        - asset: assets/fonts/Lexend-Light.ttf
-        - asset: assets/fonts/Lexend-Medium.ttf
-        - asset: assets/fonts/Lexend-SemiBold.ttf
-        - asset: assets/fonts/Lexend-Thin.ttf
-          style: italic
-          
+  - family: Lexend
+    fonts:
+      - asset: assets/fonts/Lexend-Thin.ttf
+        weight: 100
+      - asset: assets/fonts/Lexend-ExtraLight.ttf
+        weight: 200
+      - asset: assets/fonts/Lexend-Light.ttf
+        weight: 300
+      - asset: assets/fonts/Lexend-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/Lexend-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/Lexend-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/Lexend-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/Lexend-ExtraBold.ttf
+        weight: 800
+      - asset: assets/fonts/Lexend-Black.ttf
+        weight: 900

@@ -11,7 +11,7 @@ import 'package:messenger/routes/routes_export.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: NamedRoutes.login,
+    initialLocation: NamedRoutes.main,
     routes: [
       // Auth
       GoRoute(

@@ -1,0 +1,32 @@
+{
+  "@@locale": "hi",
+
+  "appName": "Casper Chat",
+  
+  "login": "Login",
+  "logout": "Logout",
+  "username": "Username",
+  "password": "Password",
+  "selectRole": "Select Role",
+  "showRoleDropdown": "Show Role Dropdown",
+  
+  "dashboard": "Dashboard",
+  "home": "Home",
+  "settings": "Settings",
+
+  "save": "Save",
+  "submit": "Submit",
+  "cancel": "Cancel",
+
+  "selectProfileImage": "Select Profile Image",
+
+  "approved": "Approved",
+  "unApproved": "Unapproved",
+
+  "title": "Title",
+  "noTitle": "No Title",
+  "message": "Message",
+  "msgTo": "Message To",
+
+  "undefined": "Undefined"
+}

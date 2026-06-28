@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:messenger/core/constants/app_constants.dart';
 import 'package:messenger/core/theme/app_theme.dart';
+import 'package:messenger/generated/app_localizations.dart';
 import 'package:messenger/routes/app_router.dart';
 
 class MyMessengerApp extends ConsumerWidget {
@@ -27,8 +28,11 @@ class MyMessengerApp extends ConsumerWidget {
         title: AppConstants.appName,
         theme: lightTheme,
         darkTheme: darkTheme,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         routerConfig: router,
+        localizationsDelegates: [AppLocalizations.delegate],
+
+        supportedLocales: const [Locale('en')],
 
         // builder: (context, state) {},
       ),

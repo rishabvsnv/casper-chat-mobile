@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
 
-class ProfileScreen extends ConsumerWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen2 extends ConsumerWidget {
+  const ProfileScreen2({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

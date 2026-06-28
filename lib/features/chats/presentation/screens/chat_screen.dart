@@ -76,7 +76,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       "name": "Penelope",
       "message": "See you tomorrow 👋",
       "time": "9:12",
-      "unread": 0,
+      "unread": 102,
       "color": Colors.purple,
       "read": true,
       "muted": false,
@@ -122,8 +122,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
       appBar: CustomAppBar(
         isDashboard: true,
-        title: 'Telegram',
-        customTitle: Row(
+        // title: 'Telegram',
+        /* customTitle: Row(
           children: [
             SizedBox(
               width: 54,
@@ -152,7 +152,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
           ],
-        ),
+        ), */
         actions: [
           PopupMenuButton(
             itemBuilder: (_) => const [
@@ -252,7 +252,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ),
                 ),
 
-                SizedBox(
+                /* SizedBox(
                   height: 100,
                   child: Card(
                     elevation: 1,
@@ -265,7 +265,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       ),
                     ),
                   ),
-                ),
+                ), */
 
                 SizedBox(
                   height: 42,
