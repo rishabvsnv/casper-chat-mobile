@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/features/settings/presentation/widgets/section_header_widget.dart';
-import 'package:messenger/routes/named_routes.dart';
 
 class StorageScreen extends StatefulWidget {
   const StorageScreen({super.key});
@@ -11,8 +10,7 @@ class StorageScreen extends StatefulWidget {
 }
 
 class _StorageScreenState extends State<StorageScreen> {
-  double usedStorage = 4.8;
-  double totalStorage = 16.0;
+  double cacheSizeMB = 2456;
 
   bool autoDownloadPhotos = true;
   bool autoDownloadVideos = true;
@@ -23,32 +21,57 @@ class _StorageScreenState extends State<StorageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final storagePercentage = usedStorage / totalStorage;
-
     return Scaffold(
       appBar: AppBar(title: const Text('Storage Usage')),
       body: ListView(
         children: [
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
+          // STORAGE OVERVIEW
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Card(
+              elevation: 0,
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
-                    const Icon(Icons.storage_outlined, size: 48),
-                    const SizedBox(height: 16),
-                    Text(
-                      '${usedStorage.toStringAsFixed(1)} GB of ${totalStorage.toStringAsFixed(1)} GB used',
-                      style: Theme.of(context).textTheme.titleMedium,
+                    CircleAvatar(
+                      radius: 34,
+                      child: Icon(
+                        Icons.storage_outlined,
+                        size: 34,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
+
                     const SizedBox(height: 16),
-                    LinearProgressIndicator(value: storagePercentage),
-                    const SizedBox(height: 12),
+
                     Text(
-                      '${(storagePercentage * 100).toStringAsFixed(0)}% used',
+                      '${cacheSizeMB.toStringAsFixed(0)} MB',
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.w700),
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    Text(
+                      'Cached Media',
+                      style: TextStyle(color: Colors.grey.shade600),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    LinearProgressIndicator(
+                      value: 0.32,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    Text(
+                      '2.4 GB of 8 GB used',
+                      style: TextStyle(color: Colors.grey.shade600),
                     ),
                   ],
                 ),
@@ -56,181 +79,183 @@ class _StorageScreenState extends State<StorageScreen> {
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
 
           SectionHeaderWidget(title: 'STORAGE'),
 
-          ListTile(
-            leading: const Icon(Icons.cleaning_services_outlined),
-            title: const Text('Clear Cache'),
-            subtitle: const Text('Free up device storage'),
-            trailing: const Text('2.3 GB'),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (_) {
-                  return AlertDialog(
-                    title: const Text('Clear Cache'),
-                    content: const Text('Are you sure you want clear cache?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => context.pop(),
-                        child: const Text('Cancel'),
-                      ),
-                      FilledButton(
-                        onPressed: () {
-                          context.pop();
+          _SettingsCard(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.cleaning_services_outlined),
+                title: const Text('Clear Cache'),
+                subtitle: const Text('Remove downloaded temporary files'),
+                trailing: Text('${cacheSizeMB.toStringAsFixed(0)} MB'),
+                onTap: _showClearCacheDialog,
+              ),
 
-                          // Todo:
-                          // AuthRepository.logout();
-                          // Clear cache
-                          // Navigate to login
+              const Divider(height: 1),
 
-                          context.go(NamedRoutes.login);
-                        },
-                        child: const Text('Clear'),
-                      ),
-                    ],
-                  );
+              ListTile(
+                leading: const Icon(Icons.schedule_outlined),
+                title: const Text('Keep Media'),
+                subtitle: Text(keepMedia),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () {
+                  _showKeepMediaDialog(context);
                 },
-              );
-              showDialog<bool>(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Clear Cache"),
-                    content: Text("Are you sure you want to clear cache?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text("Cancel"),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: Text(
-                          "Clear",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
+              ),
+            ],
           ),
 
-          ListTile(
-            leading: const Icon(Icons.schedule_outlined),
-            title: const Text('Keep Media'),
-            subtitle: Text(keepMedia),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              _showKeepMediaDialog(context);
-            },
+          SectionHeaderWidget(title: 'MEDIA USAGE'),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: const [
+                Expanded(
+                  child: _UsageCard(
+                    icon: Icons.photo_library_outlined,
+                    title: 'Photos',
+                    value: '380 MB',
+                  ),
+                ),
+
+                SizedBox(width: 12),
+
+                Expanded(
+                  child: _UsageCard(
+                    icon: Icons.video_library_outlined,
+                    title: 'Videos',
+                    value: '1.7 GB',
+                  ),
+                ),
+              ],
+            ),
           ),
 
-          const Divider(),
+          const SizedBox(height: 12),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _UsageCard(
+              icon: Icons.insert_drive_file_outlined,
+              title: 'Files',
+              value: '320 MB',
+            ),
+          ),
 
           SectionHeaderWidget(title: 'AUTO DOWNLOAD'),
 
-          SwitchListTile(
-            value: autoDownloadPhotos,
-            title: const Text('Photos'),
-            subtitle: const Text('Automatically download photos'),
-            onChanged: (value) {
-              setState(() {
-                autoDownloadPhotos = value;
-              });
-            },
-          ),
+          _SettingsCard(
+            children: [
+              SwitchListTile.adaptive(
+                value: autoDownloadPhotos,
+                title: const Text('Photos'),
+                subtitle: const Text('Automatically download photos'),
+                onChanged: (value) {
+                  setState(() {
+                    autoDownloadPhotos = value;
+                  });
+                },
+              ),
 
-          SwitchListTile(
-            value: autoDownloadVideos,
-            title: const Text('Videos'),
-            subtitle: const Text('Automatically download videos'),
-            onChanged: (value) {
-              setState(() {
-                autoDownloadVideos = value;
-              });
-            },
-          ),
+              const Divider(height: 1),
 
-          SwitchListTile(
-            value: autoDownloadFiles,
-            title: const Text('Files'),
-            subtitle: const Text('Automatically download documents'),
-            onChanged: (value) {
-              setState(() {
-                autoDownloadFiles = value;
-              });
-            },
-          ),
+              SwitchListTile.adaptive(
+                value: autoDownloadVideos,
+                title: const Text('Videos'),
+                subtitle: const Text('Automatically download videos'),
+                onChanged: (value) {
+                  setState(() {
+                    autoDownloadVideos = value;
+                  });
+                },
+              ),
 
-          const Divider(),
+              const Divider(height: 1),
+
+              SwitchListTile.adaptive(
+                value: autoDownloadFiles,
+                title: const Text('Files'),
+                subtitle: const Text('Automatically download documents'),
+                onChanged: (value) {
+                  setState(() {
+                    autoDownloadFiles = value;
+                  });
+                },
+              ),
+            ],
+          ),
 
           SectionHeaderWidget(title: 'MEDIA'),
 
-          SwitchListTile(
-            value: saveToGallery,
-            title: const Text('Save to Gallery'),
-            subtitle: const Text('Store downloaded media in gallery'),
-            onChanged: (value) {
-              setState(() {
-                saveToGallery = value;
-              });
-            },
+          _SettingsCard(
+            children: [
+              SwitchListTile.adaptive(
+                value: saveToGallery,
+                title: const Text('Save to Gallery'),
+                subtitle: const Text('Store downloaded media in gallery'),
+                onChanged: (value) {
+                  setState(() {
+                    saveToGallery = value;
+                  });
+                },
+              ),
+            ],
           ),
 
-          ListTile(
-            leading: const Icon(Icons.photo_library_outlined),
-            title: const Text('Photos'),
-            subtitle: const Text('1.2 GB'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
-
-          ListTile(
-            leading: const Icon(Icons.video_library_outlined),
-            title: const Text('Videos'),
-            subtitle: const Text('2.8 GB'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
-
-          ListTile(
-            leading: const Icon(Icons.insert_drive_file_outlined),
-            title: const Text('Files'),
-            subtitle: const Text('0.8 GB'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
-
-          const Divider(),
-
-          SectionHeaderWidget(title: 'NETWORK'),
-
-          ListTile(
-            leading: const Icon(Icons.network_check),
-            title: const Text('Data Usage'),
-            subtitle: const Text('Manage mobile and Wi-Fi usage'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              context.push(NamedRoutes.dataUsage);
-            },
-          ),
-
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
         ],
       ),
     );
   }
 
+  Future<void> _showClearCacheDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('Clear Cache'),
+          content: const Text('Are you sure you want to clear cached media?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('Clear'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      setState(() {
+        cacheSizeMB = 0;
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cache cleared successfully')),
+      );
+    }
+  }
+
   Future<void> _showKeepMediaDialog(BuildContext context) async {
-    final options = ['3 Days', '1 Week', '1 Month', 'Forever'];
+    const options = ['3 Days', '1 Week', '1 Month', 'Forever'];
 
     await showModalBottomSheet(
       context: context,
-      builder: (context) {
+      showDragHandle: true,
+      builder: (_) {
         String tempValue = keepMedia;
 
         return StatefulBuilder(
@@ -239,23 +264,16 @@ class _StorageScreenState extends State<StorageScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: options.map((option) {
-                  final isSelected = tempValue == option;
-
-                  return ListTile(
+                  return RadioListTile<String>(
+                    value: option,
+                    groupValue: tempValue,
                     title: Text(option),
-                    trailing: isSelected
-                        ? const Icon(Icons.check, color: Colors.blue)
-                        : null,
-                    onTap: () {
-                      setModalState(() {
-                        tempValue = option;
-                      });
-
+                    onChanged: (value) {
                       setState(() {
-                        keepMedia = option;
+                        keepMedia = value!;
                       });
 
-                      Navigator.pop(context);
+                      context.pop();
                     },
                   );
                 }).toList(),
@@ -264,6 +282,59 @@ class _StorageScreenState extends State<StorageScreen> {
           },
         );
       },
+    );
+  }
+}
+
+class _SettingsCard extends StatelessWidget {
+  final List<Widget> children;
+
+  const _SettingsCard({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        child: Column(children: children),
+      ),
+    );
+  }
+}
+
+class _UsageCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String value;
+
+  const _UsageCard({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Icon(icon, size: 28),
+
+            const SizedBox(height: 10),
+
+            Text(value, style: const TextStyle(fontWeight: FontWeight.w700)),
+
+            const SizedBox(height: 4),
+
+            Text(title),
+          ],
+        ),
+      ),
     );
   }
 }

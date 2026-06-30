@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+/* import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/auth_routes.dart';
 import 'package:messenger/routes/named_routes.dart';
@@ -11,3 +11,4 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [shellRoute(), ...authRoutes, ...overlayRoutes],
   );
 });
+ */

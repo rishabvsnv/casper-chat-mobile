@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+/* import 'package:go_router/go_router.dart';
 import 'package:messenger/features/folders/presentation/screens/folders_screen.dart';
 import 'package:messenger/features/settings/presentation/screens/appearance_screen.dart';
 import 'package:messenger/features/settings/presentation/screens/devices_screen.dart';
@@ -29,3 +29,4 @@ StatefulShellBranch settingsBranch() {
     ],
   );
 }
+ */

@@ -17,7 +17,6 @@ export 'package:messenger/features/settings/presentation/screens/privacy_screen.
 export 'package:messenger/features/settings/presentation/screens/setting_screen.dart';
 export 'package:messenger/features/contacts/presentation/screens/contacts_screen.dart';
 export 'package:messenger/features/calls/presentation/screens/calls_screen.dart';
-export 'package:messenger/features/settings/presentation/screens/folders_screen.dart';
 export 'package:messenger/features/settings/presentation/screens/devices_screen.dart';
 export 'package:messenger/features/saved_messages/presentation/screens/saved_messages_screen.dart';
 export 'package:messenger/features/groups/presentation/screens/new_group_screen.dart';

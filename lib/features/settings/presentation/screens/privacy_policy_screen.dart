@@ -59,175 +59,134 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             'If you have questions about this Privacy Policy or our privacy practices, please contact the Casper Chat support team through the Help & Support section of the application.',
       ),
     ];
+    
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xffF8FAFC),
       appBar: const CustomAppBar(title: 'Privacy Policy'),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 24),
         children: [
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xff4F46E5), Color(0xff7C3AED)],
+          const SizedBox(height: 12),
+
+          /// Summary Card
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 28,
+                      child: Icon(
+                        Icons.shield_outlined,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Privacy Policy',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Learn how CasperChat handles and protects your information.',
+                            style: TextStyle(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            child: const Column(
-              children: [
-                CircleAvatar(
-                  radius: 42,
-                  backgroundColor: Colors.white24,
-                  child: Icon(
-                    Icons.shield_rounded,
-                    size: 44,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Your Privacy Matters',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Casper Chat is committed to protecting your privacy and ensuring a secure messaging experience for everyone.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, height: 1.5),
-                ),
-              ],
-            ),
           ),
 
-          Container(
-            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Row(
+          const SizedBox(height: 16),
+
+          /// Privacy Highlights
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: Column(
               children: const [
-                Expanded(
-                  child: _PrivacyBadge(
-                    icon: Icons.lock_outline_rounded,
-                    label: 'Encrypted',
-                  ),
+                ListTile(
+                  leading: Icon(Icons.lock_outline_rounded),
+                  title: Text('Encrypted'),
+                  subtitle: Text('Secure communication'),
                 ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: _PrivacyBadge(
-                    icon: Icons.shield_outlined,
-                    label: 'Secure',
-                  ),
+                Divider(height: 1),
+                ListTile(
+                  leading: Icon(Icons.cloud_outlined),
+                  title: Text('Cloud Sync'),
+                  subtitle: Text('Access from all devices'),
                 ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: _PrivacyBadge(
-                    icon: Icons.verified_user_outlined,
-                    label: 'Protected',
-                  ),
+                Divider(height: 1),
+                ListTile(
+                  leading: Icon(Icons.security_outlined),
+                  title: Text('Protected'),
+                  subtitle: Text('Your data remains secure'),
                 ),
               ],
             ),
           ),
 
-          Container(
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: .04),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.update_rounded, color: Color(0xff4F46E5)),
-                SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Last Updated: June 2026',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ],
+          const SizedBox(height: 16),
+
+          /// Last Updated
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: const ListTile(
+              leading: Icon(Icons.update_rounded),
+              title: Text('Last Updated'),
+              subtitle: Text('June 2026'),
             ),
           ),
+
+          const SizedBox(height: 20),
 
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               'Privacy Policy Details',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
 
+          const SizedBox(height: 8),
+
           ...sections.map(
-            (section) => Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: .04),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
+            (section) => Card(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              elevation: 0,
               child: ExpansionTile(
-                tilePadding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 4,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                collapsedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                leading: Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff4F46E5).withValues(alpha: .10),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.privacy_tip_outlined,
-                    color: Color(0xff4F46E5),
-                  ),
+                leading: const CircleAvatar(
+                  child: Icon(Icons.privacy_tip_outlined),
                 ),
                 title: Text(
                   section.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     child: Text(
                       section.content,
-                      style: TextStyle(
-                        color: Colors.grey.shade700,
-                        height: 1.6,
-                      ),
+                      style: const TextStyle(height: 1.5),
                     ),
                   ),
                 ],
@@ -237,35 +196,40 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
           const SizedBox(height: 16),
 
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: const LinearGradient(
-                colors: [Color(0xff4F46E5), Color(0xff7C3AED)],
+          /// Footer Card
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.favorite_outline_rounded,
+                      size: 32,
+                      color: theme.colorScheme.primary,
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Thank You For Trusting CasperChat',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'We are committed to keeping your conversations secure, private and protected.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            child: const Column(
-              children: [
-                Icon(Icons.favorite_rounded, color: Colors.white, size: 32),
-                SizedBox(height: 12),
-                Text(
-                  'Thank You For Trusting Casper Chat',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'We are committed to keeping your conversations secure, private and protected.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, height: 1.5),
-                ),
-              ],
             ),
           ),
         ],
@@ -281,7 +245,7 @@ class PrivacySection {
   const PrivacySection({required this.title, required this.content});
 }
 
-class _PrivacyBadge extends StatelessWidget {
+/* class _PrivacyBadge extends StatelessWidget {
   final IconData icon;
   final String label;
 
@@ -307,4 +271,4 @@ class _PrivacyBadge extends StatelessWidget {
       ),
     );
   }
-}
+} */

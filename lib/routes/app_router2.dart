@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/features/common/presentation/screens/main_screen.dart';
+import 'package:messenger/features/folders/presentation/screens/edit_folder_screen.dart';
+import 'package:messenger/features/folders/presentation/screens/folders_screen.dart';
+import 'package:messenger/features/profile/presentation/screens/my_account_screen.dart';
 import 'package:messenger/features/settings/presentation/screens/privacy_policy_screen.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/routes/routes_export.dart';
@@ -97,6 +100,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: NamedRoutes.folders,
         builder: (context, state) => const FoldersScreen(),
       ),
+      GoRoute(
+        path: NamedRoutes.editFolder,
+        builder: (context, state) => const EditFolderScreen(),
+      ),
 
       GoRoute(
         path: NamedRoutes.blockedUsers,
@@ -188,6 +195,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: NamedRoutes.casperChatFeatures,
         builder: (context, state) => const CasperchatFeaturesScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.myAccount,
+        builder: (_, _) => const MyAccountScreen(),
       ),
       GoRoute(
         path: NamedRoutes.share,

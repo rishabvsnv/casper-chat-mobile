@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+/* import 'package:go_router/go_router.dart';
 import 'package:messenger/features/common/presentation/screens/main_screen.dart';
 import 'package:messenger/routes/chat_routes.dart';
 import 'package:messenger/routes/contact_routes.dart';
@@ -16,3 +16,4 @@ StatefulShellRoute shellRoute() {
     ],
   );
 }
+ */

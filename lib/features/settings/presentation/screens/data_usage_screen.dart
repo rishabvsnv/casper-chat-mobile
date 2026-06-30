@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
+import 'package:messenger/shared/widgets/custom_list_tile.dart';
 
 class DataUsageScreen extends ConsumerStatefulWidget {
   const DataUsageScreen({super.key});
@@ -22,128 +23,190 @@ class _DataUsageScreenState extends ConsumerState<DataUsageScreen> {
       appBar: const CustomAppBar(title: 'Data and Storage'),
       body: ListView(
         children: [
+          const SizedBox(height: 12),
+
+          // SUMMARY CARD
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 24,
+                      child: Icon(
+                        Icons.data_usage,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+
+                    const SizedBox(width: 16),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Network Usage',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Monitor mobile data, Wi-Fi usage and storage.',
+                            style: TextStyle(color: Colors.grey.shade600),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
           const SizedBox(height: 8),
 
-          _SectionHeader(title: 'NETWORK USAGE'),
+          const _SectionHeader(title: 'NETWORK USAGE'),
 
-          ListTile(
-            leading: const Icon(Icons.network_cell),
-            title: const Text('Mobile Data Usage'),
-            subtitle: const Text('1.8 GB sent, 6.4 GB received'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+          _SettingsCard(
+            children: [
+              CustomListTile(
+                icon: Icons.network_cell,
+                title: 'Mobile Data Usage',
+                subtitle: '1.2 GB used this month',
+                onTap: () {},
+              ),
+
+              const Divider(height: 1),
+
+              CustomListTile(
+                icon: Icons.wifi,
+                title: 'Wi-Fi Data Usage',
+                subtitle: '8.4 GB used this month',
+                onTap: () {},
+              ),
+
+              const Divider(height: 1),
+
+              CustomListTile(
+                icon: Icons.public,
+                title: 'Roaming Data Usage',
+                subtitle: 'No roaming usage',
+                onTap: () {},
+              ),
+
+              const Divider(height: 1),
+
+              CustomListTile(
+                icon: Icons.restart_alt,
+                title: 'Reset Statistics',
+                subtitle: 'Clear all usage statistics',
+                onTap: () {
+                  _showResetDialog(context);
+                },
+              ),
+            ],
           ),
 
-          ListTile(
-            leading: const Icon(Icons.wifi),
-            title: const Text('Wi-Fi Data Usage'),
-            subtitle: const Text('4.2 GB sent, 18.5 GB received'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+          const _SectionHeader(title: 'AUTO DOWNLOAD'),
+
+          _SettingsCard(
+            children: [
+              CustomListTile(
+                icon: Icons.network_cell,
+                title: 'Using Mobile Data',
+                subtitle: 'Photos, Videos, Files',
+                onTap: () {},
+              ),
+
+              const Divider(height: 1),
+
+              CustomListTile(
+                icon: Icons.wifi,
+                title: 'Using Wi-Fi',
+                subtitle: 'Photos, Videos, Files',
+                onTap: () {},
+              ),
+
+              const Divider(height: 1),
+
+              CustomListTile(
+                icon: Icons.public,
+                title: 'When Roaming',
+                subtitle: 'Disabled',
+                onTap: () {},
+              ),
+            ],
           ),
 
-          ListTile(
-            leading: const Icon(Icons.public),
-            title: const Text('Roaming Data Usage'),
-            subtitle: const Text('0 MB sent, 0 MB received'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+          const _SectionHeader(title: 'CALLS'),
+
+          _SettingsCard(
+            children: [
+              SwitchListTile.adaptive(
+                value: useLessDataForCalls,
+                title: const Text('Use Less Data'),
+                subtitle: const Text('Reduce bandwidth usage during calls'),
+                onChanged: (value) {
+                  setState(() {
+                    useLessDataForCalls = value;
+                  });
+                },
+              ),
+            ],
           ),
 
-          ListTile(
-            leading: const Icon(Icons.restart_alt),
-            title: const Text('Reset Statistics'),
-            subtitle: const Text('Clear all network usage statistics'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              _showResetDialog(context);
-            },
+          const _SectionHeader(title: 'AUTOPLAY MEDIA'),
+
+          _SettingsCard(
+            children: [
+              SwitchListTile.adaptive(
+                value: autoPlayVideos,
+                title: const Text('Autoplay Videos'),
+                subtitle: const Text('Automatically play videos'),
+                onChanged: (value) {
+                  setState(() {
+                    autoPlayVideos = value;
+                  });
+                },
+              ),
+
+              const Divider(height: 1),
+
+              SwitchListTile.adaptive(
+                value: autoPlayGifs,
+                title: const Text('Autoplay GIFs'),
+                subtitle: const Text('Automatically play GIF animations'),
+                onChanged: (value) {
+                  setState(() {
+                    autoPlayGifs = value;
+                  });
+                },
+              ),
+            ],
           ),
 
-          const Divider(),
+          const _SectionHeader(title: 'STORAGE'),
 
-          _SectionHeader(title: 'AUTO DOWNLOAD MEDIA'),
-
-          ListTile(
-            leading: const Icon(Icons.network_cell),
-            title: const Text('Using Mobile Data'),
-            subtitle: const Text('Photos, Videos, Files'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+          _SettingsCard(
+            children: [
+              CustomListTile(
+                icon: Icons.storage_outlined,
+                title: 'Storage Usage',
+                subtitle: 'Cache size: 2.3 GB',
+                onTap: () {
+                  context.push(NamedRoutes.storage);
+                },
+              ),
+            ],
           ),
 
-          ListTile(
-            leading: const Icon(Icons.wifi),
-            title: const Text('Using Wi-Fi'),
-            subtitle: const Text('Photos, Videos, Files'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
-
-          ListTile(
-            leading: const Icon(Icons.public),
-            title: const Text('When Roaming'),
-            subtitle: const Text('Disabled'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
-
-          const Divider(),
-
-          _SectionHeader(title: 'CALLS'),
-
-          SwitchListTile(
-            value: useLessDataForCalls,
-            title: const Text('Use Less Data for Calls'),
-            subtitle: const Text('Reduce bandwidth usage during voice calls'),
-            onChanged: (value) {
-              setState(() {
-                useLessDataForCalls = value;
-              });
-            },
-          ),
-
-          const Divider(),
-
-          _SectionHeader(title: 'AUTOPLAY MEDIA'),
-
-          SwitchListTile(
-            value: autoPlayVideos,
-            title: const Text('Autoplay Videos'),
-            subtitle: const Text('Automatically play videos in chats'),
-            onChanged: (value) {
-              setState(() {
-                autoPlayVideos = value;
-              });
-            },
-          ),
-
-          SwitchListTile(
-            value: autoPlayGifs,
-            title: const Text('Autoplay GIFs'),
-            subtitle: const Text('Automatically play GIF animations'),
-            onChanged: (value) {
-              setState(() {
-                autoPlayGifs = value;
-              });
-            },
-          ),
-
-          const Divider(),
-
-          _SectionHeader(title: 'STORAGE'),
-
-          ListTile(
-            leading: const Icon(Icons.storage_outlined),
-            title: const Text('Storage Usage'),
-            subtitle: const Text('Manage cache and downloaded media'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              context.push(NamedRoutes.storage);
-            },
-          ),
-
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
         ],
       ),
     );
@@ -184,6 +247,24 @@ class _DataUsageScreenState extends ConsumerState<DataUsageScreen> {
   }
 }
 
+class _SettingsCard extends StatelessWidget {
+  final List<Widget> children;
+
+  const _SettingsCard({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        child: Column(children: children),
+      ),
+    );
+  }
+}
+
 class _SectionHeader extends StatelessWidget {
   final String title;
 
@@ -192,12 +273,15 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.fromLTRB(24, 12, 24, 8),
       child: Text(
         title,
-        style: Theme.of(
-          context,
-        ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color: Colors.grey.shade600,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1,
+        ),
       ),
     );
   }

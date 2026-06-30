@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+/* import 'package:go_router/go_router.dart';
 import 'package:messenger/features/channels/presentation/screens/new_channel_screen.dart';
 import 'package:messenger/features/common/presentation/screens/share_screen.dart';
 import 'package:messenger/features/common/presentation/screens/casperchat_features_screen.dart';
@@ -30,3 +30,4 @@ final List<RouteBase> overlayRoutes = [
   ),
   GoRoute(path: NamedRoutes.share, builder: (_, _) => const ShareScreen()),
 ];
+ */

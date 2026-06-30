@@ -26,11 +26,13 @@ dependencies:
   # video_player: ^2.11.1
   # share_plus: ^13.1.0
   phosphoricons_flutter: ^1.0.0
+  # disk_space_plus: ^0.2.6
 
   flutter_localizations:
     sdk: flutter
   flutter_launcher_icons: ^0.14.4
-  # phosphor_flutter: ^2.1.0
+  system_info2: ^4.1.0
+  qr_code_scanner_plus: ^2.2.0
 
 flutter_launcher_icons:
   android: true

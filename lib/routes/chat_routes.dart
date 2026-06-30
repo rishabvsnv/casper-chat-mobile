@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+/* import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/routes_export.dart';
 import 'package:messenger/routes/named_routes.dart';
 
@@ -23,3 +23,4 @@ StatefulShellBranch chatBranch() {
     ],
   );
 }
+ */

@@ -58,110 +58,168 @@ class _BlockedUsersScreenState extends ConsumerState<BlockedUsersScreen> {
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'Blocked Users'),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddBlockedUserDialog();
-        },
-        child: const Icon(Icons.person_add_alt_1),
+
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showAddBlockedUserDialog,
+        icon: const Icon(Icons.person_add_alt_1),
+        label: const Text('Block User'),
       ),
+
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            child: Row(
-              children: [
-                const Icon(Icons.block_outlined),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    '${_blockedUsers.length} blocked user(s)',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const SizedBox(height: 12),
 
           Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search blocked users',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchQuery.isNotEmpty
-                    ? IconButton(
-                        onPressed: () {
-                          _searchController.clear();
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.errorContainer,
+                      child: Icon(
+                        Icons.block,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
 
-                          setState(() {
-                            _searchQuery = '';
-                          });
-                        },
-                        icon: const Icon(Icons.clear),
-                      )
-                    : null,
-                border: const OutlineInputBorder(),
+                    const SizedBox(width: 16),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Blocked Users',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${_blockedUsers.length} blocked account(s)',
+                            style: TextStyle(color: Colors.grey.shade600),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
             ),
           ),
+
+          const SizedBox(height: 8),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              elevation: 0,
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search blocked users',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: _searchQuery.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+
+                            setState(() {
+                              _searchQuery = '';
+                            });
+                          },
+                        )
+                      : null,
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
 
           Expanded(
             child: filteredUsers.isEmpty
                 ? const _EmptyBlockedUsersView()
-                : ListView.separated(
+                : ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
                     itemCount: filteredUsers.length,
-                    separatorBuilder: (_, _) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       final user = filteredUsers[index];
 
-                      return ListTile(
-                        leading: CircleAvatar(
-                          child: Text(user.name[0].toUpperCase()),
-                        ),
-                        title: Text(
-                          user.name,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(user.username),
-                            Text(
-                              'Blocked ${user.blockedDate}',
-                              style: Theme.of(context).textTheme.bodySmall,
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Card(
+                          elevation: 0,
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(12),
+
+                            leading: CircleAvatar(
+                              radius: 24,
+                              child: Text(
+                                user.name[0].toUpperCase(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                        isThreeLine: true,
-                        trailing: PopupMenuButton<String>(
-                          onSelected: (value) {
-                            if (value == 'unblock') {
-                              _unblockUser(user);
-                            }
-                          },
-                          itemBuilder: (_) => const [
-                            PopupMenuItem(
-                              value: 'profile',
-                              child: Text('View Profile'),
+
+                            title: Text(
+                              user.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                            PopupMenuItem(
-                              value: 'unblock',
-                              child: Text('Unblock User'),
+
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(user.username),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'Blocked ${user.blockedDate}',
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+
+                            trailing: PopupMenuButton<String>(
+                              onSelected: (value) {
+                                if (value == 'unblock') {
+                                  _unblockUser(user);
+                                }
+                              },
+                              itemBuilder: (_) => const [
+                                PopupMenuItem(
+                                  value: 'profile',
+                                  child: Text('View Profile'),
+                                ),
+                                PopupMenuItem(
+                                  value: 'unblock',
+                                  child: Text('Unblock User'),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        onTap: () {
-                          // Todo:
-                          // Open user profile
-                        },
                       );
                     },
                   ),
@@ -199,15 +257,26 @@ class _EmptyBlockedUsersView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.block_outlined, size: 80, color: Colors.grey.shade400),
-            const SizedBox(height: 16),
+            CircleAvatar(
+              radius: 42,
+              child: Icon(
+                Icons.block_outlined,
+                size: 42,
+                color: Colors.grey.shade600,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
             Text(
               'No Blocked Users',
               style: Theme.of(context).textTheme.titleLarge,
             ),
+
             const SizedBox(height: 8),
+
             Text(
-              'Blocked users will appear here.',
+              'People you block will appear here. They won\'t be able to send messages or call you.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),

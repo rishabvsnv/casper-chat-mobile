@@ -20,6 +20,7 @@ class NamedRoutes {
   static final String storage = '/settings/storage';
   static final String devices = '/settings/devices';
   static final String folders = '/settings/folders';
+  static final String editFolder = '/settings/edit-folder';
   static final String blockedUsers = '/blocked-users';
   static final String dataUsage = '/data-usage';
   static final String activeSessions = '/active-sessions';
@@ -35,5 +36,6 @@ class NamedRoutes {
   static final String peopleNearby = '/people-nearby';
   static final String myQR = '/my-qr';
   static final String casperChatFeatures = '/telegram-features';
+  static final String myAccount = '/my-account';
   static final String share = '/share';
 }

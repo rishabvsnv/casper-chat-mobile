@@ -27,8 +27,11 @@ class _EditFolderScreenState extends ConsumerState<EditFolderScreen> {
   @override
   void initState() {
     super.initState();
-
     _nameController = TextEditingController(text: widget.initialName);
+
+    _nameController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -85,8 +88,37 @@ class _EditFolderScreenState extends ConsumerState<EditFolderScreen> {
     );
   }
 
+  Widget _sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+      child: Text(
+        title.toUpperCase(),
+        style: Theme.of(
+          context,
+        ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700),
+      ),
+    );
+  }
+
+  Widget _switchTile({
+    required String title,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    String? subtitle,
+  }) {
+    return SwitchListTile.adaptive(
+      title: Text(title),
+      subtitle: subtitle != null ? Text(subtitle) : null,
+      value: value,
+      onChanged: onChanged,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Edit Folder',
@@ -95,160 +127,222 @@ class _EditFolderScreenState extends ConsumerState<EditFolderScreen> {
         ],
       ),
       body: ListView(
+        padding: const EdgeInsets.only(bottom: 32),
         children: [
           const SizedBox(height: 12),
 
+          /// Summary Card
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Folder Name',
-                border: OutlineInputBorder(),
+            child: Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 28,
+                      child: Icon(
+                        Icons.folder_outlined,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _nameController.text.isEmpty
+                                ? 'Folder'
+                                : _nameController.text,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            'Customize which chats appear in this folder',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          const SizedBox(height: 24),
+          /// Folder Name
+          _sectionTitle('Folder Name'),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'INCLUDED CHATS',
-              style: Theme.of(
-                context,
-              ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Folder Name',
+                ),
+              ),
             ),
           ),
 
-          SwitchListTile(
-            value: includeContacts,
-            title: const Text('Contacts'),
-            onChanged: (value) {
-              setState(() {
-                includeContacts = value;
-              });
-            },
-          ),
+          /// Included Chats
+          _sectionTitle('Included Chats'),
 
-          SwitchListTile(
-            value: includeNonContacts,
-            title: const Text('Non-Contacts'),
-            onChanged: (value) {
-              setState(() {
-                includeNonContacts = value;
-              });
-            },
-          ),
-
-          SwitchListTile(
-            value: includeGroups,
-            title: const Text('Groups'),
-            onChanged: (value) {
-              setState(() {
-                includeGroups = value;
-              });
-            },
-          ),
-
-          SwitchListTile(
-            value: includeChannels,
-            title: const Text('Channels'),
-            onChanged: (value) {
-              setState(() {
-                includeChannels = value;
-              });
-            },
-          ),
-
-          SwitchListTile(
-            value: includeBots,
-            title: const Text('Bots'),
-            onChanged: (value) {
-              setState(() {
-                includeBots = value;
-              });
-            },
-          ),
-
-          const Divider(),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'EXCLUDED CHATS',
-              style: Theme.of(
-                context,
-              ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: Column(
+              children: [
+                _switchTile(
+                  title: 'Contacts',
+                  value: includeContacts,
+                  onChanged: (value) {
+                    setState(() {
+                      includeContacts = value;
+                    });
+                  },
+                ),
+                const Divider(height: 1),
+                _switchTile(
+                  title: 'Non-Contacts',
+                  value: includeNonContacts,
+                  onChanged: (value) {
+                    setState(() {
+                      includeNonContacts = value;
+                    });
+                  },
+                ),
+                const Divider(height: 1),
+                _switchTile(
+                  title: 'Groups',
+                  value: includeGroups,
+                  onChanged: (value) {
+                    setState(() {
+                      includeGroups = value;
+                    });
+                  },
+                ),
+                const Divider(height: 1),
+                _switchTile(
+                  title: 'Channels',
+                  value: includeChannels,
+                  onChanged: (value) {
+                    setState(() {
+                      includeChannels = value;
+                    });
+                  },
+                ),
+                const Divider(height: 1),
+                _switchTile(
+                  title: 'Bots',
+                  value: includeBots,
+                  onChanged: (value) {
+                    setState(() {
+                      includeBots = value;
+                    });
+                  },
+                ),
+              ],
             ),
           ),
 
-          SwitchListTile(
-            value: excludeMuted,
-            title: const Text('Muted Chats'),
-            onChanged: (value) {
-              setState(() {
-                excludeMuted = value;
-              });
-            },
-          ),
+          /// Excluded Chats
+          _sectionTitle('Excluded Chats'),
 
-          SwitchListTile(
-            value: excludeRead,
-            title: const Text('Read Chats'),
-            onChanged: (value) {
-              setState(() {
-                excludeRead = value;
-              });
-            },
-          ),
-
-          SwitchListTile(
-            value: excludeArchived,
-            title: const Text('Archived Chats'),
-            onChanged: (value) {
-              setState(() {
-                excludeArchived = value;
-              });
-            },
-          ),
-
-          const Divider(),
-
-          ListTile(
-            leading: const Icon(Icons.people_outline),
-            title: const Text('Included Chats'),
-            subtitle: const Text('Choose specific chats'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              // Todo:
-              // Open chat picker
-            },
-          ),
-
-          ListTile(
-            leading: const Icon(Icons.block_outlined),
-            title: const Text('Excluded Chats'),
-            subtitle: const Text('Choose chats to exclude'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              // Todo:
-              // Open excluded chat picker
-            },
-          ),
-
-          const Divider(),
-
-          ListTile(
-            leading: const Icon(Icons.delete_outline, color: Colors.red),
-            title: const Text(
-              'Delete Folder',
-              style: TextStyle(color: Colors.red),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: Column(
+              children: [
+                _switchTile(
+                  title: 'Muted Chats',
+                  value: excludeMuted,
+                  onChanged: (value) {
+                    setState(() {
+                      excludeMuted = value;
+                    });
+                  },
+                ),
+                const Divider(height: 1),
+                _switchTile(
+                  title: 'Read Chats',
+                  value: excludeRead,
+                  onChanged: (value) {
+                    setState(() {
+                      excludeRead = value;
+                    });
+                  },
+                ),
+                const Divider(height: 1),
+                _switchTile(
+                  title: 'Archived Chats',
+                  value: excludeArchived,
+                  onChanged: (value) {
+                    setState(() {
+                      excludeArchived = value;
+                    });
+                  },
+                ),
+              ],
             ),
-            onTap: _deleteFolder,
           ),
 
-          const SizedBox(height: 24),
+          /// Specific Chats
+          _sectionTitle('Specific Chats'),
+
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.people_outline),
+                  title: const Text('Included Chats'),
+                  subtitle: const Text('Choose specific chats'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () {},
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.block_outlined),
+                  title: const Text('Excluded Chats'),
+                  subtitle: const Text('Choose chats to exclude'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+
+          /// Danger Zone
+          _sectionTitle('Danger Zone'),
+
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: ListTile(
+              leading: const Icon(
+                Icons.delete_outline_rounded,
+                color: Colors.red,
+              ),
+              title: const Text(
+                'Delete Folder',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: const Text('Remove this folder permanently'),
+              onTap: _deleteFolder,
+            ),
+          ),
         ],
       ),
     );

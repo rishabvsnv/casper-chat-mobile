@@ -1,4 +1,4 @@
-package com.casperchat.messenger
+package com.casperchat.app
 
 import io.flutter.embedding.android.FlutterActivity
 

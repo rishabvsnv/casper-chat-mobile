@@ -11,6 +11,7 @@ class LanguageScreen extends ConsumerStatefulWidget {
 
 class _LanguageScreenState extends ConsumerState<LanguageScreen> {
   String _selectedLanguage = 'English';
+  String _searchQuery = '';
 
   final List<LanguageModel> _languages = const [
     LanguageModel(name: 'English', nativeName: 'English', code: 'en'),
@@ -29,85 +30,150 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final filteredLanguages = _languages.where((language) {
+      final query = _searchQuery.toLowerCase();
+
+      return language.name.toLowerCase().contains(query) ||
+          language.nativeName.toLowerCase().contains(query);
+    }).toList();
+
     return Scaffold(
       appBar: const CustomAppBar(title: 'Language'),
-      body: Column(
+      body: ListView(
+        padding: const EdgeInsets.only(bottom: 24),
         children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            child: const Row(
-              children: [
-                Icon(Icons.language_outlined),
-                SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Choose the language used throughout the application.',
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const SizedBox(height: 12),
 
-          Expanded(
-            child: RadioGroup<String>(
-              groupValue: _selectedLanguage,
-              onChanged: (String? value) {
-                if (value == null) return;
-
-                setState(() {
-                  _selectedLanguage = value;
-                });
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Language changed to $value')),
-                );
-              },
-              child: ListView.separated(
-                itemCount: _languages.length,
-                separatorBuilder: (_, _) => const Divider(height: 1),
-                itemBuilder: (context, index) {
-                  final language = _languages[index];
-
-                  final isSelected = language.name == _selectedLanguage;
-
-                  return RadioListTile<String>(
-                    value: language.name,
-                    title: Text(
-                      language.name,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    subtitle: Text(language.nativeName),
-                    secondary: CircleAvatar(
-                      child: Text(
-                        language.code.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+          /// Summary Card
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 28,
+                      child: Icon(
+                        Icons.language_rounded,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
-                    selected: isSelected,
-                  );
-                },
+
+                    const SizedBox(width: 16),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'App Language',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+
+                          const SizedBox(height: 4),
+
+                          Text(
+                            'Currently using $_selectedLanguage',
+                            style: TextStyle(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: FilledButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('$_selectedLanguage selected')),
-                  );
-                },
-                icon: const Icon(Icons.check),
-                label: const Text('Apply Language'),
+          const SizedBox(height: 16),
+
+          /// Search
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
+              decoration: const InputDecoration(
+                hintText: 'Search language',
+                prefixIcon: Icon(Icons.search),
               ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'Available Languages',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            elevation: 0,
+            child: ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: filteredLanguages.length,
+              separatorBuilder: (_, _) => const Divider(height: 1),
+              itemBuilder: (context, index) {
+                final language = filteredLanguages[index];
+
+                final selected = language.name == _selectedLanguage;
+
+                return ListTile(
+                  leading: CircleAvatar(
+                    child: Text(
+                      language.code.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
+                  title: Text(language.name),
+
+                  subtitle: Text(language.nativeName),
+
+                  trailing: selected
+                      ? Icon(
+                          Icons.check_circle_rounded,
+                          color: theme.colorScheme.primary,
+                        )
+                      : null,
+
+                  onTap: () {
+                    setState(() {
+                      _selectedLanguage = language.name;
+                    });
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Language changed to ${language.name}'),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
