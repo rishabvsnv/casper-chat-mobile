@@ -15,6 +15,7 @@ class NamedRoutes {
   static final String appearance = '/settings/appearance';
   static final String language = '/settings/language';
   static final String privacy = '/settings/privacy';
+  static final String privacyPolicy = '/settings/privacy-policy';
   static final String notifications = '/settings/notifications';
   static final String storage = '/settings/storage';
   static final String devices = '/settings/devices';
@@ -33,6 +34,6 @@ class NamedRoutes {
   static final String channelWithParams = '/channel/:channelId';
   static final String peopleNearby = '/people-nearby';
   static final String myQR = '/my-qr';
-  static final String telegramFeatures = '/telegram-features';
+  static final String casperChatFeatures = '/telegram-features';
   static final String share = '/share';
 }

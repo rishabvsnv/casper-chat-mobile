@@ -104,7 +104,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: Text(
-                  'Telegram',
+                  'CasperChat',
                   style: theme.textTheme.headlineMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:messenger/features/contacts/domain/call_model.dart';
 import 'package:messenger/routes/routes_export.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 enum ContactSortType { name, lastSeen }
 
@@ -84,13 +85,12 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
         ],
       ),
 
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 90),
-        child: CupertinoButton.filled(
-          padding: EdgeInsets.zero,
-          child: const Icon(CupertinoIcons.person_add),
-          onPressed: () {},
-        ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'contact_fab',
+        backgroundColor: const Color(0xff229ED9),
+        elevation: 6,
+        onPressed: () {},
+        child: const Icon(PhosphorIconsRegular.user, color: Colors.white),
       ),
 
       body: ListView(

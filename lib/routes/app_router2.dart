@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/features/common/presentation/screens/main_screen.dart';
+import 'package:messenger/features/settings/presentation/screens/privacy_policy_screen.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/routes/routes_export.dart';
 
@@ -75,6 +76,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: NamedRoutes.privacy,
         builder: (context, state) => const PrivacyScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.privacyPolicy,
+        builder: (context, state) => const PrivacyPolicyScreen(),
       ),
       GoRoute(
         path: NamedRoutes.notifications,
@@ -181,8 +186,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-        path: NamedRoutes.telegramFeatures,
-        builder: (context, state) => const TelegramFeaturesScreen(),
+        path: NamedRoutes.casperChatFeatures,
+        builder: (context, state) => const CasperchatFeaturesScreen(),
       ),
       GoRoute(
         path: NamedRoutes.share,

@@ -25,7 +25,7 @@ export 'package:messenger/features/channels/presentation/screens/new_channel_scr
 export 'package:messenger/features/nearby/presentation/screens/people_nearby_screen.dart';
 export 'package:messenger/features/settings/presentation/screens/storage_screen.dart';
 export 'package:messenger/features/common/presentation/screens/share_screen.dart';
-export 'package:messenger/features/common/presentation/screens/telegram_features_screen.dart';
+export 'package:messenger/features/common/presentation/screens/casperchat_features_screen.dart';
 export 'package:messenger/features/contacts/presentation/screens/blocked_users_screen.dart';
 export 'package:messenger/features/settings/presentation/screens/active_sessions_screen.dart';
 export 'package:messenger/features/settings/presentation/screens/data_usage_screen.dart';

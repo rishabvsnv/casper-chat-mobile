@@ -45,18 +45,18 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             icon: Badge(
               label: Text('5'),
               isLabelVisible: true,
-              child: Icon(PhosphorIconsRegular.chatCircle),
+              child: Icon(PhosphorIconsRegular.chatsCircle),
             ),
             activeIcon: Badge(
               label: Text('5'),
               isLabelVisible: true,
-              child: Icon(PhosphorIconsFill.chatCircle),
+              child: Icon(PhosphorIconsFill.chatsCircle),
             ),
             label: 'Chats',
           ),
           BottomNavigationBarItem(
-            icon: Icon(PhosphorIconsRegular.users),
-            activeIcon: Icon(PhosphorIconsFill.users),
+            icon: Icon(PhosphorIconsRegular.addressBook),
+            activeIcon: Icon(PhosphorIconsFill.addressBook),
             label: 'Contacts',
           ),
           BottomNavigationBarItem(
@@ -65,9 +65,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             label: 'Settings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(PhosphorIconsRegular.user),
-            activeIcon: Icon(PhosphorIconsFill.user),
-            label: 'You',
+            icon: Icon(PhosphorIconsRegular.userCircle),
+            activeIcon: Icon(PhosphorIconsFill.userCircle),
+            label: 'Profile',
           ),
         ],
       ),

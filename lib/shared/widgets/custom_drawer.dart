@@ -234,7 +234,7 @@ class CustomDrawer extends ConsumerWidget {
                     context,
                     icon: Icons.auto_awesome_outlined,
                     title: 'Telegram Features',
-                    onTap: () => context.push(NamedRoutes.telegramFeatures),
+                    onTap: () => context.push(NamedRoutes.casperChatFeatures),
                   ),
 
                   const Divider(),

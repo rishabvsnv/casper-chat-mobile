@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+// import 'package:messenger/features/chats/presentation/widgets/show_birthdays.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
@@ -98,6 +100,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    /* WidgetsBinding.instance.addPostFrameCallback((_) {
+      showBirthdayDialog(BuildContext, context);
+    }); */
+  }
+
+  @override
   Widget build(BuildContext context) {
     final filteredChats = selectedTab == 0
         ? chats
@@ -124,7 +135,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             backgroundColor: Colors.white,
             elevation: 4,
             onPressed: () {},
-            child: const Icon(Icons.camera_alt, color: Color(0xff229ED9)),
+            child: const Icon(
+              PhosphorIconsRegular.camera,
+              color: Color(0xff229ED9),
+            ),
           ),
 
           const SizedBox(height: 12),
@@ -134,14 +148,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             backgroundColor: const Color(0xff229ED9),
             elevation: 6,
             onPressed: () {},
-            child: const Icon(Icons.edit, color: Colors.white),
+            child: const Icon(PhosphorIconsRegular.pen, color: Colors.white),
           ),
         ],
       ),
 
       appBar: CustomAppBar(
         isDashboard: true,
-        // title: 'Telegram',
+        // title: 'CasperChat',
         /* customTitle: Row(
           children: [
             SizedBox(
@@ -163,7 +177,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
             const Text(
-              "Telegram",
+              "CasperChat",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
@@ -242,7 +256,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       ),
 
                       const Text(
-                        "Telegram",
+                        "CasperChat",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w700,
@@ -260,27 +274,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ),
                 ), */
                 Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+                  margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  child: CupertinoSearchTextField(placeholder: 'Search'),
+                  child: const CupertinoSearchTextField(
+                    backgroundColor: Colors.transparent,
+                    placeholder: 'Search chats',
+                  ),
                 ),
-
-                /* SizedBox(
-                  height: 100,
-                  child: Card(
-                    elevation: 1,
-                    margin: EdgeInsets.all(16),
-                    child: ListTile(
-                      dense: true,
-                      title: Text('Add your birthday! 🎂'),
-                      subtitle: Text(
-                        'Let your contacts know when you\'re celebrating',
-                      ),
-                    ),
-                  ),
-                ), */
+                // ShowBirthdays(),
                 CupertinoSlidingSegmentedControl<int>(
                   groupValue: selectedTab,
                   children: {
@@ -291,9 +295,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     4: Text('Bots'),
                   },
                   onValueChanged: (value) {
+                    if (value == null) return;
+
                     setState(() {
-                      selectedTab = value!;
+                      selectedTab = value;
                     });
+
+                    _pageController.animateToPage(
+                      value,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
                   },
                 ),
 
@@ -501,30 +513,4 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
     );
   }
-
-  /* static Widget _tab(String title, bool selected) {
-    return Container(
-      margin: const EdgeInsets.only(right: 20),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: selected ? const Color(0xff229ED9) : Colors.grey.shade700,
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 4),
-          if (selected)
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              width: selected ? 24 : 0,
-              height: 3,
-            ),
-        ],
-      ),
-    );
-  } */
 }

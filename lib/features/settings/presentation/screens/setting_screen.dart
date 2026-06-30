@@ -201,21 +201,21 @@ class SettingScreen extends ConsumerWidget {
               children: [
                 _profileTile(
                   icon: Icons.workspace_premium_outlined,
-                  title: 'Telegram Premium',
+                  title: 'CasperChat Premium',
                   onTap: () {},
                 ),
                 const Divider(height: 1),
 
                 _profileTile(
                   icon: Icons.stars_outlined,
-                  title: 'Telegram Stars',
+                  title: 'CasperChat Stars',
                   onTap: () {},
                 ),
                 const Divider(height: 1),
 
                 _profileTile(
                   icon: Icons.business_center_outlined,
-                  title: 'Telegram Business',
+                  title: 'CasperChat Business',
                   onTap: () {},
                 ),
                 const Divider(height: 1),
@@ -239,16 +239,16 @@ class SettingScreen extends ConsumerWidget {
 
                 _profileTile(
                   icon: Icons.quiz_outlined,
-                  title: 'Telegram FAQ',
+                  title: 'CasperChat FAQ',
                   onTap: () {},
                 ),
                 const Divider(height: 1),
 
                 _profileTile(
                   icon: Icons.auto_awesome_outlined,
-                  title: 'Telegram Features',
+                  title: 'CasperChat Features',
                   onTap: () {
-                    context.push(NamedRoutes.telegramFeatures);
+                    context.push(NamedRoutes.casperChatFeatures);
                   },
                 ),
                 const Divider(height: 1),
@@ -257,14 +257,14 @@ class SettingScreen extends ConsumerWidget {
                   icon: Icons.privacy_tip_outlined,
                   title: 'Privacy Policy',
                   onTap: () {
-                    context.push(NamedRoutes.privacy);
+                    context.push(NamedRoutes.privacyPolicy);
                     // context.push(NamedRoutes.privacy);
                   },
                 ),
               ],
             ),
 
-            Center(child: Text('Telegram for Android v12.8.3 (6922)')),
+            Center(child: Text('CasperChat for Android v12.8.3 (6922)')),
             Center(child: Text('store bundled arm64-v8a')),
             SizedBox(height: 90),
           ],
