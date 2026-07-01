@@ -23,12 +23,6 @@ class _QrCodeScreenState extends ConsumerState<QrCodeScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   @override
-  void dispose() {
-    _scannerController?.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 

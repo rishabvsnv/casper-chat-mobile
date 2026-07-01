@@ -59,7 +59,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             'If you have questions about this Privacy Policy or our privacy practices, please contact the Casper Chat support team through the Help & Support section of the application.',
       ),
     ];
-    
+
     final theme = Theme.of(context);
 
     return Scaffold(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/features/chats/presentation/widgets/chat_search_delegate.dart';
 // import 'package:messenger/features/chats/presentation/widgets/show_birthdays.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
@@ -78,6 +79,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     },
     {
       "name": "Penelope",
+      "type": "Unread",
       "message": "See you tomorrow 👋",
       "time": "9:12",
       "unread": 102,
@@ -134,7 +136,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             heroTag: 'camera_fab',
             backgroundColor: Colors.white,
             elevation: 4,
-            onPressed: () {},
+            onPressed: () {
+              context.push(NamedRoutes.camera);
+            },
             child: const Icon(
               PhosphorIconsRegular.camera,
               color: Color(0xff229ED9),
@@ -147,7 +151,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             heroTag: 'compose_fab',
             backgroundColor: const Color(0xff229ED9),
             elevation: 6,
-            onPressed: () {},
+            onPressed: () {
+              context.push(NamedRoutes.contacts);
+            },
             child: const Icon(PhosphorIconsRegular.pen, color: Colors.white),
           ),
         ],
@@ -273,7 +279,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ],
                   ),
                 ), */
-                Container(
+                /* Container(
                   margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade100,
@@ -282,6 +288,45 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   child: const CupertinoSearchTextField(
                     backgroundColor: Colors.transparent,
                     placeholder: 'Search chats',
+                  ),
+                ), */
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Hero(
+                    tag: 'global_search',
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(14),
+                        onTap: () {
+                          showSearch(
+                            context: context,
+                            delegate: ChatSearchDelegate(chats),
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.search_rounded,
+                                color: Colors.grey.shade600,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Search',
+                                style: TextStyle(color: Colors.grey.shade600),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 // ShowBirthdays(),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/features/settings/domain/setting_item.dart';
+import 'package:messenger/features/settings/presentation/widgets/settings_search_delegate.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_list_tile.dart';
 
@@ -9,12 +11,101 @@ class SettingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final settingsItems = [
+      SettingItem(
+        title: 'Account',
+        subtitle: 'Number, Username, Bio',
+        icon: Icons.person_outline,
+        onTap: () => context.push(NamedRoutes.myAccount),
+      ),
+      SettingItem(
+        title: 'Privacy & Security',
+        subtitle: 'Last Seen, Devices, Passcode',
+        icon: Icons.shield_outlined,
+        onTap: () => context.push(NamedRoutes.privacy),
+      ),
+      SettingItem(
+        title: 'Data and Storage',
+        subtitle: 'Media and network usage',
+        icon: Icons.storage_outlined,
+        onTap: () => context.push(NamedRoutes.storage),
+      ),
+      SettingItem(
+        title: 'Notifications',
+        subtitle: 'Messages, Groups, Calls',
+        icon: Icons.notifications_outlined,
+        onTap: () => context.push(NamedRoutes.notifications),
+      ),
+      SettingItem(
+        title: 'Devices',
+        subtitle: 'Manage active sessions',
+        icon: Icons.devices_outlined,
+        onTap: () => context.push(NamedRoutes.devices),
+      ),
+      SettingItem(
+        title: 'Power Saving',
+        subtitle: 'Reduce animations and effects',
+        icon: Icons.battery_saver_outlined,
+        onTap: () {},
+      ),
+      SettingItem(
+        title: 'Chat Settings',
+        subtitle: 'Themes, Wallpaper, Appearance',
+        icon: Icons.chat_bubble_outline,
+        onTap: () {},
+      ),
+      SettingItem(
+        title: 'Chat Folders',
+        subtitle: 'Organize your chats',
+        icon: Icons.folder_outlined,
+        onTap: () => context.push(NamedRoutes.folders),
+      ),
+      SettingItem(
+        title: 'Language',
+        subtitle: 'English',
+        icon: Icons.language_outlined,
+        onTap: () => context.push(NamedRoutes.language),
+      ),
+      SettingItem(
+        title: 'Ask a Question',
+        subtitle: '',
+        icon: Icons.help_outline,
+        onTap: () => context.push(NamedRoutes.askQues),
+      ),
+      SettingItem(
+        title: 'CasperChat FAQ',
+        subtitle: '',
+        icon: Icons.quiz_outlined,
+        onTap: () => context.push(NamedRoutes.casperChatFaqs),
+      ),
+      SettingItem(
+        title: 'CasperChat Features',
+        subtitle: '',
+        icon: Icons.auto_awesome_outlined,
+        onTap: () => context.push(NamedRoutes.casperChatFeatures),
+      ),
+      SettingItem(
+        title: 'Privacy Policy',
+        subtitle: '',
+        icon: Icons.privacy_tip_outlined,
+        onTap: () => context.push(NamedRoutes.privacyPolicy),
+      ),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
         centerTitle: false,
         actions: [
-          IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: SettingsSearchDelegate(settingsItems),
+              );
+            },
+          ),
           PopupMenuButton<String>(
             itemBuilder: (_) => const [
               PopupMenuItem(
@@ -153,19 +244,22 @@ class SettingScreen extends ConsumerWidget {
                 ),
               ],
             ), */
-
             SettingsSection(
               children: [
                 CustomListTile(
                   icon: Icons.help_outline,
                   title: 'Ask a Question',
-                  onTap: () {},
+                  onTap: () {
+                    context.push(NamedRoutes.askQues);
+                  },
                 ),
                 const Divider(height: 1),
                 CustomListTile(
                   icon: Icons.quiz_outlined,
                   title: 'CasperChat FAQ',
-                  onTap: () {},
+                  onTap: () {
+                    context.push(NamedRoutes.casperChatFaqs);
+                  },
                 ),
                 const Divider(height: 1),
                 CustomListTile(

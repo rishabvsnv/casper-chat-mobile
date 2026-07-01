@@ -256,27 +256,27 @@ class _StorageScreenState extends State<StorageScreen> {
       context: context,
       showDragHandle: true,
       builder: (_) {
-        String tempValue = keepMedia;
-
         return StatefulBuilder(
           builder: (context, setModalState) {
             return SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: options.map((option) {
-                  return RadioListTile<String>(
-                    value: option,
-                    groupValue: tempValue,
-                    title: Text(option),
-                    onChanged: (value) {
-                      setState(() {
-                        keepMedia = value!;
-                      });
+              child: RadioGroup<String>(
+                groupValue: keepMedia,
+                onChanged: (value) {
+                  setState(() {
+                    keepMedia = value!;
+                  });
 
-                      context.pop();
-                    },
-                  );
-                }).toList(),
+                  context.pop();
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: options.map((option) {
+                    return RadioListTile<String>(
+                      value: option,
+                      title: Text(option),
+                    );
+                  }).toList(),
+                ),
               ),
             );
           },

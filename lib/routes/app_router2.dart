@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/features/common/presentation/screens/ask_question_screen.dart';
+import 'package:messenger/features/common/presentation/screens/camera_screen.dart';
+import 'package:messenger/features/common/presentation/screens/casperchat_faq_screen.dart';
 import 'package:messenger/features/common/presentation/screens/main_screen.dart';
 import 'package:messenger/features/folders/presentation/screens/edit_folder_screen.dart';
 import 'package:messenger/features/folders/presentation/screens/folders_screen.dart';
@@ -45,6 +48,10 @@ final routerProvider = Provider<GoRouter>((ref) {
 
           return MessageInfoScreen(chatId: chatId, userName: userName);
         },
+      ),
+      GoRoute(
+        path: NamedRoutes.camera,
+        builder: (context, state) => const CameraScreen(),
       ),
 
       // Archive
@@ -192,6 +199,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const QrCodeScreen(),
       ),
 
+      GoRoute(
+        path: NamedRoutes.askQues,
+        builder: (context, state) => const AskQuestionScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.casperChatFaqs,
+        builder: (context, state) => const CasperchatFaqScreen(),
+      ),
       GoRoute(
         path: NamedRoutes.casperChatFeatures,
         builder: (context, state) => const CasperchatFeaturesScreen(),

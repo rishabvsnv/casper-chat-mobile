@@ -8,6 +8,7 @@ class NamedRoutes {
   static final String otp = '/otp';
   static final String chats = '/chats';
   static final String chatWithParams = '/chats/:chatId';
+  static final String camera = '/camera';
   static final String archive = '/archive';
   static final String profile = '/profile';
   static final String profileEdit = '/profile/edit';
@@ -35,6 +36,8 @@ class NamedRoutes {
   static final String channelWithParams = '/channel/:channelId';
   static final String peopleNearby = '/people-nearby';
   static final String myQR = '/my-qr';
+  static final String askQues = '/ask-ques';
+  static final String casperChatFaqs = '/faqs';
   static final String casperChatFeatures = '/telegram-features';
   static final String myAccount = '/my-account';
   static final String share = '/share';
