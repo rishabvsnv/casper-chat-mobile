@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:messenger/features/chats/presentation/screens/chat_screen.dart';
+import 'package:messenger/features/common/providers/unread_count_provider.dart';
 import 'package:messenger/features/contacts/presentation/screens/contacts_screen.dart';
 import 'package:messenger/features/profile/presentation/screens/profile_screen.dart';
 import 'package:messenger/features/settings/presentation/screens/setting_screen.dart';
@@ -19,6 +20,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final unreadCount = ref.watch(unreadCountProvider);
+
     return Scaffold(
       body: IndexedStack(
         index: currentIndex,
@@ -40,31 +43,31 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             currentIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Badge(
-              label: Text('5'),
-              isLabelVisible: true,
-              child: Icon(PhosphorIconsRegular.chatsCircle),
+              label: Text(unreadCount.toString()),
+              isLabelVisible: unreadCount > 0,
+              child: const Icon(PhosphorIconsRegular.chatsCircle),
             ),
             activeIcon: Badge(
-              label: Text('5'),
-              isLabelVisible: true,
-              child: Icon(PhosphorIconsFill.chatsCircle),
+              label: Text(unreadCount.toString()),
+              isLabelVisible: unreadCount > 0,
+              child: const Icon(PhosphorIconsFill.chatsCircle),
             ),
             label: 'Chats',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(PhosphorIconsRegular.addressBook),
             activeIcon: Icon(PhosphorIconsFill.addressBook),
             label: 'Contacts',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(PhosphorIconsRegular.gear),
             activeIcon: Icon(PhosphorIconsFill.gear),
             label: 'Settings',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(PhosphorIconsRegular.userCircle),
             activeIcon: Icon(PhosphorIconsFill.userCircle),
             label: 'Profile',

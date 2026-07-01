@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/features/chats/presentation/widgets/chat_search_delegate.dart';
+import 'package:messenger/features/chats/providers/chat_provider.dart';
 // import 'package:messenger/features/chats/presentation/widgets/show_birthdays.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
@@ -21,86 +22,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   final tabs = ['All', 'Unread', 'Groups', 'Work', 'Bots'];
 
-  final chats = [
-    {
-      "name": "Saved Messages",
-      "type": "All",
-      "message": "IMG_420.png",
-      "time": "Fri",
-      "unread": 0,
-      "color": Colors.blue,
-      "read": true,
-      "muted": false,
-      "pinned": true,
-    },
-    {
-      "name": "Emma Torreaux",
-      "type": "Work",
-      "message": "Bob says hi.",
-      "time": "9:41",
-      "unread": 0,
-      "color": Colors.orange,
-      "read": true,
-      "muted": false,
-      "pinned": false,
-    },
-    {
-      "name": "Roberto",
-      "type": "Work",
-      "message": "Say hello to Emma.",
-      "time": "9:41",
-      "unread": 1,
-      "color": Colors.green,
-      "read": false,
-      "muted": false,
-      "pinned": false,
-    },
-    {
-      "name": "8Bit Times",
-      "type": "Groups",
-      "message": "8Bit Times started a Live Stream",
-      "time": "9:41",
-      "unread": 4,
-      "color": Colors.red,
-      "read": false,
-      "muted": true,
-      "pinned": false,
-    },
-    {
-      "name": "Digital Nomads",
-      "type": "Groups",
-      "message": "Jennie: We just reached 2,500 members",
-      "time": "9:22",
-      "unread": 12,
-      "color": Colors.teal,
-      "read": false,
-      "muted": true,
-      "pinned": true,
-    },
-    {
-      "name": "Penelope",
-      "type": "Unread",
-      "message": "See you tomorrow 👋",
-      "time": "9:12",
-      "unread": 102,
-      "color": Colors.purple,
-      "read": true,
-      "muted": false,
-      "pinned": false,
-    },
-    {
-      "name": "ChatGPT Bots",
-      "type": "Bots",
-      "message": "See you tomorrow 👋",
-      "time": "9:12",
-      "unread": 0,
-      "color": Colors.purple,
-      "read": true,
-      "muted": false,
-      "pinned": false,
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -112,6 +33,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final chats = ref.watch(chatsProvider);
+
     final filteredChats = selectedTab == 0
         ? chats
         : chats.where((chat) {
