@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:messenger/features/folders/domain/folder_item.dart';
+import 'package:messenger/features/folders/providers/folders_provider.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
 
 class EditFolderScreen extends ConsumerStatefulWidget {
@@ -43,18 +46,20 @@ class _EditFolderScreenState extends ConsumerState<EditFolderScreen> {
   void _saveFolder() {
     final folderName = _nameController.text.trim();
 
-    if (folderName.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Folder name cannot be empty')),
-      );
-      return;
-    }
+    if (folderName.isEmpty) return;
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('$folderName saved')));
+    ref
+        .read(foldersProvider.notifier)
+        .updateFolder(
+          widget.initialName,
+          FolderItem(
+            name: folderName,
+            description: 'Custom Folder',
+            chatCount: 0,
+          ),
+        );
 
-    Navigator.pop(context);
+    context.pop(context);
   }
 
   void _deleteFolder() {
@@ -67,14 +72,23 @@ class _EditFolderScreenState extends ConsumerState<EditFolderScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                context.pop(context);
               },
               child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                ref
+                    .read(foldersProvider.notifier)
+                    .removeFolder(
+                      FolderItem(
+                        name: widget.initialName,
+                        description: '',
+                        chatCount: 0,
+                      ),
+                    );
+
+                context.pop(context);
 
                 ScaffoldMessenger.of(
                   context,

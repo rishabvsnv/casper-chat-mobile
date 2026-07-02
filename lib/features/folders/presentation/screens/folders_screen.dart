@@ -273,7 +273,7 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
                           ),
 
                     onTap: () {
-                      context.push(NamedRoutes.editFolder);
+                      context.push(NamedRoutes.editFolder, extra: folder);
                     },
                   ),
                 );

@@ -60,7 +60,7 @@ final chatsProvider = Provider<List<Map<String, dynamic>>>((ref) {
     },
     {
       "name": "Penelope",
-      "type": "Unread",
+      "type": "Work",
       "message": "See you tomorrow 👋",
       "time": "9:12",
       "unread": 102,

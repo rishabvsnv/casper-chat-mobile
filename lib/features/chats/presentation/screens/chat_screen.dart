@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +19,9 @@ class ChatScreen extends ConsumerStatefulWidget {
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final PageController _pageController = PageController();
+  final ScrollController _tabScrollController = ScrollController();
   int selectedTab = 0;
+  final List<GlobalKey> _tabKeys = [];
 
   @override
   void initState() {
@@ -31,11 +32,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }); */
   }
 
+  void _scrollToSelectedTab(int index) {
+    final context = _tabKeys[index].currentContext;
+
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+        alignment: 0.5,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final chats = ref.watch(chatsProvider);
     final folders = ref.watch(foldersProvider);
     final tabs = ['All', 'Unread', ...folders.map((e) => e.name)];
+
+    while (_tabKeys.length < tabs.length) {
+      _tabKeys.add(GlobalKey());
+    }
 
     if (selectedTab >= tabs.length) {
       selectedTab = 0;
@@ -239,28 +257,60 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
                 // ShowBirthdays(),
                 if (tabs.length > 1)
-                  CupertinoSlidingSegmentedControl<int>(
-                    groupValue: selectedTab,
-                    children: {
-                      for (int i = 0; i < tabs.length; i++)
-                        i: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(tabs[i]),
-                        ),
-                    },
-                    onValueChanged: (value) {
-                      if (value == null) return;
+                  Container(
+                    height: 40,
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF1C1C1E)
+                          : const Color(0xFFF1F1F3),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: ListView.separated(
+                      controller: _tabScrollController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: tabs.length,
+                      separatorBuilder: (_, _) => const SizedBox(width: 2),
+                      itemBuilder: (context, index) {
+                        final selected = selectedTab == index;
 
-                      setState(() {
-                        selectedTab = value;
-                      });
-
-                      _pageController.animateToPage(
-                        value,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    },
+                        return GestureDetector(
+                          onTap: () {
+                            _pageController.animateToPage(
+                              index,
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.easeOut,
+                            );
+                          },
+                          child: AnimatedContainer(
+                            key: _tabKeys[index],
+                            duration: const Duration(milliseconds: 120),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: selected
+                                  ? Theme.of(context).cardColor
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Center(
+                              child: Text(
+                                tabs[index],
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: selected
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
 
                 const SizedBox(height: 8),
@@ -272,6 +322,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       setState(() {
                         selectedTab = index;
                       });
+
+                      _scrollToSelectedTab(index);
                     },
                     itemCount: tabs.length,
                     itemBuilder: (context, tabIndex) {

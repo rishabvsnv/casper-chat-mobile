@@ -32,6 +32,17 @@ class FoldersNotifier extends StateNotifier<List<FolderItem>> {
     await _save();
   }
 
+  Future<void> updateFolder(String oldName, FolderItem updated) async {
+    state = state.map((folder) {
+      if (folder.name == oldName) {
+        return updated;
+      }
+      return folder;
+    }).toList();
+
+    await _save();
+  }
+
   Future<void> _save() async {
     final box = await Hive.openBox('folders');
 
