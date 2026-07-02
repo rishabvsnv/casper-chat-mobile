@@ -202,17 +202,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ],
                   ),
                 ), */
-                /* Container(
-                  margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const CupertinoSearchTextField(
-                    backgroundColor: Colors.transparent,
-                    placeholder: 'Search chats',
-                  ),
-                ), */
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Hero(
