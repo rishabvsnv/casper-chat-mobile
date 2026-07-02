@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/features/folders/domain/folder_item.dart';
+import 'package:messenger/features/folders/providers/folders_provider.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
 
@@ -12,47 +14,6 @@ class FoldersScreen extends ConsumerStatefulWidget {
 }
 
 class _FoldersScreenState extends ConsumerState<FoldersScreen> {
-  final List<FolderItem> _folders = [
-    const FolderItem(
-      name: 'All Chats',
-      icon: Icons.chat_bubble_outline_rounded,
-      description: 'All messages',
-      chatCount: 248,
-      isDefault: true,
-    ),
-    const FolderItem(
-      name: 'Unread',
-      icon: Icons.mark_chat_unread_outlined,
-      description: 'Unread conversations',
-      chatCount: 17,
-      isDefault: true,
-    ),
-    const FolderItem(
-      name: 'Personal',
-      icon: Icons.person_outline_rounded,
-      description: 'Friends & Family',
-      chatCount: 32,
-    ),
-    const FolderItem(
-      name: 'Work',
-      icon: Icons.work_outline_rounded,
-      description: 'Work related chats',
-      chatCount: 48,
-    ),
-    const FolderItem(
-      name: 'Groups',
-      icon: Icons.groups_outlined,
-      description: 'Group conversations',
-      chatCount: 24,
-    ),
-    const FolderItem(
-      name: 'Channels',
-      icon: Icons.campaign_outlined,
-      description: 'Subscribed channels',
-      chatCount: 116,
-    ),
-  ];
-
   Future<void> _createFolder() async {
     final controller = TextEditingController();
 
@@ -92,16 +53,16 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
       return;
     }
 
-    setState(() {
-      _folders.add(
-        FolderItem(
-          name: result,
-          description: 'Custom folder',
-          icon: Icons.folder_outlined,
-          chatCount: 0,
-        ),
-      );
-    });
+    ref
+        .read(foldersProvider.notifier)
+        .addFolder(
+          FolderItem(
+            name: result,
+            description: 'Custom Folder',
+            // icon: Icons.folder_outlined,
+            chatCount: 0,
+          ),
+        );
 
     if (!mounted) return;
 
@@ -113,8 +74,9 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final folders = ref.watch(foldersProvider);
 
-    final customFolders = _folders.where((e) => !e.isDefault).length;
+    final customFolders = folders.where((e) => !e.isDefault).length;
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'Chat Folders'),
@@ -162,7 +124,7 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${_folders.length} folders configured',
+                            '${folders.length} folders configured',
                             style: TextStyle(color: Colors.grey.shade600),
                           ),
                         ],
@@ -183,7 +145,7 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
               children: [
                 Expanded(
                   child: _StatCard(
-                    title: '${_folders.length}',
+                    title: '${folders.length}',
                     subtitle: 'Folders',
                     icon: Icons.folder_outlined,
                   ),
@@ -203,7 +165,7 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
 
                 Expanded(
                   child: _StatCard(
-                    title: '${_folders.where((e) => e.isDefault).length}',
+                    title: '${folders.where((e) => e.isDefault).length}',
                     subtitle: 'Default',
                     icon: Icons.star_outline,
                   ),
@@ -226,27 +188,27 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
 
           const SizedBox(height: 8),
 
-          if (_folders.isEmpty)
+          if (folders.isEmpty)
             const _EmptyFoldersView()
           else
             ReorderableListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               buildDefaultDragHandles: false,
-              itemCount: _folders.length,
+              itemCount: folders.length,
               onReorderItem: (oldIndex, newIndex) {
                 setState(() {
                   if (newIndex > oldIndex) {
                     newIndex -= 1;
                   }
 
-                  final item = _folders.removeAt(oldIndex);
+                  final item = folders.removeAt(oldIndex);
 
-                  _folders.insert(newIndex, item);
+                  folders.insert(newIndex, item);
                 });
               },
               itemBuilder: (context, index) {
-                final folder = _folders[index];
+                final folder = folders[index];
 
                 return Card(
                   key: ValueKey(folder.name),
@@ -258,8 +220,7 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(16),
 
-                    leading: CircleAvatar(child: Icon(folder.icon)),
-
+                    // leading: CircleAvatar(child: Icon(folder.icon)),
                     title: Text(
                       folder.name,
                       style: const TextStyle(fontWeight: FontWeight.w600),
@@ -293,9 +254,9 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
                         : PopupMenuButton<String>(
                             onSelected: (value) {
                               if (value == 'delete') {
-                                setState(() {
-                                  _folders.remove(folder);
-                                });
+                                ref
+                                    .read(foldersProvider.notifier)
+                                    .removeFolder(folder);
                               }
                             },
                             itemBuilder: (_) => const [
@@ -322,22 +283,6 @@ class _FoldersScreenState extends ConsumerState<FoldersScreen> {
       ),
     );
   }
-}
-
-class FolderItem {
-  final String name;
-  final String description;
-  final IconData icon;
-  final int chatCount;
-  final bool isDefault;
-
-  const FolderItem({
-    required this.name,
-    required this.description,
-    required this.icon,
-    required this.chatCount,
-    this.isDefault = false,
-  });
 }
 
 class _StatCard extends StatelessWidget {

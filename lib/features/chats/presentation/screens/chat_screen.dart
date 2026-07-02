@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:messenger/core/theme/app_colors.dart';
 import 'package:messenger/features/chats/presentation/widgets/chat_search_delegate.dart';
 import 'package:messenger/features/chats/providers/chat_provider.dart';
+import 'package:messenger/features/folders/providers/folders_provider.dart';
 // import 'package:messenger/features/chats/presentation/widgets/show_birthdays.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
@@ -21,8 +22,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final PageController _pageController = PageController();
   int selectedTab = 0;
 
-  final tabs = ['All', 'Unread', 'Groups', 'Work', 'Bots'];
-
   @override
   void initState() {
     super.initState();
@@ -35,20 +34,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final chats = ref.watch(chatsProvider);
+    final folders = ref.watch(foldersProvider);
+    final tabs = ['All', 'Unread', ...folders.map((e) => e.name)];
 
-    final filteredChats = selectedTab == 0
-        ? chats
-        : chats.where((chat) {
-            return chat["type"] == tabs[selectedTab];
-          }).toList();
-    filteredChats.sort((a, b) {
-      final aPinned = a["pinned"] as bool;
-      final bPinned = b["pinned"] as bool;
+    if (selectedTab >= tabs.length) {
+      selectedTab = 0;
+    }
 
-      if (aPinned == bPinned) return 0;
-
-      return aPinned ? -1 : 1;
-    });
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Column(
@@ -246,31 +238,32 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ),
                 ),
                 // ShowBirthdays(),
-                CupertinoSlidingSegmentedControl<int>(
-                  groupValue: selectedTab,
-                  children: {
-                    0: Text('All'),
-                    1: Text('Unread'),
-                    2: Text('Groups'),
-                    3: Text('Work'),
-                    4: Text('Bots'),
-                  },
-                  onValueChanged: (value) {
-                    if (value == null) return;
+                if (tabs.length > 1)
+                  CupertinoSlidingSegmentedControl<int>(
+                    groupValue: selectedTab,
+                    children: {
+                      for (int i = 0; i < tabs.length; i++)
+                        i: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(tabs[i]),
+                        ),
+                    },
+                    onValueChanged: (value) {
+                      if (value == null) return;
 
-                    setState(() {
-                      selectedTab = value;
-                    });
+                      setState(() {
+                        selectedTab = value;
+                      });
 
-                    _pageController.animateToPage(
-                      value,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                ),
+                      _pageController.animateToPage(
+                        value,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                  ),
 
-                const Divider(height: 1),
+                const SizedBox(height: 8),
 
                 Expanded(
                   child: PageView.builder(
@@ -284,14 +277,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     itemBuilder: (context, tabIndex) {
                       final filteredChats = tabIndex == 0
                           ? chats
+                          : tabIndex == 1
+                          ? chats
+                                .where((chat) => (chat["unread"] as int) > 0)
+                                .toList()
                           : chats
                                 .where((chat) => chat["type"] == tabs[tabIndex])
                                 .toList();
-
                       filteredChats.sort((a, b) {
                         final aPinned = a["pinned"] as bool;
                         final bPinned = b["pinned"] as bool;
+
                         if (aPinned == bPinned) return 0;
+
                         return aPinned ? -1 : 1;
                       });
 

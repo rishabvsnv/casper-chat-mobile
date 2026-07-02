@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:messenger/app.dart';
 
 Future<void> bootstrapApp() async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await Hive.initFlutter();
 
       FlutterError.onError = (FlutterErrorDetails details) {
         FlutterError.presentError(details);
