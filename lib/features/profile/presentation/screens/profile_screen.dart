@@ -55,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              centerTitle: true,
+              centerTitle: false,
               title: const Text(
                 'Profile',
                 style: TextStyle(fontWeight: FontWeight.w600),

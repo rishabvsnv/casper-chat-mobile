@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:messenger/features/contacts/domain/call_model.dart';
+import 'package:messenger/features/contacts/providers/contact_provider.dart';
 import 'package:messenger/routes/routes_export.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
@@ -20,47 +20,21 @@ class ContactsScreen extends ConsumerStatefulWidget {
 class _ContactsScreenState extends ConsumerState<ContactsScreen> {
   @override
   Widget build(BuildContext context) {
-    final contacts = [
-      CallModel(
-        name: 'Alex Johnson',
-        time: 'last seen Yesterday at 08:45 PM',
-        isIncoming: true,
-      ),
-      CallModel(name: 'Emma Wilson', time: 'online', isIncoming: false),
-      CallModel(
-        name: 'John Doe',
-        time: 'last seen Today at 10:24 AM',
-        isIncoming: true,
-      ),
-      CallModel(
-        name: 'Michael Smith',
-        time: 'last seen Monday at 11:30 AM',
-        isIncoming: true,
-      ),
-      CallModel(
-        name: 'Sophia Brown',
-        time: 'last seen Yesterday at 05:10 PM',
-        isIncoming: false,
-      ),
-      CallModel(name: 'William Parker', time: 'online', isIncoming: true),
-      CallModel(
-        name: 'Olivia Davis',
-        time: 'last seen recently',
-        isIncoming: false,
-      ),
-    ];
+    final contacts = List<Map<String, dynamic>>.from(
+      ref.watch(contactsProvider),
+    );
 
     if (sortType == ContactSortType.name) {
-      contacts.sort((a, b) => a.name.compareTo(b.name));
+      contacts.sort((a, b) => a["name"].compareTo(b["name"]));
     } else {
       contacts.sort((a, b) {
-        final aOnline = a.time.toLowerCase() == 'online';
-        final bOnline = b.time.toLowerCase() == 'online';
+        final aOnline = a["online"] as bool;
+        final bOnline = b["online"] as bool;
 
         if (aOnline && !bOnline) return -1;
         if (!aOnline && bOnline) return 1;
 
-        return a.name.compareTo(b.name);
+        return a["name"].compareTo(b["name"]);
       });
     }
 
@@ -138,17 +112,36 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
             ),
           ),
 
-          SettingsSection(
-            children: contacts
-                .map(
-                  (contact) => _contactTile(
+          /* SettingsSection(
+            children: contacts.map((contact) {
+              return _contactTile(
+                context,
+                name: contact["name"],
+                status: contact["status"],
+                onTap: () {},
+              );
+            }).toList(),
+          ), */
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+            child: Card(
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: contacts.length,
+                itemBuilder: (context, index) {
+                  final contact = contacts[index];
+                  return _contactTile(
                     context,
-                    name: contact.name,
-                    status: contact.time,
+                    name: contact["name"],
+                    status: contact["status"],
                     onTap: () {},
-                  ),
-                )
-                .toList(),
+                  );
+                },
+              ),
+            ),
           ),
 
           const SizedBox(height: 100),

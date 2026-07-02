@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/core/theme/app_colors.dart';
 import 'package:messenger/features/chats/presentation/widgets/chat_search_delegate.dart';
 import 'package:messenger/features/chats/providers/chat_provider.dart';
 // import 'package:messenger/features/chats/presentation/widgets/show_birthdays.dart';
@@ -49,16 +50,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       return aPinned ? -1 : 1;
     });
     return Scaffold(
-      backgroundColor: Colors.white,
-
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton.small(
             heroTag: 'camera_fab',
-            backgroundColor: Colors.white,
-            elevation: 4,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            foregroundColor: Theme.of(context).colorScheme.primary,
+            elevation: 2,
             onPressed: () {
               context.push(NamedRoutes.camera);
             },
@@ -72,8 +72,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           FloatingActionButton(
             heroTag: 'compose_fab',
-            backgroundColor: const Color(0xff229ED9),
-            elevation: 6,
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            elevation: 2,
+            highlightElevation: 4,
             onPressed: () {
               context.push(NamedRoutes.contacts);
             },
@@ -220,7 +222,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           height: 50,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
+                            color: Theme.of(
+                              context,
+                            ).inputDecorationTheme.fillColor,
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: Row(
@@ -291,174 +295,192 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         return aPinned ? -1 : 1;
                       });
 
-                      return ListView.builder(
-                        itemCount: filteredChats.length,
-                        itemBuilder: (context, index) {
-                          final chat = filteredChats[index];
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+                        child: Card(
+                          elevation: 0,
+                          margin: EdgeInsets.zero,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.only(top: 8, bottom: 120),
+                            itemCount: filteredChats.length,
+                            itemBuilder: (context, index) {
+                              final chat = filteredChats[index];
 
-                          return GestureDetector(
-                            onTap: () {
-                              context.push(
-                                '${NamedRoutes.chats}/$index',
-                                extra: chat['name'],
-                              );
-                            },
-                            onLongPress: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (_) {
-                                  return Wrap(
-                                    children: [
-                                      ListTile(
-                                        leading: Icon(Icons.push_pin),
-                                        title: Text("Pin Chat"),
-                                      ),
-                                      ListTile(
-                                        leading: Icon(Icons.notifications_off),
-                                        title: Text("Mute"),
-                                      ),
-                                      ListTile(
-                                        leading: Icon(Icons.archive),
-                                        title: Text("Archive"),
-                                      ),
-                                    ],
+                              return GestureDetector(
+                                onTap: () {
+                                  context.push(
+                                    '${NamedRoutes.chats}/$index',
+                                    extra: chat['name'],
                                   );
                                 },
+                                onLongPress: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (_) {
+                                      return Wrap(
+                                        children: [
+                                          ListTile(
+                                            leading: Icon(Icons.push_pin),
+                                            title: Text("Pin Chat"),
+                                          ),
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.notifications_off,
+                                            ),
+                                            title: Text("Mute"),
+                                          ),
+                                          ListTile(
+                                            leading: Icon(Icons.archive),
+                                            title: Text("Archive"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: chat["color"] as Color,
+                                        child: Text(
+                                          chat["name"]
+                                              .toString()
+                                              .substring(0, 1)
+                                              .toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+
+                                      const SizedBox(width: 12),
+
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    chat["name"].toString(),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 17,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                if (chat["pinned"] as bool)
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                      right: 4,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.push_pin_rounded,
+                                                      size: 15,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+
+                                                Text(
+                                                  chat["time"].toString(),
+                                                  style: TextStyle(
+                                                    color: Colors.grey.shade500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                            const SizedBox(height: 4),
+
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  (chat["read"] as bool)
+                                                      ? Icons.done_all
+                                                      : Icons.done,
+                                                  size: 16,
+                                                  color: const Color(
+                                                    0xff229ED9,
+                                                  ),
+                                                ),
+
+                                                const SizedBox(width: 4),
+
+                                                Expanded(
+                                                  child: Text(
+                                                    chat["message"].toString(),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade600,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                if (chat["muted"] as bool)
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: 6,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.volume_off_outlined,
+                                                      size: 16,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      if ((chat["unread"] as int) > 0)
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            left: 10,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            color: Color(0xff229ED9),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(20),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            chat["unread"].toString(),
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
                               );
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: chat["color"] as Color,
-                                    child: Text(
-                                      chat["name"]
-                                          .toString()
-                                          .substring(0, 1)
-                                          .toUpperCase(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-
-                                  const SizedBox(width: 12),
-
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                chat["name"].toString(),
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 17,
-                                                ),
-                                              ),
-                                            ),
-
-                                            if (chat["pinned"] as bool)
-                                              const Padding(
-                                                padding: EdgeInsets.only(
-                                                  right: 4,
-                                                ),
-                                                child: Icon(
-                                                  Icons.push_pin_rounded,
-                                                  size: 15,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-
-                                            Text(
-                                              chat["time"].toString(),
-                                              style: TextStyle(
-                                                color: Colors.grey.shade500,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-                                        const SizedBox(height: 4),
-
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              (chat["read"] as bool)
-                                                  ? Icons.done_all
-                                                  : Icons.done,
-                                              size: 16,
-                                              color: const Color(0xff229ED9),
-                                            ),
-
-                                            const SizedBox(width: 4),
-
-                                            Expanded(
-                                              child: Text(
-                                                chat["message"].toString(),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade600,
-                                                ),
-                                              ),
-                                            ),
-
-                                            if (chat["muted"] as bool)
-                                              const Padding(
-                                                padding: EdgeInsets.only(
-                                                  left: 6,
-                                                ),
-                                                child: Icon(
-                                                  Icons.volume_off_outlined,
-                                                  size: 16,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-
-                                  if ((chat["unread"] as int) > 0)
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 10),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xff229ED9),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        chat["unread"].toString(),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                          ),
+                        ),
                       );
                     },
                   ),

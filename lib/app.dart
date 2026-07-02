@@ -28,7 +28,7 @@ class MyMessengerApp extends ConsumerWidget {
         title: AppConstants.appName,
         theme: lightTheme,
         darkTheme: darkTheme,
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.system,
         routerConfig: router,
         localizationsDelegates: [AppLocalizations.delegate],
 
