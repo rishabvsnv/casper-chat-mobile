@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/routes/named_routes.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -26,12 +27,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       duration: const Duration(milliseconds: 1200),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack),
+    _scaleAnimation = Tween<double>(begin: 0.6, end: 1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
     );
 
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
 
     _animationController.forward();
@@ -53,11 +54,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     // final isLoggedIn = false;
 
     /* if (isLoggedIn) {
-      context.go('/home');
+      context.go(NamedRoutes.chats);
     } else {
-      context.go('/login');
+      context.go(NamedRoutes.login);
     } */
-    context.go('/login');
+    context.go(NamedRoutes.login);
   }
 
   @override
@@ -73,7 +74,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(color: theme.colorScheme.primary),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF4FD8FF), Color(0xFF0A84FF)],
+          ),
+        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -84,27 +91,30 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 child: ScaleTransition(
                   scale: _scaleAnimation,
                   child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          blurRadius: 26,
+                          spreadRadius: 2,
+                        ),
+                      ],
                     ),
-                    child: Icon(
-                      Icons.send_rounded,
-                      size: 64,
-                      color: theme.colorScheme.primary,
+                    child: Image.asset(
+                      'assets/images/casper_logo_white.png',
+                      width: 136,
+                      height: 136,
                     ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: Text(
-                  'CasperChat',
+                  'Casper Chat',
                   style: theme.textTheme.headlineMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -112,31 +122,27 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
 
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: Text(
-                  'Fast. Secure. Powerful.',
+                  'Stay close to every conversation.',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.white70,
+                    color: Colors.white.withValues(alpha: 0.85),
                   ),
                 ),
               ),
 
               const Spacer(),
 
-              const CircularProgressIndicator(color: Colors.white),
-
-              const SizedBox(height: 24),
-
               Text(
-                'Loading...',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.white70,
+                'v1.0.0',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.65),
+                  fontSize: 12,
                 ),
               ),
-
               const SizedBox(height: 40),
             ],
           ),

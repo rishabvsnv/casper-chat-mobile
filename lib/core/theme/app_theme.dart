@@ -45,7 +45,7 @@ final ThemeData lightTheme = ThemeData(
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: AppColors.primary,
     foregroundColor: Colors.white,
-    elevation: 3,
+    elevation: 1,
   ),
 
   cardTheme: CardThemeData(

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/features/calls/presentation/screens/caller_screen.dart';
 import 'package:messenger/features/common/presentation/screens/ask_question_screen.dart';
 import 'package:messenger/features/common/presentation/screens/camera_screen.dart';
 import 'package:messenger/features/common/presentation/screens/casperchat_faq_screen.dart';
@@ -14,7 +15,7 @@ import 'package:messenger/routes/routes_export.dart';
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     // initialLocation: NamedRoutes.login,
-    initialLocation: NamedRoutes.main,
+    initialLocation: NamedRoutes.splash,
     routes: [
       // Auth
       GoRoute(
@@ -143,6 +144,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: NamedRoutes.calls,
         builder: (context, state) => const CallsScreen(),
+      ),
+      GoRoute(
+        path: NamedRoutes.caller,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+
+          return CallerScreen(name: extra?['userName'] ?? 'Unknown');
+        },
       ),
 
       // Saved Messages

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/features/saved_messages/domain/saved_message.dart';
+import 'package:messenger/routes/named_routes.dart';
 
 class MessageInfoScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -106,7 +107,12 @@ class _MessageInfoScreenState extends ConsumerState<MessageInfoScreen> {
 
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.push(
+                NamedRoutes.caller,
+                extra: {'userName': widget.userName},
+              );
+            },
             icon: const Icon(Icons.call_outlined, color: Colors.black),
           ),
 

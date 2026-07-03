@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/named_routes.dart';
-import 'package:messenger/shared/widgets/custom_appbar.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -25,36 +24,45 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   bool sendMessages = false;
 
-  final Map<String, String> countryCodes = {
-    'in': '+91',
-    'us': '+1',
-    'uk': '+44',
-    'ca': '+1',
-    'au': '+61',
-    'nz': '+64',
-    'de': '+49',
-    'fr': '+33',
-    'it': '+39',
-    'es': '+34',
-    'ru': '+7',
-    'cn': '+86',
-    'jp': '+81',
-    'kr': '+82',
-    'sg': '+65',
-    'my': '+60',
-    'th': '+66',
-    'id': '+62',
-    'ae': '+971',
-    'sa': '+966',
-    'qa': '+974',
-    'kw': '+965',
-    'om': '+968',
-    'bh': '+973',
-    'pk': '+92',
-    'bd': '+880',
-    'lk': '+94',
-    'np': '+977',
+  final Map<String, Map<String, String>> countries = {
+    'in': {'name': 'India', 'code': '+91', 'flag': '🇮🇳'},
+    'us': {'name': 'United States', 'code': '+1', 'flag': '🇺🇸'},
+    'uk': {'name': 'United Kingdom', 'code': '+44', 'flag': '🇬🇧'},
+    'ca': {'name': 'Canada', 'code': '+1', 'flag': '🇨🇦'},
+    'au': {'name': 'Australia', 'code': '+61', 'flag': '🇦🇺'},
+    'nz': {'name': 'New Zealand', 'code': '+64', 'flag': '🇳🇿'},
+    'de': {'name': 'Germany', 'code': '+49', 'flag': '🇩🇪'},
+    'fr': {'name': 'France', 'code': '+33', 'flag': '🇫🇷'},
+    'it': {'name': 'Italy', 'code': '+39', 'flag': '🇮🇹'},
+    'es': {'name': 'Spain', 'code': '+34', 'flag': '🇪🇸'},
+    'ru': {'name': 'Russia', 'code': '+7', 'flag': '🇷🇺'},
+    'cn': {'name': 'China', 'code': '+86', 'flag': '🇨🇳'},
+    'jp': {'name': 'Japan', 'code': '+81', 'flag': '🇯🇵'},
+    'kr': {'name': 'South Korea', 'code': '+82', 'flag': '🇰🇷'},
+    'sg': {'name': 'Singapore', 'code': '+65', 'flag': '🇸🇬'},
+    'my': {'name': 'Malaysia', 'code': '+60', 'flag': '🇲🇾'},
+    'th': {'name': 'Thailand', 'code': '+66', 'flag': '🇹🇭'},
+    'id': {'name': 'Indonesia', 'code': '+62', 'flag': '🇮🇩'},
+    'ae': {'name': 'United Arab Emirates', 'code': '+971', 'flag': '🇦🇪'},
+    'sa': {'name': 'Saudi Arabia', 'code': '+966', 'flag': '🇸🇦'},
+    'qa': {'name': 'Qatar', 'code': '+974', 'flag': '🇶🇦'},
+    'kw': {'name': 'Kuwait', 'code': '+965', 'flag': '🇰🇼'},
+    'om': {'name': 'Oman', 'code': '+968', 'flag': '🇴🇲'},
+    'bh': {'name': 'Bahrain', 'code': '+973', 'flag': '🇧🇭'},
+    'pk': {'name': 'Pakistan', 'code': '+92', 'flag': '🇵🇰'},
+    'bd': {'name': 'Bangladesh', 'code': '+880', 'flag': '🇧🇩'},
+    'lk': {'name': 'Sri Lanka', 'code': '+94', 'flag': '🇱🇰'},
+    'np': {'name': 'Nepal', 'code': '+977', 'flag': '🇳🇵'},
   };
+
+  final countries2 = [
+    {'code': 'jp', 'name': 'Japan', 'flag': '🇯🇵'},
+    {'code': 'sg', 'name': 'Singapore', 'flag': '🇸🇬'},
+    {'code': 'pk', 'name': 'Pakistan', 'flag': '🇵🇰'},
+    {'code': 'bd', 'name': 'Bangladesh', 'flag': '🇧🇩'},
+    {'code': 'lk', 'name': 'Sri Lanka', 'flag': '🇱🇰'},
+    {'code': 'np', 'name': 'Nepal', 'flag': '🇳🇵'},
+  ];
 
   final List<Map<String, String?>> keypadKeys = [
     {'title': '1', 'subtitle': null},
@@ -94,97 +102,117 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void _onCountryCodeChanged() {
     final code = _countryCodeController.text.trim();
 
-    final match = countryCodes.entries.where((e) => e.value == code);
-
-    if (match.isNotEmpty) {
-      final country = match.first.key;
-
-      if (_selectedCountry != country) {
-        setState(() {
-          _selectedCountry = country;
-        });
+    for (final entry in countries.entries) {
+      if (entry.value['code'] == code) {
+        if (_selectedCountry != entry.key) {
+          setState(() {
+            _selectedCountry = entry.key;
+          });
+        }
+        break;
       }
     }
   }
 
   void _onKeyPressed(String key) {
-    final controller = _countryCodeFocusNode.hasFocus
-        ? _countryCodeController
-        : _phoneController;
+    setState(() {
+      final controller = _countryCodeFocusNode.hasFocus
+          ? _countryCodeController
+          : _phoneController;
 
-    if (key == 'BACKSPACE') {
-      if (controller.text.isNotEmpty) {
-        controller.text = controller.text.substring(
-          0,
-          controller.text.length - 1,
-        );
+      if (key == 'BACKSPACE') {
+        if (controller.text.isNotEmpty) {
+          controller.text = controller.text.substring(
+            0,
+            controller.text.length - 1,
+          );
+        }
+      } else if (key == 'LongPress') {
+        controller.clear();
+      } else {
+        controller.text += key;
       }
-    } else if (key == 'LongPress') {
-      controller.clear();
-    } else {
-      controller.text += key;
-    }
 
-    controller.selection = TextSelection.collapsed(
-      offset: controller.text.length,
-    );
+      controller.selection = TextSelection.collapsed(
+        offset: controller.text.length,
+      );
+    });
   }
 
-  void _showProxySheet() {
+  void _showCountryPicker() {
+    final countryList = countries.entries.toList();
+
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Card(
-                elevation: 1,
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                child: SwitchListTile(
-                  value: sendMessages,
-                  title: const Text('Use Proxy'),
-                  onChanged: (value) {
-                    setState(() {
-                      sendMessages = value;
-                    });
-                    Navigator.pop(context);
-                    _showProxySheet();
-                  },
+      builder: (context) {
+        String search = '';
+
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            final filteredCountries = countryList.where((entry) {
+              return entry.value['name']!.toLowerCase().contains(
+                    search.toLowerCase(),
+                  ) ||
+                  entry.key.toLowerCase().contains(search.toLowerCase());
+            }).toList();
+
+            return SafeArea(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextField(
+                        // autofocus: true,
+                        decoration: InputDecoration(
+                          hintText: 'Search country',
+                          prefixIcon: const Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setModalState(() {
+                            search = value;
+                          });
+                        },
+                      ),
+                    ),
+
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: filteredCountries.length,
+                        itemBuilder: (context, index) {
+                          final entry = filteredCountries[index];
+
+                          return ListTile(
+                            leading: Text(
+                              entry.value['flag']!,
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                            title: Text(entry.value['name']!),
+                            subtitle: Text(entry.value['code']!),
+                            onTap: () {
+                              setState(() {
+                                _selectedCountry = entry.key;
+                                _countryCodeController.text =
+                                    entry.value['code']!;
+                              });
+
+                              context.pop();
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              const _SectionHeader(title: 'Connections'),
-
-              ListTile(
-                title: const Text('Add Proxy'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-
-              Card(
-                elevation: 1,
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                child: SwitchListTile(
-                  value: sendMessages,
-                  title: const Text('Use Proxy for Calls'),
-                  onChanged: (value) {
-                    setState(() {
-                      sendMessages = value;
-                    });
-                    Navigator.pop(context);
-                    _showProxySheet();
-                  },
-                ),
-              ),
-
-              const _SectionHeader(
-                title: 'Proxy servers may degrade the quality of your calls.',
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
@@ -199,145 +227,91 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final keypadHeight = isSmallScreen ? 260.0 : size.height * 0.38;
 
     return Scaffold(
-      appBar: CustomAppBar(
-        title: '',
-        actions: [
-          IconButton(
-            onPressed: _showProxySheet,
-            icon: const Icon(Icons.shield_outlined),
-          ),
-        ],
-      ),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: size.height * 0.40),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Your phone number',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
-                ),
+                const SizedBox(height: 12),
 
-                const SizedBox(height: 6),
-
-                const Text(
-                  'Please confirm your country code\nand enter your phone number.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-
-                const SizedBox(height: 32),
-
-                DropdownButtonFormField<String>(
-                  initialValue: _selectedCountry,
-                  decoration: const InputDecoration(
-                    labelText: 'Country',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: const [
-                    DropdownMenuItem(value: 'in', child: Text('🇮🇳 India')),
-                    DropdownMenuItem(
-                      value: 'us',
-                      child: Text('🇺🇸 United States'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'uk',
-                      child: Text('🇬🇧 United Kingdom'),
-                    ),
-                    DropdownMenuItem(value: 'ca', child: Text('🇨🇦 Canada')),
-                    DropdownMenuItem(
-                      value: 'au',
-                      child: Text('🇦🇺 Australia'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'nz',
-                      child: Text('🇳🇿 New Zealand'),
-                    ),
-                    DropdownMenuItem(value: 'de', child: Text('🇩🇪 Germany')),
-                    DropdownMenuItem(value: 'fr', child: Text('🇫🇷 France')),
-                    DropdownMenuItem(value: 'it', child: Text('🇮🇹 Italy')),
-                    DropdownMenuItem(value: 'es', child: Text('🇪🇸 Spain')),
-                    DropdownMenuItem(value: 'ru', child: Text('🇷🇺 Russia')),
-                    DropdownMenuItem(value: 'cn', child: Text('🇨🇳 China')),
-                    DropdownMenuItem(value: 'jp', child: Text('🇯🇵 Japan')),
-                    DropdownMenuItem(
-                      value: 'kr',
-                      child: Text('🇰🇷 South Korea'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'sg',
-                      child: Text('🇸🇬 Singapore'),
-                    ),
-                    DropdownMenuItem(value: 'my', child: Text('🇲🇾 Malaysia')),
-                    DropdownMenuItem(value: 'th', child: Text('🇹🇭 Thailand')),
-                    DropdownMenuItem(
-                      value: 'id',
-                      child: Text('🇮🇩 Indonesia'),
-                    ),
-                    DropdownMenuItem(value: 'ae', child: Text('🇦🇪 UAE')),
-                    DropdownMenuItem(
-                      value: 'sa',
-                      child: Text('🇸🇦 Saudi Arabia'),
-                    ),
-                    DropdownMenuItem(value: 'qa', child: Text('🇶🇦 Qatar')),
-                    DropdownMenuItem(value: 'kw', child: Text('🇰🇼 Kuwait')),
-                    DropdownMenuItem(value: 'om', child: Text('🇴🇲 Oman')),
-                    DropdownMenuItem(value: 'bh', child: Text('🇧🇭 Bahrain')),
-                    DropdownMenuItem(value: 'pk', child: Text('🇵🇰 Pakistan')),
-                    DropdownMenuItem(
-                      value: 'bd',
-                      child: Text('🇧🇩 Bangladesh'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'lk',
-                      child: Text('🇱🇰 Sri Lanka'),
-                    ),
-                    DropdownMenuItem(value: 'np', child: Text('🇳🇵 Nepal')),
-                  ],
-                  onChanged: (value) {
-                    if (value == null) return;
-
-                    setState(() {
-                      _selectedCountry = value;
-                      _countryCodeController.text = countryCodes[value]!;
-                    });
-                  },
+                Image.asset(
+                  'assets/images/casper_logo.png',
+                  width: 72,
+                  height: 72,
                 ),
 
                 const SizedBox(height: 20),
 
+                Text(
+                  'Casper Chat',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  'Stay close to every conversation.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+
+                const SizedBox(height: 40),
+
                 Container(
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
                     border: Border.all(
                       color: Theme.of(context).colorScheme.outline,
                     ),
-                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ListTile(
+                    leading: Text(
+                      countries[_selectedCountry]!['flag']!,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                    title: Text(countries[_selectedCountry]!['name']!),
+                    // subtitle: Text(countries[_selectedCountry]!['code']!),
+                    trailing: const Icon(Icons.keyboard_arrow_down_rounded),
+                    onTap: _showCountryPicker,
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).inputDecorationTheme.fillColor,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color:
+                          _phoneFocusNode.hasFocus ||
+                              _countryCodeFocusNode.hasFocus
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.transparent,
+                      width: 1.5,
+                    ),
                   ),
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 80,
-                        child: TextFormField(
-                          controller: _countryCodeController,
-                          focusNode: _countryCodeFocusNode,
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.none,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 16),
-                            hintText: '+91',
+                        width: 60,
+                        child: Center(
+                          child: Text(
+                            _countryCodeController.text,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ),
 
                       Container(
                         width: 1,
-                        height: 32,
-                        color: Colors.grey.shade300,
+                        height: 28,
+                        color: Theme.of(context).colorScheme.outline,
                       ),
 
                       Expanded(
@@ -346,17 +320,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           focusNode: _phoneFocusNode,
                           keyboardType: TextInputType.none,
                           decoration: const InputDecoration(
-                            hintText: 'Phone number',
                             border: InputBorder.none,
+                            hintText: 'Phone Number',
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 16,
-                              vertical: 16,
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
+                ),
+
+                const SizedBox(height: 24),
+
+                ValueListenableBuilder<TextEditingValue>(
+                  valueListenable: _phoneController,
+                  builder: (context, value, child) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: FilledButton.icon(
+                        onPressed: value.text.length >= 10
+                            ? () => context.pushReplacement(NamedRoutes.main)
+                            : null,
+                        icon: const Icon(Icons.arrow_forward_rounded),
+                        label: const Text('Continue'),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -408,18 +400,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ),
         ),
       ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push(NamedRoutes.chats);
-        },
-        child: const Icon(Icons.arrow_forward),
-      ),
     );
   }
 }
 
-class DialPadWidget extends StatelessWidget {
+class DialPadWidget extends StatefulWidget {
   final String title;
   final String? subtitle;
   final VoidCallback onTap;
@@ -432,51 +417,59 @@ class DialPadWidget extends StatelessWidget {
   });
 
   @override
+  State<DialPadWidget> createState() => _DialPadWidgetState();
+}
+
+class _DialPadWidgetState extends State<DialPadWidget> {
+  bool _pressed = false;
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        child: Center(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        duration: const Duration(milliseconds: 80),
+        scale: _pressed ? 0.95 : 1,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 120),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: _pressed
+                ? Theme.of(context).colorScheme.primaryContainer
+                : Theme.of(context).cardColor,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                title,
+                widget.title,
                 style: TextStyle(
-                  fontSize: width < 360 ? 16 : 18,
+                  fontSize: width < 360 ? 18 : 22,
                   fontWeight: FontWeight.w500,
                 ),
               ),
 
-              if (subtitle != null)
+              if (widget.subtitle != null)
                 Text(
-                  subtitle!,
-                  style: TextStyle(fontSize: width < 360 ? 10 : 12),
+                  widget.subtitle!,
+                  style: TextStyle(
+                    fontSize: width < 360 ? 10 : 12,
+                    letterSpacing: 1.4,
+                    color: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.color?.withValues(alpha: .7),
+                  ),
                 ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _SectionHeader extends StatelessWidget {
-  final String title;
-
-  const _SectionHeader({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Text(
-        title,
-        style: Theme.of(
-          context,
-        ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }

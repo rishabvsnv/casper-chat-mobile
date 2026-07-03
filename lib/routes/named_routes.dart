@@ -28,6 +28,7 @@ class NamedRoutes {
   static final String contacts = '/contacts';
   static final String contactWithParams = '/contact/:userId';
   static final String calls = '/calls';
+  static final String caller = '/caller';
   static final String savedMessages = '/saved-messages';
   static final String mediaWithParams = '/media/:mediaId';
   static final String newGroup = '/new-group';

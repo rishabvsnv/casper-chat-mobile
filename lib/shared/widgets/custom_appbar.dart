@@ -39,7 +39,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     Widget appBarTitle;
 
     if (isDashboard) {
-      appBarTitle = Text(
+      appBarTitle = Row(
+        children: [
+          Image.asset('assets/images/casper_logo.png', width: 36, height: 36),
+          const SizedBox(width: 4),
+          Text(
+            context.l10n.appName,
+            style:
+                titleStyle ??
+                const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF229ED9),
+                ),
+          ),
+        ],
+      );
+      /* appBarTitle = Text(
         context.l10n.appName,
         style:
             titleStyle ??
@@ -48,7 +64,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontWeight: FontWeight.w700,
               color: Color(0xFF229ED9),
             ),
-      );
+      ); */
     } else {
       appBarTitle = titleWidget ?? Text(title!, style: titleStyle);
     }

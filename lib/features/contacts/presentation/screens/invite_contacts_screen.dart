@@ -87,7 +87,7 @@ class _InviteContactsScreenState extends ConsumerState<InviteContactsScreen> {
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Invite friends to join Telegram and start chatting.',
+                    'Invite friends to join Casper Chat and start chatting.',
                   ),
                 ),
               ],

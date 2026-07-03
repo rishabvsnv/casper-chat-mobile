@@ -1,114 +1,175 @@
-# Telegram Clone
+# 👻 Casper Chat
 
-A modern Telegram-inspired messaging application built with **Flutter**, powered by **TDLib**, and designed using **Clean Architecture**, **Riverpod**, and **Material 3**.
+A modern, scalable, and feature-rich messaging platform built with **Flutter**, designed using **Clean Architecture**, **Riverpod**, **GoRouter**, and **Material 3**.
+
+Casper Chat focuses on performance, reliability, privacy, and a beautiful user experience while maintaining a clean and maintainable codebase.
 
 ---
 
 ## 📱 Overview
 
-Telegram Clone aims to provide a fast, secure, and scalable messaging experience similar to Telegram while maintaining a clean codebase and modern Flutter development practices.
+Casper Chat is a next-generation messaging application built from the ground up using Flutter.
 
-The application leverages Telegram's official **TDLib (Telegram Database Library)** for real-time messaging, synchronization, authentication, media handling, and other Telegram functionalities.
+The project is designed with a modular architecture that supports real-time messaging, media sharing, groups, channels, voice and video communication, and future platform expansion.
+
+The goal of Casper Chat is to provide a fast, intuitive, and modern communication platform with a professional user experience across Android, iOS, Desktop, and Web.
 
 ---
 
 ## ✨ Features
 
-### Authentication
+### 🔐 Authentication
 
-- Phone number login
+- Phone number authentication
 - OTP verification
 - Session management
 - Logout support
+- Account recovery
+- Secure login flow
 
-### Chats
+---
 
-- Private chats
-- Group chats
-- Channel support
+### 💬 Messaging
+
+- One-to-one messaging
+- Real-time message delivery
+- Message status indicators
 - Message reactions
 - Reply messages
 - Forward messages
 - Pinned messages
 - Draft messages
+- Scheduled messages
+- Message search
+- Message editing
+- Message deletion
 
-### Messaging
+---
 
-- Text messages
-- Image messages
-- Video messages
-- Audio messages
+### 📸 Media Sharing
+
+- Image sharing
+- Video sharing
+- Audio sharing
 - Voice notes
-- Document sharing
-- Stickers
+- File sharing
 - GIF support
-
-### Media
-
-- Media gallery
-- File downloads
-- File uploads
+- Sticker support
 - Media preview
+- Media downloads
+- Media uploads
 
-### User Management
+---
 
-- User profiles
-- Profile photo management
-- Online status
-- Last seen information
-- Username support
-
-### Contacts
-
-- Contact synchronization
-- Search contacts
-- Invite contacts
-
-### Groups & Channels
+### 👥 Groups
 
 - Create groups
-- Create channels
 - Manage members
-- Manage administrators
-- Ban users
+- Assign administrators
+- Group permissions
+- Member restrictions
 - Mute users
+- Ban users
+- Group invite links
 
-### Notifications
+---
+
+### 📢 Channels
+
+- Create channels
+- Public channels
+- Private channels
+- Channel management
+- Subscriber management
+- Channel media sharing
+
+---
+
+### 📞 Calls
+
+- Voice calls
+- Video calls
+- Call history
+- Incoming calls
+- Outgoing calls
+- Missed calls
+
+---
+
+### 🌐 Stories
+
+- Create stories
+- Story viewers
+- Story reactions
+- Story privacy controls
+- Expiring content
+
+---
+
+### 👤 User Profiles
+
+- Profile photo management
+- Username support
+- Bio support
+- Online status
+- Last seen visibility
+- Profile customization
+
+---
+
+### 📇 Contacts
+
+- Contact synchronization
+- Contact search
+- Contact invitations
+- Favorite contacts
+
+---
+
+### 🔔 Notifications
 
 - Push notifications
 - Message notifications
 - Group notifications
 - Channel notifications
+- Call notifications
+- Custom notification settings
 
-### Settings
+---
+
+### ⚙️ Settings
 
 - Appearance settings
 - Privacy settings
 - Notification settings
-- Data & storage settings
 - Language settings
+- Storage management
+- Data usage settings
+- Security settings
 
 ---
 
 ## 🏗 Architecture
 
-The project follows **Clean Architecture** principles.
+Casper Chat follows **Clean Architecture** principles for scalability, maintainability, and testability.
 
 ```text
 lib/
 ├── app/
 │   ├── router/
 │   ├── theme/
-│   └── providers/
+│   ├── providers/
+│   └── services/
 │
 ├── core/
 │   ├── constants/
 │   ├── exceptions/
 │   ├── extensions/
+│   ├── models/
 │   ├── network/
 │   ├── services/
-│   ├── utils/
-│   └── tdlib/
+│   ├── storage/
+│   └── utils/
 │
 ├── features/
 │   ├── auth/
@@ -117,19 +178,24 @@ lib/
 │   ├── calls/
 │   ├── groups/
 │   ├── channels/
+│   ├── stories/
 │   ├── profile/
 │   ├── settings/
-│   └── search/
+│   ├── search/
+│   └── folders/
 │
 ├── shared/
 │   ├── widgets/
 │   ├── models/
-│   └── providers/
+│   ├── providers/
+│   └── extensions/
 │
 └── main.dart
 ```
 
-### Layer Structure
+---
+
+### Feature Structure
 
 Each feature follows:
 
@@ -159,6 +225,10 @@ feature/
 
 - Flutter
 
+### Language
+
+- Dart
+
 ### State Management
 
 - Riverpod
@@ -167,26 +237,29 @@ feature/
 
 - GoRouter
 
-### Backend
-
-- Telegram TDLib
-
 ### Local Storage
 
 - Hive
 - SharedPreferences
 
+### Code Generation
+
+- Freezed
+- Json Serializable
+
 ### Dependency Injection
 
 - Riverpod Providers
 
-### Networking
+### Media
 
-- TDLib API
+- Image Picker
+- Cached Network Image
 
 ### UI
 
 - Material 3
+- Custom Design System
 
 ---
 
@@ -195,18 +268,28 @@ feature/
 ```yaml
 flutter_riverpod
 go_router
+
 freezed
 freezed_annotation
 json_annotation
+
 hive
 hive_flutter
+
 shared_preferences
+
 equatable
+
 intl
+
 cached_network_image
+
 flutter_svg
+
 permission_handler
+
 image_picker
+
 path_provider
 ```
 
@@ -216,21 +299,20 @@ path_provider
 
 ### Prerequisites
 
-- Flutter SDK (latest stable)
+- Flutter SDK (Latest Stable)
 - Dart SDK
 - Android Studio / VS Code
-- Telegram API ID
-- Telegram API Hash
-- TDLib binaries
+- Android SDK
+- Xcode (For iOS)
 
 ---
 
 ## Clone Repository
 
 ```bash
-git clone https://github.com/rishabvsnv/Telegram-Clone-using-TDLib.git
+git clone https://github.com/yourusername/casper-chat.git
 
-cd telegram-clone
+cd casper-chat
 ```
 
 ---
@@ -243,25 +325,7 @@ flutter pub get
 
 ---
 
-## Configure TDLib
-
-Obtain your Telegram API credentials:
-
-- API ID
-- API Hash
-
-Create a configuration file:
-
-```dart
-class TelegramConfig {
-  static const int apiId = YOUR_API_ID;
-  static const String apiHash = 'YOUR_API_HASH';
-}
-```
-
----
-
-## Run Code Generation
+## Generate Code
 
 ```bash
 dart run build_runner build --delete-conflicting-outputs
@@ -281,26 +345,27 @@ flutter run
 
 ### Android
 
-Add Internet permission:
+Add required permissions:
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET"/>
-```
 
-Additional permissions:
-
-```xml
-<uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-<uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
-<uses-permission android:name="android.permission.RECORD_AUDIO"/>
 <uses-permission android:name="android.permission.CAMERA"/>
+
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
+<uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 ```
 
 ---
 
 ### iOS
 
-Add required permissions in:
+Add permissions to:
 
 ```text
 ios/Runner/Info.plist
@@ -312,17 +377,19 @@ Examples:
 NSCameraUsageDescription
 NSMicrophoneUsageDescription
 NSPhotoLibraryUsageDescription
+NSPhotoLibraryAddUsageDescription
 ```
 
 ---
 
 ## 🔒 Security
 
-- Secure session handling
-- Telegram authentication
-- Local data encryption
-- Secure media storage
+- Secure authentication
+- Session management
+- Encrypted local storage
+- Secure media handling
 - Privacy-first architecture
+- Permission-based access control
 
 ---
 
@@ -342,29 +409,33 @@ flutter test integration_test
 
 ---
 
-## 📈 Project Status
+## 📈 Roadmap
 
-### MVP
+### Current Development
 
 - [x] Authentication
-- [x] User profiles
-- [x] Chat list
-- [x] Private messaging
-- [x] Media messaging
-- [x] Group chats
+- [x] User Profiles
+- [x] Chat List
+- [x] Private Messaging
+- [x] Media Messaging
 - [x] Search
 - [x] Settings
+- [x] Folder Management
 
-### Future Releases
+### Upcoming Features
 
-- [ ] Voice calls
-- [ ] Video calls
+- [ ] Voice Calls
+- [ ] Video Calls
 - [ ] Stories
+- [ ] Channels
 - [ ] Bots
 - [ ] Mini Apps
-- [ ] Live streaming
-- [ ] End-to-end secret chats
-- [ ] Multi-account support
+- [ ] Live Streaming
+- [ ] Communities
+- [ ] Multi-Account Support
+- [ ] End-to-End Encryption
+- [ ] Desktop Support
+- [ ] Web Support
 
 ---
 
@@ -372,26 +443,27 @@ flutter test integration_test
 
 Contributions are welcome.
 
-1. Fork the repository
-2. Create a feature branch
+### Create a Feature Branch
 
 ```bash
 git checkout -b feature/new-feature
 ```
 
-3. Commit changes
+### Commit Changes
 
 ```bash
 git commit -m "Add new feature"
 ```
 
-4. Push branch
+### Push Changes
 
 ```bash
 git push origin feature/new-feature
 ```
 
-5. Open a Pull Request
+### Open Pull Request
+
+Submit a Pull Request describing your changes.
 
 ---
 
@@ -401,16 +473,24 @@ This project is licensed under the MIT License.
 
 ---
 
-## ⚠ Disclaimer
+## 👨‍💻 Author
 
-This project is an independent educational implementation inspired by Telegram.
+### Rishabh
 
-Telegram®, TDLib, and related trademarks belong to their respective owners. This project is not affiliated with, endorsed by, or sponsored by Telegram Messenger LLP.
+Flutter Developer
+
+Built with ❤️ using Flutter.
 
 ---
 
-## 👨‍💻 Author
+## ⭐ Support
 
-Developed with Flutter and TDLib.
+If you find Casper Chat useful, consider giving the repository a star.
 
-If you find this project useful, consider giving it a ⭐ on GitHub.
+It helps support development and makes the project more visible to the Flutter community.
+
+---
+
+# Casper Chat
+
+### Fast. Secure. Beautiful Messaging.

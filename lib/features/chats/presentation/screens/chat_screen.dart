@@ -96,37 +96,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
       appBar: CustomAppBar(
         isDashboard: true,
-        // title: 'CasperChat',
-        /* customTitle: Row(
-          children: [
-            SizedBox(
-              width: 54,
-              child: Stack(
-                children: [
-                  const CircleAvatar(
-                    radius: 16,
-                    backgroundColor: Colors.orange,
-                  ),
-                  Positioned(
-                    left: 18,
-                    child: CircleAvatar(
-                      radius: 16,
-                      backgroundColor: Colors.purple.shade200,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Text(
-              "CasperChat",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: Color(0xff229ED9),
-              ),
-            ),
-          ],
-        ), */
         actions: [
           PopupMenuButton(
             itemBuilder: (_) => [

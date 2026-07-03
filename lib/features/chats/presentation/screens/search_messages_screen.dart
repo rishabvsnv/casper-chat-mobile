@@ -31,7 +31,7 @@ class _SearchMessagesScreenState extends ConsumerState<SearchMessagesScreen> {
     const MessageSearchResult(
       id: '3',
       sender: 'Michael Smith',
-      message: 'The latest Telegram clone update has been deployed.',
+      message: 'The latest Casper Chat update has been deployed.',
       date: 'Monday',
       chatName: 'Development Team',
     ),
