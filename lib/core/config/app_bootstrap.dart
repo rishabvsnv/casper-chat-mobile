@@ -5,11 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:messenger/app.dart';
+import 'package:messenger/core/config/supabase_config.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> bootstrapApp() async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await Supabase.initialize(
+        url: SupabaseConfig.url,
+        publishableKey: SupabaseConfig.publishableKey,
+      );
 
       await Hive.initFlutter();
 

@@ -1,8 +1,10 @@
 // ==============================
 // Auth
 // ==============================
-export 'package:messenger/features/auth/presentation/screens/login_screen.dart';
-export 'package:messenger/features/auth/presentation/screens/otp_screen.dart';
+// export 'package:messenger/features/auth/presentation/screens/phone_login_screen.dart';
+export 'package:messenger/features/auth/presentation/screens/email_login_screen.dart';
+export 'package:messenger/features/auth/presentation/screens/otp_verification_screen.dart';
+export 'package:messenger/features/auth/presentation/screens/email_verification_screen.dart';
 export 'package:messenger/features/auth/presentation/screens/splash_screen.dart';
 
 // ==============================

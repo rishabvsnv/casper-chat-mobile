@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:messenger/core/theme/app_colors.dart';
 import 'package:messenger/features/contacts/providers/device_contacts_provider.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
@@ -58,13 +59,15 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
           ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
         heroTag: 'contact_fab',
-        backgroundColor: const Color(0xff229ED9),
+        backgroundColor: AppColors.primary,
         elevation: 6,
         onPressed: () {},
         child: const Icon(PhosphorIconsRegular.user, color: Colors.white),
       ),
+
       body: contactsAsync.when(
         data: (contacts) {
           final sortedContacts = [...contacts];

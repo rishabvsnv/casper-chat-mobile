@@ -112,6 +112,54 @@ class _AppearanceScreenState extends ConsumerState<AppearanceScreen> {
 
           const Divider(),
 
+          _sectionTitle(context, 'WALLPAPER'),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 120,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _wallpaperTile(
+                        context,
+                        color: const Color(0xFFF5F5F5),
+                        label: 'Light',
+                      ),
+                      _wallpaperTile(
+                        context,
+                        color: const Color(0xFF1C1C1E),
+                        label: 'Dark',
+                      ),
+                      _wallpaperTile(
+                        context,
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+                        ),
+                        label: 'Gradient',
+                      ),
+                      _wallpaperTile(
+                        context,
+                        image: const AssetImage('assets/wallpapers/w1.jpg'),
+                        label: 'Nature',
+                      ),
+                      _wallpaperTile(
+                        context,
+                        image: const AssetImage('assets/wallpapers/w2.jpg'),
+                        label: 'City',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const Divider(),
+
           _sectionTitle(context, 'CHAT TEXT SIZE'),
 
           Padding(
@@ -232,6 +280,47 @@ class _AppearanceScreenState extends ConsumerState<AppearanceScreen> {
         style: Theme.of(
           context,
         ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _wallpaperTile(
+    BuildContext context, {
+    Color? color,
+    Gradient? gradient,
+    ImageProvider? image,
+    required String label,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12),
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('$label wallpaper selected')),
+              );
+            },
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: color,
+                gradient: gradient,
+                image: image != null
+                    ? DecorationImage(image: image, fit: BoxFit.cover)
+                    : null,
+                border: Border.all(
+                  color: Theme.of(context).dividerColor.withValues(alpha: 0.3),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(label, style: const TextStyle(fontSize: 12)),
+        ],
       ),
     );
   }

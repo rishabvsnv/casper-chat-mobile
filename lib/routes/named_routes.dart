@@ -6,6 +6,7 @@ class NamedRoutes {
   static final String splash = '/splash';
   static final String login = '/login';
   static final String otp = '/otp';
+  static final String emailVerification = '/email-verification';
   static final String chats = '/chats';
   static final String chatWithParams = '/chats/:chatId';
   static final String camera = '/camera';

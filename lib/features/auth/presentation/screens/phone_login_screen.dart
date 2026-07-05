@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/named_routes.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class PhoneLoginScreen extends ConsumerStatefulWidget {
+  const PhoneLoginScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<PhoneLoginScreen> createState() => _PhoneLoginScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
   final FocusNode _phoneFocusNode = FocusNode();
   final FocusNode _countryCodeFocusNode = FocusNode();
 

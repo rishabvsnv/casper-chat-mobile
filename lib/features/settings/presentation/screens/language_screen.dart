@@ -44,58 +44,6 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 24),
         children: [
-          const SizedBox(height: 12),
-
-          /// Summary Card
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Card(
-              elevation: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 28,
-                      child: Icon(
-                        Icons.language_rounded,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-
-                    const SizedBox(width: 16),
-
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'App Language',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-
-                          const SizedBox(height: 4),
-
-                          Text(
-                            'Currently using $_selectedLanguage',
-                            style: TextStyle(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
           /// Search
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -108,18 +56,6 @@ class _LanguageScreenState extends ConsumerState<LanguageScreen> {
               decoration: const InputDecoration(
                 hintText: 'Search language',
                 prefixIcon: Icon(Icons.search),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 20),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'Available Languages',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
               ),
             ),
           ),

@@ -5,91 +5,101 @@ import 'package:messenger/features/settings/domain/setting_item.dart';
 import 'package:messenger/features/settings/presentation/widgets/settings_search_delegate.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_list_tile.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settingsItems = [
+    final List<SettingItem> settingsItems = [
       SettingItem(
         title: 'Account',
         subtitle: 'Number, Username, Bio',
-        icon: Icons.person_outline,
+        icon: PhosphorIconsRegular.user,
         onTap: () => context.push(NamedRoutes.myAccount),
       ),
       SettingItem(
         title: 'Privacy & Security',
         subtitle: 'Last Seen, Devices, Passcode',
-        icon: Icons.shield_outlined,
+        icon: PhosphorIconsRegular.shield,
         onTap: () => context.push(NamedRoutes.privacy),
       ),
       SettingItem(
         title: 'Data and Storage',
         subtitle: 'Media and network usage',
-        icon: Icons.storage_outlined,
+        icon: PhosphorIconsRegular.database,
         onTap: () => context.push(NamedRoutes.storage),
       ),
       SettingItem(
         title: 'Notifications',
         subtitle: 'Messages, Groups, Calls',
-        icon: Icons.notifications_outlined,
+        icon: PhosphorIconsRegular.bell,
         onTap: () => context.push(NamedRoutes.notifications),
       ),
       SettingItem(
         title: 'Devices',
         subtitle: 'Manage active sessions',
-        icon: Icons.devices_outlined,
+        icon: PhosphorIconsRegular.desktop,
         onTap: () => context.push(NamedRoutes.devices),
       ),
       SettingItem(
         title: 'Power Saving',
         subtitle: 'Reduce animations and effects',
-        icon: Icons.battery_saver_outlined,
+        icon: PhosphorIconsRegular.batteryCharging,
         onTap: () {},
       ),
       SettingItem(
         title: 'Chat Settings',
         subtitle: 'Themes, Wallpaper, Appearance',
-        icon: Icons.chat_bubble_outline,
-        onTap: () {},
+        icon: PhosphorIconsRegular.chatCircle,
+        onTap: () {
+          context.push(NamedRoutes.appearance);
+        },
       ),
       SettingItem(
         title: 'Chat Folders',
         subtitle: 'Organize your chats',
-        icon: Icons.folder_outlined,
+        icon: PhosphorIconsRegular.folder,
         onTap: () => context.push(NamedRoutes.folders),
       ),
       SettingItem(
         title: 'Language',
         subtitle: 'English',
-        icon: Icons.language_outlined,
+        icon: PhosphorIconsRegular.globe,
         onTap: () => context.push(NamedRoutes.language),
       ),
       SettingItem(
         title: 'Ask a Question',
-        subtitle: '',
-        icon: Icons.help_outline,
+        icon: PhosphorIconsRegular.question,
         onTap: () => context.push(NamedRoutes.askQues),
       ),
       SettingItem(
-        title: 'CasperChat FAQ',
-        subtitle: '',
-        icon: Icons.quiz_outlined,
+        title: 'FAQ',
+        icon: PhosphorIconsRegular.info,
         onTap: () => context.push(NamedRoutes.casperChatFaqs),
       ),
       SettingItem(
-        title: 'CasperChat Features',
-        subtitle: '',
-        icon: Icons.auto_awesome_outlined,
+        title: 'Features',
+        icon: PhosphorIconsRegular.sparkle,
         onTap: () => context.push(NamedRoutes.casperChatFeatures),
       ),
       SettingItem(
         title: 'Privacy Policy',
-        subtitle: '',
-        icon: Icons.privacy_tip_outlined,
+        icon: PhosphorIconsRegular.lock,
         onTap: () => context.push(NamedRoutes.privacyPolicy),
       ),
+    ];
+
+    final List<List<SettingItem>> settingsSections = [
+      // SECTION 1: Account & Security
+      settingsItems.sublist(0, 5),
+
+      // SECTION 2: Preferences
+      settingsItems.sublist(5, 9),
+
+      // SECTION 3: Help & Info
+      settingsItems.sublist(9, settingsItems.length),
     ];
 
     return Scaffold(
@@ -146,134 +156,27 @@ class SettingsScreen extends ConsumerWidget {
 
             const SizedBox(height: 12),
 
-            SettingsSection(
-              children: [
-                CustomListTile(
-                  icon: Icons.person_outline,
-                  title: 'Account',
-                  subtitle: 'Number, Username, Bio',
-                  onTap: () => context.push(NamedRoutes.myAccount),
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.shield_outlined,
-                  title: 'Privacy & Security',
-                  subtitle: 'Last Seen, Devices, Passcode',
-                  onTap: () => context.push(NamedRoutes.privacy),
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.storage_outlined,
-                  title: 'Data and Storage',
-                  subtitle: 'Media and network usage',
-                  onTap: () => context.push(NamedRoutes.storage),
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.notifications_outlined,
-                  title: 'Notifications',
-                  subtitle: 'Messages, Groups, Calls',
-                  onTap: () => context.push(NamedRoutes.notifications),
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.devices_outlined,
-                  title: 'Devices',
-                  subtitle: 'Manage active sessions',
-                  onTap: () => context.push(NamedRoutes.devices),
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.battery_saver_outlined,
-                  title: 'Power Saving',
-                  subtitle: 'Reduce animations and effects',
-                  onTap: () {},
-                ),
-              ],
-            ),
+            Column(
+              children: settingsSections.map((section) {
+                return SettingsSection(
+                  children: section.map((item) {
+                    final index = section.indexOf(item);
 
-            SettingsSection(
-              children: [
-                CustomListTile(
-                  icon: Icons.chat_bubble_outline,
-                  title: 'Chat Settings',
-                  subtitle: 'Themes, Wallpaper, Appearance',
-                  onTap: () {},
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.folder_outlined,
-                  title: 'Chat Folders',
-                  subtitle: 'Organize your chats',
-                  onTap: () => context.push(NamedRoutes.folders),
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.language_outlined,
-                  title: 'Language',
-                  subtitle: 'English',
-                  onTap: () => context.push(NamedRoutes.language),
-                ),
-              ],
-            ),
-
-            /* SettingsSection(
-              children: [
-                CustomListTile(
-                  icon: Icons.workspace_premium_outlined,
-                  title: 'CasperChat Premium',
-                  onTap: () {},
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.stars_outlined,
-                  title: 'CasperChat Stars',
-                  onTap: () {},
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.business_center_outlined,
-                  title: 'CasperChat Business',
-                  onTap: () {},
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.card_giftcard_outlined,
-                  title: 'Send a Gift',
-                  onTap: () {},
-                ),
-              ],
-            ), */
-            SettingsSection(
-              children: [
-                CustomListTile(
-                  icon: Icons.help_outline,
-                  title: 'Ask a Question',
-                  onTap: () {
-                    context.push(NamedRoutes.askQues);
-                  },
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.quiz_outlined,
-                  title: 'CasperChat FAQ',
-                  onTap: () {
-                    context.push(NamedRoutes.casperChatFaqs);
-                  },
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.auto_awesome_outlined,
-                  title: 'CasperChat Features',
-                  onTap: () => context.push(NamedRoutes.casperChatFeatures),
-                ),
-                const Divider(height: 1),
-                CustomListTile(
-                  icon: Icons.privacy_tip_outlined,
-                  title: 'Privacy Policy',
-                  onTap: () => context.push(NamedRoutes.privacyPolicy),
-                ),
-              ],
+                    return Column(
+                      children: [
+                        CustomListTile(
+                          icon: item.icon,
+                          title: item.title,
+                          subtitle: item.subtitle,
+                          onTap: item.onTap,
+                        ),
+                        if (index != section.length - 1)
+                          const Divider(height: 1),
+                      ],
+                    );
+                  }).toList(),
+                );
+              }).toList(),
             ),
 
             Padding(
@@ -288,24 +191,6 @@ class SettingsScreen extends ConsumerWidget {
             ),
 
             const SizedBox(height: 12),
-
-            Center(
-              child: Text(
-                'CasperChat for Android v12.8.3 (6922)',
-                style: TextStyle(color: Colors.grey.shade600),
-              ),
-            ),
-
-            const SizedBox(height: 4),
-
-            Center(
-              child: Text(
-                'store bundled arm64-v8a',
-                style: TextStyle(color: Colors.grey.shade600),
-              ),
-            ),
-
-            const SizedBox(height: 100),
           ],
         ),
       ),
@@ -348,14 +233,14 @@ class _ProfileCard extends StatelessWidget {
             ),
 
             IconButton(
-              icon: const Icon(Icons.qr_code),
+              icon: const Icon(PhosphorIcons.qrCode),
               onPressed: () {
                 context.push(NamedRoutes.myQR);
               },
             ),
 
             IconButton(
-              icon: const Icon(Icons.edit_outlined),
+              icon: const Icon(PhosphorIcons.pen),
               onPressed: () {
                 context.push(NamedRoutes.myAccount);
               },

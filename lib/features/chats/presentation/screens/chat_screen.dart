@@ -60,50 +60,40 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton.small(
-            heroTag: 'camera_fab',
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            foregroundColor: Theme.of(context).colorScheme.primary,
-            elevation: 2,
-            onPressed: () {
-              context.push(NamedRoutes.camera);
-            },
-            child: const Icon(
-              PhosphorIconsRegular.camera,
-              color: Color(0xff229ED9),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          FloatingActionButton(
-            heroTag: 'compose_fab',
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
-            elevation: 2,
-            highlightElevation: 4,
-            onPressed: () {
-              context.push(NamedRoutes.contacts);
-            },
-            child: const Icon(PhosphorIconsRegular.pen, color: Colors.white),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'compose_fab',
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        elevation: 2,
+        highlightElevation: 4,
+        onPressed: () {
+          context.push(NamedRoutes.contacts);
+        },
+        child: const Icon(PhosphorIconsRegular.pen, color: Colors.white),
       ),
 
       appBar: CustomAppBar(
         isDashboard: true,
         actions: [
-          PopupMenuButton(
+          Hero(
+            tag: 'global_search',
+            child: IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: ChatSearchDelegate(chats),
+                );
+              },
+              icon: Icon(PhosphorIcons.magnifyingGlassBold),
+            ),
+          ),
+          /* PopupMenuButton(
             itemBuilder: (_) => [
               const PopupMenuItem(
                 value: 'profile',
                 child: Row(
                   children: [
-                    Icon(Icons.dark_mode_outlined),
+                    Icon(PhosphorIconsRegular.moonStars),
                     Text('Night Mode'),
                   ],
                 ),
@@ -114,7 +104,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 },
                 value: 'message',
                 child: const Row(
-                  children: [Icon(Icons.people_outlined), Text('New Group')],
+                  children: [
+                    Icon(PhosphorIconsRegular.usersThree),
+                    Text('New Group'),
+                  ],
                 ),
               ),
               PopupMenuItem(
@@ -124,14 +117,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 value: 'remove',
                 child: const Row(
                   children: [
-                    Icon(Icons.bookmark_outline),
+                    Icon(PhosphorIconsRegular.bookmarkSimple),
                     Text('Saved Messages'),
                   ],
                 ),
               ),
             ],
-          ),
-          // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
+          ), */
         ],
       ),
       body: SafeArea(
@@ -139,91 +131,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           builder: (context) {
             return Column(
               children: [
-                /* Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 54,
-                        child: Stack(
-                          children: [
-                            const CircleAvatar(
-                              radius: 16,
-                              backgroundColor: Colors.orange,
-                            ),
-                            Positioned(
-                              left: 18,
-                              child: CircleAvatar(
-                                radius: 16,
-                                backgroundColor: Colors.purple.shade200,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const Text(
-                        "CasperChat",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff229ED9),
-                        ),
-                      ),
-
-                      const Spacer(),
-
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.search),
-                      ),
-                    ],
-                  ),
-                ), */
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Hero(
-                    tag: 'global_search',
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(14),
-                        onTap: () {
-                          showSearch(
-                            context: context,
-                            delegate: ChatSearchDelegate(chats),
-                          );
-                        },
-                        child: Container(
-                          height: 50,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).inputDecorationTheme.fillColor,
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.search_rounded,
-                                color: Colors.grey.shade600,
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                'Search',
-                                style: TextStyle(color: Colors.grey.shade600),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
                 // ShowBirthdays(),
                 if (tabs.length > 1)
                   Container(
@@ -339,17 +246,21 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                       return Wrap(
                                         children: [
                                           ListTile(
-                                            leading: Icon(Icons.push_pin),
+                                            leading: Icon(
+                                              PhosphorIconsRegular.pushPin,
+                                            ),
                                             title: Text("Pin Chat"),
                                           ),
                                           ListTile(
                                             leading: Icon(
-                                              Icons.notifications_off,
+                                              PhosphorIconsRegular.speakerSlash,
                                             ),
                                             title: Text("Mute"),
                                           ),
                                           ListTile(
-                                            leading: Icon(Icons.archive),
+                                            leading: Icon(
+                                              PhosphorIconsRegular.archiveBox,
+                                            ),
                                             title: Text("Archive"),
                                           ),
                                         ],
@@ -364,19 +275,49 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                   ),
                                   child: Row(
                                     children: [
-                                      CircleAvatar(
-                                        radius: 24,
-                                        backgroundColor: chat["color"] as Color,
-                                        child: Text(
-                                          chat["name"]
-                                              .toString()
-                                              .substring(0, 1)
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
+                                      Stack(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 24,
+                                            backgroundColor:
+                                                chat["color"] as Color,
+                                            child: Text(
+                                              chat["name"]
+                                                  .toString()
+                                                  .substring(0, 1)
+                                                  .toUpperCase(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          if (chat["pinned"] as bool)
+                                            Positioned(
+                                              top: 0,
+                                              right: 0,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  right: 4,
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: AppColors.ghost,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          20,
+                                                        ),
+                                                  ),
+                                                  child: Icon(
+                                                    PhosphorIcons.pushPinFill,
+                                                    size: 15,
+                                                    color:
+                                                        chat["color"] as Color,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
                                       ),
 
                                       const SizedBox(width: 12),
@@ -400,18 +341,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                                     ),
                                                   ),
                                                 ),
-
-                                                if (chat["pinned"] as bool)
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                      right: 4,
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.push_pin_rounded,
-                                                      size: 15,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
 
                                                 Text(
                                                   chat["time"].toString(),
@@ -479,7 +408,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                             vertical: 4,
                                           ),
                                           decoration: const BoxDecoration(
-                                            color: Color(0xff229ED9),
+                                            color: AppColors.unread,
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(20),
                                             ),

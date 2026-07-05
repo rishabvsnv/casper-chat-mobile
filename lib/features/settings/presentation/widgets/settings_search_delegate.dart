@@ -37,7 +37,7 @@ class SettingsSearchDelegate extends SearchDelegate {
       final q = query.toLowerCase();
 
       return item.title.toLowerCase().contains(q) ||
-          item.subtitle.toLowerCase().contains(q);
+          item.subtitle!.toLowerCase().contains(q);
     }).toList();
 
     if (results.isEmpty) {
@@ -52,7 +52,7 @@ class SettingsSearchDelegate extends SearchDelegate {
         return ListTile(
           leading: Icon(item.icon),
           title: Text(item.title),
-          subtitle: Text(item.subtitle),
+          subtitle: Text(item.subtitle!),
           onTap: () {
             close(context, null);
             item.onTap();

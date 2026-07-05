@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
 
-class OtpScreen extends ConsumerStatefulWidget {
-  const OtpScreen({super.key});
+class OtpVerificationScreen extends ConsumerStatefulWidget {
+  const OtpVerificationScreen({super.key});
 
   @override
-  ConsumerState<OtpScreen> createState() => _OtpScreenState();
+  ConsumerState<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
 }
 
-class _OtpScreenState extends ConsumerState<OtpScreen> {
+class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   final _otpController = TextEditingController();
 
   bool _isLoading = false;
