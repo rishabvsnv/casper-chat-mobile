@@ -32,6 +32,12 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
   Widget build(BuildContext context) {
     final contactsAsync = ref.watch(deviceContactsProvider);
 
+    final registeredNumbers = {
+      '+918319168878',
+      '+919770134581',
+      '+918085285836',
+    };
+
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Contacts',
@@ -161,9 +167,15 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
 
                       final name = contact.displayName ?? 'Unknown';
 
-                      final phone = contact.phones.isNotEmpty
+                      /* final phone = contact.phones.isNotEmpty
                           ? contact.phones.first.number
-                          : 'No number';
+                          : 'No number'; */
+
+                      final isCasperUser = contact.phones.any(
+                        (p) => registeredNumbers.contains(
+                          p.number.replaceAll(' ', ''),
+                        ),
+                      );
 
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(
@@ -191,9 +203,17 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
                           ),
                         ),
                         subtitle: Text(
+                          isCasperUser
+                              ? 'On Casper Chat'
+                              : 'Invite to Casper Chat',
+                          style: TextStyle(
+                            color: isCasperUser ? Colors.green : Colors.grey,
+                          ),
+                        ),
+                        /* subtitle: Text(
                           phone,
                           style: TextStyle(color: Colors.grey.shade600),
-                        ),
+                        ), */
                         onTap: () {},
                       );
                     },

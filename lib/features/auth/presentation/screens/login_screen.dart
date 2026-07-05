@@ -222,9 +222,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    final isSmallScreen = size.height < 700;
-
-    final keypadHeight = isSmallScreen ? 260.0 : size.height * 0.38;
+    final width = MediaQuery.of(context).size.width;
+    final keypadHeight = width * 0.85;
 
     return Scaffold(
       body: SafeArea(
@@ -356,12 +355,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton.extended(
+      /* floatingActionButton: FloatingActionButton.extended(
         label: Text('Skip'),
         onPressed: () {
           context.pushReplacement(NamedRoutes.main);
         },
-      ),
+      ), */
 
       bottomNavigationBar: SafeArea(
         top: false,
@@ -374,7 +373,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               itemCount: keypadKeys.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                childAspectRatio: isSmallScreen ? 1.7 : 2.0,
+                childAspectRatio: 1.65,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
