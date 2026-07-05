@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/named_routes.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -45,20 +46,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
     if (!mounted) return;
 
-    // Todo:
-    // Check authentication state
-    // Check onboarding state
-    // Check TDLib initialization
-    // Check token/session
+    final user = Supabase.instance.client.auth.currentUser;
 
-    // final isLoggedIn = false;
+    debugPrint('Current User: ${user?.email}');
 
-    /* if (isLoggedIn) {
-      context.go(NamedRoutes.chats);
+    if (user != null) {
+      context.go(NamedRoutes.main);
     } else {
       context.go(NamedRoutes.login);
-    } */
-    context.go(NamedRoutes.login);
+    }
   }
 
   @override

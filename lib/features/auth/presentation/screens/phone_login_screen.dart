@@ -361,7 +361,6 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
           context.pushReplacement(NamedRoutes.main);
         },
       ), */
-
       bottomNavigationBar: SafeArea(
         top: false,
         child: SizedBox(

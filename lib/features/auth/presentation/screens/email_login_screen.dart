@@ -23,6 +23,14 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
     ).hasMatch(_emailController.text.trim());
   }
 
+  DateTime? _lastOtpSent;
+
+  bool get _canSendOtp {
+    if (_lastOtpSent == null) return true;
+    return DateTime.now().difference(_lastOtpSent!) >
+        const Duration(seconds: 60);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +52,15 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
   Future<void> _sendOtp() async {
     if (!_isValidEmail || _isLoading) return;
 
+    if (!_canSendOtp) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please wait before requesting another code.'),
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
@@ -51,7 +68,15 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
     try {
       final email = _emailController.text.trim();
 
-      await Supabase.instance.client.auth.signInWithOtp(email: email);
+      debugPrint('OTP REQUEST STARTED');
+
+      await Supabase.instance.client.auth.signInWithOtp(
+        email: email,
+        shouldCreateUser: true,
+        // emailRedirectTo: null,
+      );
+
+      _lastOtpSent = DateTime.now();
 
       if (!mounted) return;
 
@@ -61,6 +86,9 @@ class _EmailLoginScreenState extends ConsumerState<EmailLoginScreen> {
 
       context.push(NamedRoutes.emailVerification, extra: email);
     } on AuthException catch (e) {
+      debugPrint('AUTH ERROR: ${e.message}');
+      debugPrint('STATUS: ${e.statusCode}');
+
       if (!mounted) return;
 
       ScaffoldMessenger.of(
