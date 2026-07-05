@@ -10,6 +10,7 @@ class NewChannelScreen extends StatefulWidget {
 class _NewChannelScreenState extends State<NewChannelScreen> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _usernameController = TextEditingController();
 
   bool _isPublic = true;
 
@@ -21,12 +22,23 @@ class _NewChannelScreenState extends State<NewChannelScreen> {
   }
 
   void _createChannel() {
-    if (_nameController.text.trim().isEmpty) return;
+    final name = _nameController.text.trim();
 
-    // Todo:
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Channel name required')));
+      return;
+    }
+
+    if (_isPublic && _usernameController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Username required')));
+      return;
+    }
+
     // TDLib create channel
-    // Upload avatar
-    // Configure public/private settings
   }
 
   @override
@@ -40,9 +52,14 @@ class _NewChannelScreenState extends State<NewChannelScreen> {
             Center(
               child: Stack(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 50,
-                    child: Icon(Icons.campaign, size: 40),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: const Icon(
+                      Icons.campaign,
+                      size: 40,
+                      color: Colors.white,
+                    ),
                   ),
                   Positioned(
                     right: 0,
@@ -118,8 +135,9 @@ class _NewChannelScreenState extends State<NewChannelScreen> {
 
             if (_isPublic)
               TextField(
+                controller: _usernameController,
                 decoration: const InputDecoration(
-                  prefixText: 't.me/',
+                  prefixText: 'casper.me/',
                   labelText: 'Username',
                   hintText: 'my_channel',
                   border: OutlineInputBorder(),

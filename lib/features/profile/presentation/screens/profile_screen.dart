@@ -55,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              centerTitle: false,
+              centerTitle: true,
               title: const Text(
                 'Profile',
                 style: TextStyle(fontWeight: FontWeight.w600),
@@ -98,7 +98,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '@rishabh',
+                      '@rishabhvsnv',
                       style: TextStyle(
                         color: theme.colorScheme.primary,
                         fontWeight: FontWeight.w600,
@@ -146,7 +146,7 @@ class ProfileScreen extends StatelessWidget {
                       Divider(height: 1),
                       _InfoTile(
                         icon: Icons.alternate_email,
-                        title: '@rishabh',
+                        title: '@rishabhvsnv',
                         subtitle: 'Username',
                       ),
                       Divider(height: 1),
@@ -333,6 +333,7 @@ class _StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      elevation: 1,
       borderRadius: BorderRadius.circular(16),
       color: Theme.of(context).colorScheme.surfaceContainerHighest,
       child: InkWell(

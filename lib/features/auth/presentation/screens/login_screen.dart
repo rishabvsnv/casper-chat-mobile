@@ -356,6 +356,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
 
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text('Skip'),
+        onPressed: () {
+          context.pushReplacement(NamedRoutes.main);
+        },
+      ),
+
       bottomNavigationBar: SafeArea(
         top: false,
         child: SizedBox(

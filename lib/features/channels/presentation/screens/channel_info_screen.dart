@@ -99,7 +99,7 @@ class ChannelInfoScreen extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.link_outlined),
             title: const Text('Channel Link'),
-            subtitle: const Text('https://t.me/flutterdevs'),
+            subtitle: const Text('https://casper.me/flutterdevs'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),

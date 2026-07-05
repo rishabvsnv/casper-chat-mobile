@@ -1,25 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:messenger/features/groups/domain/contact_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:messenger/features/contacts/providers/device_contacts_provider.dart';
+import 'package:messenger/shared/widgets/custom_appbar.dart';
 
-class NewGroupScreen extends StatefulWidget {
+class NewGroupScreen extends ConsumerStatefulWidget {
   const NewGroupScreen({super.key});
 
   @override
-  State<NewGroupScreen> createState() => _NewGroupScreenState();
+  ConsumerState<NewGroupScreen> createState() => _NewGroupScreenState();
 }
 
-class _NewGroupScreenState extends State<NewGroupScreen> {
-  final List<ContactModel> _contacts = const [
-    ContactModel(id: '1', name: 'John Doe'),
-    ContactModel(id: '2', name: 'Emma Wilson'),
-    ContactModel(id: '3', name: 'Michael Smith'),
-    ContactModel(id: '4', name: 'Sophia Brown'),
-    ContactModel(id: '5', name: 'Alex Johnson'),
-    ContactModel(id: '6', name: 'Olivia Taylor'),
-    ContactModel(id: '7', name: 'Daniel Thomas'),
-  ];
-
+class _NewGroupScreenState extends ConsumerState<NewGroupScreen> {
   final Set<String> _selectedUsers = {};
+
+  final TextEditingController _searchController = TextEditingController();
+
+  String _searchQuery = '';
 
   void _toggleSelection(String id) {
     setState(() {
@@ -31,155 +28,170 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
     });
   }
 
-  ContactModel _getUser(String id) {
-    return _contacts.firstWhere((e) => e.id == id);
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final hasSelection = _selectedUsers.isNotEmpty;
+    final contactsAsync = ref.watch(deviceContactsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          hasSelection ? '${_selectedUsers.length} selected' : 'New Group',
+      appBar: CustomAppBar(
+        titleWidget: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('New Group'),
+            Text(
+              '${_selectedUsers.length} members selected',
+              style: const TextStyle(fontSize: 12),
+            ),
+          ],
         ),
       ),
 
       floatingActionButton: AnimatedOpacity(
         duration: const Duration(milliseconds: 200),
-        opacity: hasSelection ? 1 : 0.4,
-        child: FloatingActionButton(
-          onPressed: hasSelection ? () {} : null,
-          child: const Icon(Icons.arrow_forward),
+        opacity: _selectedUsers.isNotEmpty ? 1 : 0.4,
+        child: FloatingActionButton.extended(
+          onPressed: _selectedUsers.isNotEmpty ? () {} : null,
+          icon: const Icon(Icons.arrow_forward),
+          label: Text('${_selectedUsers.length}'),
         ),
       ),
 
-      body: Column(
-        children: [
-          /// ✅ Selected users strip (Telegram style)
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            height: hasSelection ? 90 : 0,
-            child: hasSelection
-                ? ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _selectedUsers.length,
-                    itemBuilder: (context, index) {
-                      final id = _selectedUsers.elementAt(index);
-                      final user = _getUser(id);
+      body: contactsAsync.when(
+        data: (contacts) {
+          final filteredContacts = contacts.where((contact) {
+            final name = (contact.displayName ?? '').toLowerCase();
 
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                CircleAvatar(
-                                  radius: 26,
-                                  child: Text(user.name[0]),
-                                ),
-                                Positioned(
-                                  right: -4,
-                                  top: -4,
-                                  child: GestureDetector(
-                                    onTap: () => _toggleSelection(user.id),
-                                    child: const CircleAvatar(
-                                      radius: 10,
-                                      backgroundColor: Colors.red,
-                                      child: Icon(
-                                        Icons.close,
-                                        size: 12,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            SizedBox(
-                              width: 60,
-                              child: Text(
-                                user.name,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                : const SizedBox.shrink(),
-          ),
+            return name.contains(_searchQuery.toLowerCase());
+          }).toList();
 
-          /// 👇 Contact list
-          Expanded(
-            child: ListView.separated(
-              itemCount: _contacts.length,
-              separatorBuilder: (_, _) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final contact = _contacts[index];
-                final isSelected = _selectedUsers.contains(contact.id);
+          filteredContacts.sort((a, b) {
+            final aName = (a.displayName ?? '').toLowerCase();
 
-                return InkWell(
-                  onTap: () => _toggleSelection(contact.id),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    color: isSelected
-                        ? Colors.blue.withValues(alpha: 0.08)
-                        : Colors.transparent,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    child: Row(
-                      children: [
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: 24,
-                              child: Text(contact.name[0]),
-                            ),
+            final bName = (b.displayName ?? '').toLowerCase();
 
-                            /// selection indicator
-                            if (isSelected)
-                              const Positioned(
-                                right: 0,
-                                bottom: 0,
-                                child: CircleAvatar(
-                                  radius: 8,
-                                  backgroundColor: Colors.green,
-                                  child: Icon(
-                                    Icons.check,
-                                    size: 12,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            contact.name,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
+            return aName.compareTo(bName);
+          });
+
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                child: CupertinoTextField(
+                  controller: _searchController,
+                  placeholder: 'Search contacts',
+                  prefix: const Padding(
+                    padding: EdgeInsets.only(left: 12),
+                    child: Icon(
+                      CupertinoIcons.search,
+                      size: 18,
+                      color: Colors.grey,
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-        ],
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                    });
+                  },
+                ),
+              ),
+
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: _selectedUsers.isNotEmpty ? 90 : 0,
+                child: _selectedUsers.isEmpty
+                    ? const SizedBox.shrink()
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        itemCount: _selectedUsers.length,
+                        itemBuilder: (context, index) {
+                          final id = _selectedUsers.elementAt(index);
+
+                          final contact = contacts.firstWhere(
+                            (e) => e.id == id,
+                          );
+
+                          final name = contact.displayName ?? 'Unknown';
+
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: Chip(
+                              avatar: CircleAvatar(child: Text(name[0])),
+                              label: Text(name),
+                              onDeleted: () => _toggleSelection(id),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+
+              Expanded(
+                child: ListView.separated(
+                  itemCount: filteredContacts.length,
+                  separatorBuilder: (_, _) => const Divider(height: 1),
+                  itemBuilder: (context, index) {
+                    final contact = filteredContacts[index];
+
+                    final name = contact.displayName ?? 'Unknown';
+                    final phone = contact.phones.isNotEmpty
+                        ? contact.phones.first.number
+                        : 'No number';
+
+                    final isSelected = _selectedUsers.contains(contact.id);
+
+                    return InkWell(
+                      onTap: () => _toggleSelection(contact.id!),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        color: isSelected
+                            ? Colors.blue.withValues(alpha: 0.08)
+                            : Colors.transparent,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 24,
+                            backgroundColor:
+                                Colors.primaries[name.hashCode %
+                                    Colors.primaries.length],
+                            child: Text(
+                              name[0].toUpperCase(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          title: Text(name),
+                          subtitle: Text(phone),
+                          trailing: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            child: isSelected
+                                ? const Icon(
+                                    Icons.check_circle,
+                                    color: Color(0xff229ED9),
+                                  )
+                                : const SizedBox.shrink(),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, s) => Center(child: Text(e.toString())),
       ),
     );
   }

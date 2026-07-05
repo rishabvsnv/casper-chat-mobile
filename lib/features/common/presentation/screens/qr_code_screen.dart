@@ -32,8 +32,7 @@ class _QrCodeScreenState extends ConsumerState<QrCodeScreen> {
     const String username = 'rishabvsnv';
     const String phoneNumber = '+91 9876543210';
 
-    // final qrData = 'https://t.me/$username';
-    final qrData = 'https://casperchat.app/user/$username';
+    final qrData = 'https://casperchat.me/$username';
 
     return Scaffold(
       appBar: const CustomAppBar(title: 'QR Code'),
