@@ -6,8 +6,8 @@ import 'package:messenger/features/settings/presentation/widgets/settings_search
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/shared/widgets/custom_list_tile.dart';
 
-class SettingScreen extends ConsumerWidget {
-  const SettingScreen({super.key});
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

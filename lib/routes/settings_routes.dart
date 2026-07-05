@@ -1,32 +1,28 @@
-/* import 'package:go_router/go_router.dart';
-import 'package:messenger/features/folders/presentation/screens/folders_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/appearance_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/devices_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/language_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/notifications_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/privacy_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/setting_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/storage_screen.dart';
+import 'package:messenger/routes/routes_export.dart';
+import 'package:go_router/go_router.dart';
 import 'package:messenger/routes/named_routes.dart';
 import 'package:messenger/routes/route_helpers.dart';
 
-StatefulShellBranch settingsBranch() {
-  return StatefulShellBranch(
-    routes: [
-      GoRoute(
-        path: NamedRoutes.settings,
-        builder: (_, _) => const SettingScreen(),
-        routes: [
-          simpleRoute('appearance', const AppearanceScreen()),
-          simpleRoute('privacy', const PrivacyScreen()),
-          simpleRoute('language', const LanguageScreen()),
-          simpleRoute('notifications', const NotificationsScreen()),
-          simpleRoute('storage', const StorageScreen()),
-          simpleRoute('devices', const DevicesScreen()),
-          simpleRoute('folders', const FoldersScreen()),
-        ],
-      ),
-    ],
-  );
-}
- */
+final settingsRoutes = <RouteBase>[
+  appRoute(NamedRoutes.settings, (_, _) => const SettingsScreen()),
+
+  appRoute(NamedRoutes.appearance, (_, _) => const AppearanceScreen()),
+
+  appRoute(NamedRoutes.language, (_, _) => const LanguageScreen()),
+
+  appRoute(NamedRoutes.privacy, (_, _) => const PrivacyScreen()),
+
+  appRoute(NamedRoutes.privacyPolicy, (_, _) => const PrivacyPolicyScreen()),
+
+  appRoute(NamedRoutes.notifications, (_, _) => const NotificationsScreen()),
+
+  appRoute(NamedRoutes.storage, (_, _) => const StorageScreen()),
+
+  appRoute(NamedRoutes.devices, (_, _) => const DevicesScreen()),
+
+  appRoute(NamedRoutes.blockedUsers, (_, _) => const BlockedUsersScreen()),
+
+  appRoute(NamedRoutes.dataUsage, (_, _) => const DataUsageScreen()),
+
+  appRoute(NamedRoutes.activeSessions, (_, _) => const ActiveSessionsScreen()),
+];

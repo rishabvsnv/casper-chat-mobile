@@ -5,7 +5,7 @@ import 'package:messenger/features/chats/presentation/screens/chat_screen.dart';
 import 'package:messenger/features/common/providers/unread_count_provider.dart';
 import 'package:messenger/features/contacts/presentation/screens/contacts_screen.dart';
 import 'package:messenger/features/profile/presentation/screens/profile_screen.dart';
-import 'package:messenger/features/settings/presentation/screens/setting_screen.dart';
+import 'package:messenger/features/settings/presentation/screens/settings_screen.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
@@ -28,7 +28,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         children: const [
           ChatScreen(),
           ContactsScreen(),
-          SettingScreen(),
+          SettingsScreen(),
           ProfileScreen(),
         ],
       ),

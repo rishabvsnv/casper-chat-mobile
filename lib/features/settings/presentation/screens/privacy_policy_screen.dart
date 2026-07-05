@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:messenger/features/settings/domain/privacy_policy_section.dart';
 import 'package:messenger/shared/widgets/custom_appbar.dart';
 
 class PrivacyPolicyScreen extends ConsumerWidget {
@@ -8,52 +9,52 @@ class PrivacyPolicyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sections = [
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Information We Collect',
         content:
             'Casper Chat may collect account information such as your name, email address, profile picture, phone number, and device information. We also collect usage data necessary to provide, maintain, and improve our services.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'How We Use Information',
         content:
             'We use your information to operate Casper Chat, provide messaging services, improve app performance, personalize your experience, prevent abuse, and maintain security across our platform.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Data Sharing & Disclosure',
         content:
             'We do not sell your personal information. Information may be shared only when required by law, to protect our rights, or with trusted service providers that help us operate Casper Chat.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Data Security',
         content:
             'We implement industry-standard security measures including encryption, secure data storage, access controls, and monitoring systems to protect your information from unauthorized access or misuse.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Cloud Storage',
         content:
             'Messages and files may be stored securely on our cloud infrastructure to provide synchronization across your devices and ensure reliable access to your conversations.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Third-Party Services',
         content:
             'Certain features may rely on trusted third-party providers such as analytics, cloud hosting, notifications, authentication, and payment processing services. These providers have their own privacy policies.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Your Rights',
         content:
             'You may request access, correction, export, or deletion of your personal information. Depending on your location, you may also have additional privacy rights under applicable laws.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Children\'s Privacy',
         content:
             'Casper Chat is not intended for children under the age required by local regulations. We do not knowingly collect personal information from children without appropriate consent.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Policy Updates',
         content:
             'We may update this Privacy Policy from time to time. Any changes will be reflected on this page along with the updated revision date.',
       ),
-      const PrivacySection(
+      const PrivacyPolicySection(
         title: 'Contact Us',
         content:
             'If you have questions about this Privacy Policy or our privacy practices, please contact the Casper Chat support team through the Help & Support section of the application.',
@@ -61,7 +62,6 @@ class PrivacyPolicyScreen extends ConsumerWidget {
     ];
 
     final theme = Theme.of(context);
-
     return Scaffold(
       appBar: const CustomAppBar(title: 'Privacy Policy'),
       body: ListView(
@@ -237,38 +237,3 @@ class PrivacyPolicyScreen extends ConsumerWidget {
     );
   }
 }
-
-class PrivacySection {
-  final String title;
-  final String content;
-
-  const PrivacySection({required this.title, required this.content});
-}
-
-/* class _PrivacyBadge extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const _PrivacyBadge({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: .04), blurRadius: 10),
-        ],
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: const Color(0xff4F46E5)),
-          const SizedBox(height: 8),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-        ],
-      ),
-    );
-  }
-} */
