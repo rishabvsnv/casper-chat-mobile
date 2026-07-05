@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:messenger/features/calls/domain/call_model.dart';
+import 'package:messenger/features/calls/domain/models/call_model.dart';
 
 class CallsScreen extends StatefulWidget {
   const CallsScreen({super.key});

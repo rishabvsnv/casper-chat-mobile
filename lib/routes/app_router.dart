@@ -13,8 +13,7 @@ import 'package:messenger/routes/settings_routes.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    // initialLocation: NamedRoutes.login,
-    initialLocation: NamedRoutes.main,
+    initialLocation: NamedRoutes.splash,
     routes: [
       ...authRoutes,
       ...commonRoutes,

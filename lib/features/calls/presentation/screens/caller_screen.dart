@@ -4,12 +4,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:messenger/core/theme/app_colors.dart';
-
-enum CallState { calling, ringing, connected, reconnecting }
-
-enum AudioRoute { speaker, earpiece, headphones }
-
-enum NetworkQuality { excellent, good, weak }
+import 'package:messenger/features/calls/domain/models/audio_route.dart';
+import 'package:messenger/features/calls/domain/models/call_state.dart';
+import 'package:messenger/features/calls/domain/models/network_quality.dart';
+import 'package:messenger/features/calls/presentation/widgets/audio_route_sheet.dart';
+import 'package:messenger/features/calls/presentation/widgets/call_controls.dart';
+import 'package:messenger/features/calls/presentation/widgets/call_header.dart';
+import 'package:messenger/features/calls/presentation/widgets/call_top_bar.dart';
+import 'package:messenger/features/calls/presentation/widgets/local_video_preview.dart';
 
 class CallerScreen extends StatefulWidget {
   final String name;
@@ -24,12 +26,6 @@ class CallerScreen extends StatefulWidget {
 class _CallerScreenState extends State<CallerScreen>
     with TickerProviderStateMixin {
   Duration duration = Duration.zero;
-
-  double _previewTop = 24;
-  double _previewLeft = 20;
-
-  static const double previewWidth = 110;
-  static const double previewHeight = 170;
 
   Timer? _timer;
   Timer? _callStateTimer;
@@ -244,37 +240,6 @@ class _CallerScreenState extends State<CallerScreen>
     // Todo: start/stop screen sharing
   }
 
-  void _snapToNearestCorner(Size size) {
-    final corners = [
-      Offset(20, 24), // top-left
-      Offset(size.width - previewWidth - 20, 24), // top-right
-      Offset(20, size.height - previewHeight - 140), // bottom-left
-      Offset(
-        size.width - previewWidth - 20,
-        size.height - previewHeight - 140,
-      ), // bottom-right
-    ];
-
-    final current = Offset(_previewLeft, _previewTop);
-
-    Offset nearest = corners.first;
-    double minDistance = double.infinity;
-
-    for (final corner in corners) {
-      final distance = (current - corner).distance;
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        nearest = corner;
-      }
-    }
-
-    setState(() {
-      _previewLeft = nearest.dx;
-      _previewTop = nearest.dy;
-    });
-  }
-
   void _endCall() {
     HapticFeedback.mediumImpact();
 
@@ -341,91 +306,9 @@ class _CallerScreenState extends State<CallerScreen>
                   ),
                 ),
               if (_isVideoEnabled)
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeOutCubic,
-                  top: _previewTop,
-                  left: _previewLeft,
-                  child: GestureDetector(
-                    onPanUpdate: (details) {
-                      setState(() {
-                        _previewLeft += details.delta.dx;
-                        _previewTop += details.delta.dy;
-                      });
-                    },
-                    onPanEnd: (_) {
-                      _snapToNearestCorner(MediaQuery.of(context).size);
-                    },
-                    child: Container(
-                      width: 110,
-                      height: 170,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withValues(alpha: .35),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: .15),
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Stack(
-                          children: [
-                            Container(color: Colors.black26),
-
-                            Center(
-                              child: Image.network(
-                                'https://picsum.photos/600/950',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-
-                            Positioned(
-                              bottom: 10,
-                              left: 10,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black54,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Text(
-                                  'You',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: 8,
-                              right: 8,
-                              child: GestureDetector(
-                                onTap: _toggleVideoPause,
-                                child: Container(
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Icon(
-                                    _isVideoPaused
-                                        ? Icons.play_arrow_rounded
-                                        : Icons.pause_rounded,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                LocalVideoPreview(
+                  isPaused: _isVideoPaused,
+                  onPauseToggle: _toggleVideoPause,
                 ),
 
               if (_isVideoEnabled)
@@ -439,50 +322,13 @@ class _CallerScreenState extends State<CallerScreen>
                       heroTag: 'audio_route',
                       backgroundColor: Colors.white.withValues(alpha: .15),
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (_) {
-                            return SafeArea(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListTile(
-                                    leading: const Icon(
-                                      Icons.volume_up_rounded,
-                                    ),
-                                    title: const Text('Speaker'),
-                                    onTap: () {
-                                      setState(() {
-                                        _audioRoute = AudioRoute.speaker;
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(
-                                      Icons.phone_in_talk_rounded,
-                                    ),
-                                    title: const Text('Earpiece'),
-                                    onTap: () {
-                                      setState(() {
-                                        _audioRoute = AudioRoute.earpiece;
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.headset_rounded),
-                                    title: const Text('Headphones'),
-                                    onTap: () {
-                                      setState(() {
-                                        _audioRoute = AudioRoute.headphones;
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
+                        AudioRouteSheet.show(
+                          context,
+                          currentRoute: _audioRoute,
+                          onChanged: (route) {
+                            setState(() {
+                              _audioRoute = route;
+                            });
                           },
                         );
                       },
@@ -493,291 +339,42 @@ class _CallerScreenState extends State<CallerScreen>
 
               Column(
                 children: [
-                  const SizedBox(height: 12),
-
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 250),
-                    opacity: _showControls ? 1 : 0,
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 16),
-
-                        IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: const Icon(
-                            Icons.keyboard_arrow_down_rounded,
-                            color: Colors.white,
-                            size: 34,
-                          ),
-                        ),
-
-                        const Spacer(),
-
-                        PopupMenuButton<String>(
-                          icon: const Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
-                          ),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 'screen_share':
-                                _toggleScreenShare();
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(
-                              value: 'screen_share',
-                              child: Text('Screen Share'),
-                            ),
-                            const PopupMenuItem(
-                              value: 'call_info',
-                              child: Text('Call Info'),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(width: 8),
-                      ],
-                    ),
+                  CallTopBar(
+                    visible: _showControls,
+                    onClose: _endCall,
+                    onScreenShare: _toggleScreenShare,
                   ),
 
-                  // const Spacer(),
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 250),
-                    opacity: _showControls ? 1 : 0,
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: .35),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.shield_outlined,
-                                size: 14,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 6),
-                              Text(
-                                'Casper Secure Call',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: .30),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.network_cell,
-                                size: 14,
-                                color: networkColor,
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                networkLabel,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        Text(
-                          widget.name,
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-
-                        const SizedBox(height: 6),
-
-                        Text(
-                          callStatus,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                          ),
-                        ),
-
-                        const SizedBox(height: 4),
-
-                        Text(
-                          _callState == CallState.connected
-                              ? callTime
-                              : '--:--',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+                  CallHeader(
+                    showControls: _showControls,
+                    networkColor: networkColor,
+                    networkLabel: networkLabel,
+                    name: widget.name,
+                    theme: theme,
+                    callStatus: callStatus,
+                    callState: _callState,
+                    callTime: callTime,
                   ),
 
                   const Spacer(),
 
-                  const Spacer(),
-
-                  AnimatedSlide(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    offset: _showControls ? Offset.zero : const Offset(0, 2),
-                    child: AnimatedOpacity(
-                      duration: const Duration(milliseconds: 250),
-                      opacity: _showControls ? 1 : 0,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: .12),
-                          borderRadius: BorderRadius.circular(36),
-                          border: Border.all(
-                            color: Colors.white.withValues(alpha: .12),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withValues(alpha: .12),
-                              blurRadius: 20,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _CircleCallButton(
-                              icon: _isMuted
-                                  ? Icons.mic_off_rounded
-                                  : Icons.mic_rounded,
-                              selected: _isMuted,
-                              onTap: _toggleMute,
-                            ),
-
-                            if (_isVideoEnabled)
-                              _CircleCallButton(
-                                icon: Icons.flip_camera_android_rounded,
-                                selected: false,
-                                onTap: _switchCamera,
-                              )
-                            else
-                              _CircleCallButton(
-                                icon: _isSpeakerOn
-                                    ? Icons.volume_up_rounded
-                                    : Icons.volume_off_rounded,
-                                selected: _isSpeakerOn,
-                                onTap: _toggleSpeaker,
-                              ),
-
-                            _CircleCallButton(
-                              icon: _isVideoEnabled
-                                  ? Icons.videocam_rounded
-                                  : Icons.videocam_off_rounded,
-                              selected: _isVideoEnabled,
-                              onTap: _toggleVideo,
-                            ),
-
-                            GestureDetector(
-                              onTap: _endCall,
-                              child: Container(
-                                width: 62,
-                                height: 62,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.error,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.error.withValues(
-                                        alpha: .35,
-                                      ),
-                                      blurRadius: 18,
-                                      spreadRadius: 2,
-                                    ),
-                                  ],
-                                ),
-                                child: const Icon(
-                                  Icons.call_end_rounded,
-                                  color: Colors.white,
-                                  size: 28,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  CallControls(
+                    visible: _showControls,
+                    isMuted: _isMuted,
+                    isVideoEnabled: _isVideoEnabled,
+                    onMute: _toggleMute,
+                    onVideo: _toggleVideo,
+                    onEndCall: _endCall,
+                    isSpeakerOn: _isSpeakerOn,
+                    onSwitchCamera: _switchCamera,
+                    onToggleSpeaker: _toggleSpeaker,
                   ),
+
                   const SizedBox(height: 50),
                 ],
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CircleCallButton extends StatelessWidget {
-  final IconData icon;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _CircleCallButton({
-    required this.icon,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        width: 62,
-        height: 62,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: selected ? Colors.white : Colors.white.withValues(alpha: .15),
-          border: Border.all(color: Colors.white.withValues(alpha: .12)),
-        ),
-        child: Icon(
-          icon,
-          size: 28,
-          color: selected ? AppColors.primary : Colors.white,
         ),
       ),
     );
